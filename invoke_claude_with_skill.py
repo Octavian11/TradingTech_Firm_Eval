@@ -7,6 +7,10 @@ and reference the 'company-evaluator' skill programmatically.
 
 import os
 from anthropic import Anthropic
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 def invoke_claude_with_skill(

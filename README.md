@@ -171,6 +171,8 @@ Multi-agent system = ~3 minutes total 🚀
 
 ### 2. Configure Environment Variables
 
+**Option A: Using .env file (Recommended)**
+
 Create a `.env` file in the project root:
 
 ```bash
@@ -181,6 +183,16 @@ Edit `.env` and add your API key:
 
 ```
 ANTHROPIC_API_KEY=sk-ant-api03-xxx...
+```
+
+The scripts will automatically load this file - no need to export variables!
+
+**Option B: Export environment variable**
+
+Alternatively, set the environment variable manually:
+
+```bash
+export ANTHROPIC_API_KEY=sk-ant-api03-xxx...
 ```
 
 ### 3. Python Setup

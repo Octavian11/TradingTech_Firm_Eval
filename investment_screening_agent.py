@@ -19,6 +19,10 @@ import pandas as pd
 from anthropic import Anthropic
 from datetime import datetime
 import logging
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(
