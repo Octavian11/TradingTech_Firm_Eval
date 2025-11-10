@@ -1,0 +1,29 @@
+{
+  "name": "tradingtech-firm-eval",
+  "version": "1.0.0",
+  "description": "Invoke Claude AI with custom skills programmatically",
+  "main": "invoke_claude_with_skill.ts",
+  "scripts": {
+    "start": "ts-node invoke_claude_with_skill.ts",
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn invoke_claude_with_skill.ts"
+  },
+  "keywords": [
+    "claude",
+    "anthropic",
+    "ai",
+    "skills",
+    "trading"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.0"
+  }
+}

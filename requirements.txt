@@ -1,0 +1,13 @@
+# Python dependencies for invoking Claude AI with skills
+
+# Anthropic SDK for Claude API
+anthropic>=0.39.0
+
+# Optional: For environment variable management
+python-dotenv>=1.0.0
+
+# Optional: For type checking
+mypy>=1.0.0
+
+# Optional: For async support
+aiohttp>=3.9.0
