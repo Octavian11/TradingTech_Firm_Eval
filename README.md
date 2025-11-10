@@ -26,19 +26,37 @@ The Investment Screening Agent reads company names from an Excel file, evaluates
 
 ### Quick Start with the Agent
 
+**⭐ RECOMMENDED: Multi-Agent System (New!)**
+
+The multi-agent system uses a 3-agent architecture to avoid context window issues:
+
 1. **Create an example Excel file:**
    ```bash
    python create_example_excel.py
    ```
    This creates `companies_to_screen.xlsx` with sample data.
 
-2. **Run the screening agent:**
+2. **Run the multi-agent screening system:**
    ```bash
-   python investment_screening_agent.py companies_to_screen.xlsx
+   python multi_agent_screening.py companies_to_screen.xlsx
    ```
+
+   Processes 2 companies per API call by default (small context window!)
 
 3. **Check results:**
    Open `companies_to_screen.xlsx` to see verdicts and rationales!
+
+**Alternative: Single-Agent Version (Legacy)**
+
+For simple use cases or testing:
+```bash
+python investment_screening_agent.py companies_to_screen.xlsx
+```
+
+> 💡 **Which should I use?**
+> - **10+ companies**: Use `multi_agent_screening.py` (recommended)
+> - **1-5 companies**: Either works, but multi-agent is still better
+> - **50-100 companies**: Definitely use `multi_agent_screening.py`
 
 ### Excel File Structure
 
@@ -59,8 +77,46 @@ The agent will fill in **Verdict**, **Rationale**, and **Processed?** columns au
 - ✅ **Rate limiting**: Configurable delay between API calls
 - ✅ **Summary stats**: Get counts of GREEN/YELLOW/RED verdicts
 
+### Multi-Agent Architecture
+
+The new multi-agent system consists of **3 specialized agents**:
+
+| Agent | Responsibility | Context Impact |
+|-------|---------------|----------------|
+| **ExcelManager** 📊 | Reads/writes Excel files, tracks progress | None (no API calls) |
+| **EvaluatorAgent** 🤖 | Calls Claude API with 1-3 companies per batch | ✅ Small (600 tokens avg) |
+| **OrchestratorAgent** 🎯 | Coordinates workflow between agents | None (no API calls) |
+
+**Key Benefits:**
+- ✅ Avoids context window issues (processes 1-3 companies at a time)
+- ✅ Separation of concerns (file I/O, API calls, coordination)
+- ✅ Better error handling and recovery
+- ✅ Easier to test and maintain
+
+📖 **See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed documentation**
+
 ### Agent Command-Line Options
 
+**Multi-Agent System:**
+```bash
+# Basic usage (batch size 2 - default)
+python multi_agent_screening.py companies.xlsx
+
+# Conservative mode (1 company per API call - smallest context)
+python multi_agent_screening.py companies.xlsx --batch-size 1
+
+# Fast mode (3 companies per API call)
+python multi_agent_screening.py companies.xlsx --batch-size 3
+
+# Custom configuration
+python multi_agent_screening.py companies.xlsx \
+  --batch-size 2 \
+  --skill company-evaluator \
+  --delay 2.0 \
+  --verbose
+```
+
+**Single-Agent System (Legacy):**
 ```bash
 # Basic usage
 python investment_screening_agent.py companies.xlsx
@@ -83,12 +139,18 @@ python investment_screening_agent.py companies.xlsx --model claude-opus-4-202505
 **Scenario:** You have a list of 50 potential acquisition targets and need to quickly screen them.
 
 1. Export your list to Excel with company names and any available data
-2. Run: `python investment_screening_agent.py targets.xlsx`
-3. Get coffee ☕ (takes ~2 minutes for 50 companies)
+2. Run: `python multi_agent_screening.py targets.xlsx --batch-size 2`
+3. Get coffee ☕ (takes ~3 minutes for 50 companies)
 4. Review verdicts and focus on GREEN ✅ companies first
 
 **Time savings:** Manual research = ~15 min/company × 50 = 12.5 hours
-Agent = ~2 minutes total 🚀
+Multi-agent system = ~3 minutes total 🚀
+
+**Why multi-agent for 50 companies?**
+- Small context window per API call (only 2 companies)
+- No risk of hitting token limits
+- Incremental saves (won't lose progress if interrupted)
+- Better error handling and recovery
 
 ## Prerequisites
 
