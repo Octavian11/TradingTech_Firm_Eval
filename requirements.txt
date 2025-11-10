@@ -3,6 +3,10 @@
 # Anthropic SDK for Claude API
 anthropic>=0.39.0
 
+# Excel handling for investment screening agent
+pandas>=2.0.0
+openpyxl>=3.1.0
+
 # Optional: For environment variable management
 python-dotenv>=1.0.0
 

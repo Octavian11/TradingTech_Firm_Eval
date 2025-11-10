@@ -6,6 +6,90 @@ This project demonstrates how to programmatically invoke Claude AI with a custom
 
 The code provides both Python and TypeScript implementations for calling the Anthropic Claude API and referencing custom skills that you've configured in Claude Desktop.
 
+## 🤖 Investment Screening Agent
+
+**NEW:** This project now includes an automated investment screening agent that processes Excel files with company data!
+
+### What It Does
+
+The Investment Screening Agent reads company names from an Excel file, evaluates each company using Claude AI's "company-evaluator" skill, and writes verdicts back to Excel.
+
+**Workflow:**
+1. Input: Excel file with company names/websites/data
+2. System researches and evaluates each company using Claude AI
+3. Output: Excel file with Verdict + Rationale for each company
+
+**Verdicts:**
+- **GREEN ✅**: Worth pursuing for acquisition
+- **YELLOW ⚠️**: Requires more research
+- **RED ❌**: Pass on this opportunity
+
+### Quick Start with the Agent
+
+1. **Create an example Excel file:**
+   ```bash
+   python create_example_excel.py
+   ```
+   This creates `companies_to_screen.xlsx` with sample data.
+
+2. **Run the screening agent:**
+   ```bash
+   python investment_screening_agent.py companies_to_screen.xlsx
+   ```
+
+3. **Check results:**
+   Open `companies_to_screen.xlsx` to see verdicts and rationales!
+
+### Excel File Structure
+
+Your input Excel should have these columns:
+
+| Name | Location | Website | Revenue | Deep Research | Notes | Verdict | Rationale | Processed? |
+|------|----------|---------|---------|---------------|-------|---------|-----------|------------|
+| Acme Corp | SF, CA | acme.com | $5M ARR | B2B SaaS... | Notes... | | | No |
+
+The agent will fill in **Verdict**, **Rationale**, and **Processed?** columns automatically.
+
+### Agent Features
+
+- ✅ **Incremental saving**: Results saved after each company (won't lose progress)
+- ✅ **Resume support**: Skip already processed companies automatically
+- ✅ **Error handling**: Gracefully handles API errors and retries
+- ✅ **Detailed logging**: Full log file (`screening_agent.log`) for debugging
+- ✅ **Rate limiting**: Configurable delay between API calls
+- ✅ **Summary stats**: Get counts of GREEN/YELLOW/RED verdicts
+
+### Agent Command-Line Options
+
+```bash
+# Basic usage
+python investment_screening_agent.py companies.xlsx
+
+# Use a different skill
+python investment_screening_agent.py companies.xlsx --skill my-custom-skill
+
+# Reprocess already completed companies
+python investment_screening_agent.py companies.xlsx --reprocess
+
+# Adjust rate limiting (2 second delay)
+python investment_screening_agent.py companies.xlsx --delay 2.0
+
+# Use a different Claude model
+python investment_screening_agent.py companies.xlsx --model claude-opus-4-20250514
+```
+
+### Use Case Example
+
+**Scenario:** You have a list of 50 potential acquisition targets and need to quickly screen them.
+
+1. Export your list to Excel with company names and any available data
+2. Run: `python investment_screening_agent.py targets.xlsx`
+3. Get coffee ☕ (takes ~2 minutes for 50 companies)
+4. Review verdicts and focus on GREEN ✅ companies first
+
+**Time savings:** Manual research = ~15 min/company × 50 = 12.5 hours
+Agent = ~2 minutes total 🚀
+
 ## Prerequisites
 
 - Python 3.8+ (for Python implementation)
