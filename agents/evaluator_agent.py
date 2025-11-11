@@ -252,53 +252,10 @@ QUALITY REQUIREMENTS:
 
         logger.debug(f"Calling Claude API with prompt length: {len(prompt)} chars")
 
-        # Define tools for research
-        tools = [
-            {
-                "name": "web_search",
-                "description": "Search the web for information about companies, people, funding, etc.",
-                "input_schema": {
-                    "type": "object",
-                    "properties": {
-                        "query": {
-                            "type": "string",
-                            "description": "The search query"
-                        }
-                    },
-                    "required": ["query"]
-                }
-            },
-            {
-                "name": "web_fetch",
-                "description": "Fetch and read content from a specific URL",
-                "input_schema": {
-                    "type": "object",
-                    "properties": {
-                        "url": {
-                            "type": "string",
-                            "description": "The URL to fetch"
-                        }
-                    },
-                    "required": ["url"]
-                }
-            },
-            {
-                "name": "file_read",
-                "description": "Read a file from the filesystem (skill files, references, etc.)",
-                "input_schema": {
-                    "type": "object",
-                    "properties": {
-                        "path": {
-                            "type": "string",
-                            "description": "The file path to read"
-                        }
-                    },
-                    "required": ["path"]
-                }
-            }
-        ]
-
         # Build API call parameters
+        # NOTE: We do NOT pass tools parameter here - the skill system provides
+        # web_search, web_fetch, and file_read automatically when the skill is loaded.
+        # Adding tools parameter would require a multi-turn conversation loop.
         api_params = {
             "model": self.model,
             "max_tokens": self.max_tokens,
@@ -309,8 +266,7 @@ QUALITY REQUIREMENTS:
                     "role": "user",
                     "content": prompt
                 }
-            ],
-            "tools": tools
+            ]
         }
 
         # Add thinking parameter if enabled
