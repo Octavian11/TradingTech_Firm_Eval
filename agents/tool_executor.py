@@ -1,0 +1,261 @@
+#!/usr/bin/env python3
+"""
+Tool Executor - Handles execution of research tools for Claude evaluations.
+
+Implements three tools:
+1. web_search: Search the web using DuckDuckGo (free, no API key needed)
+2. web_fetch: Fetch and extract content from URLs
+3. file_read: Read skill files from the filesystem
+
+This module bridges the gap between Claude's tool_use blocks and actual
+research capabilities, enabling Desktop-like evaluations via API.
+"""
+
+import os
+import logging
+from typing import Dict, Any, Optional
+import requests
+from bs4 import BeautifulSoup
+from duckduckgo_search import DDGS
+
+logger = logging.getLogger(__name__)
+
+
+class ToolExecutor:
+    """Executes research tools for Claude API evaluations."""
+
+    def __init__(self, skill_base_path: str = "/mnt/skills/user"):
+        """
+        Initialize the Tool Executor.
+
+        Args:
+            skill_base_path: Base path where skill files are located
+        """
+        self.skill_base_path = skill_base_path
+        self.ddgs = DDGS()
+        logger.info("ToolExecutor initialized")
+
+    def execute_tool(self, tool_name: str, tool_input: Dict[str, Any]) -> str:
+        """
+        Execute a tool and return its results.
+
+        Args:
+            tool_name: Name of the tool (web_search, web_fetch, file_read)
+            tool_input: Input parameters for the tool
+
+        Returns:
+            String result from tool execution
+        """
+        logger.info(f"Executing tool: {tool_name} with input: {tool_input}")
+
+        try:
+            if tool_name == "web_search":
+                return self._web_search(tool_input.get("query", ""))
+            elif tool_name == "web_fetch":
+                return self._web_fetch(tool_input.get("url", ""))
+            elif tool_name == "file_read":
+                return self._file_read(tool_input.get("path", ""))
+            else:
+                error_msg = f"Unknown tool: {tool_name}"
+                logger.error(error_msg)
+                return f"Error: {error_msg}"
+
+        except Exception as e:
+            error_msg = f"Tool execution failed: {str(e)}"
+            logger.error(f"{tool_name} error: {e}", exc_info=True)
+            return f"Error: {error_msg}"
+
+    def _web_search(self, query: str) -> str:
+        """
+        Search the web using DuckDuckGo.
+
+        Args:
+            query: Search query
+
+        Returns:
+            Formatted search results
+        """
+        if not query:
+            return "Error: No search query provided"
+
+        try:
+            # Get up to 10 results from DuckDuckGo
+            results = list(self.ddgs.text(query, max_results=10))
+
+            if not results:
+                return f"No results found for query: {query}"
+
+            # Format results
+            formatted_results = [f"Search results for: {query}\n"]
+
+            for i, result in enumerate(results, 1):
+                title = result.get('title', 'No title')
+                body = result.get('body', 'No description')
+                href = result.get('href', 'No URL')
+
+                formatted_results.append(
+                    f"{i}. {title}\n"
+                    f"   URL: {href}\n"
+                    f"   {body}\n"
+                )
+
+            result_text = "\n".join(formatted_results)
+            logger.info(f"web_search returned {len(results)} results for: {query}")
+            return result_text
+
+        except Exception as e:
+            error_msg = f"Search failed: {str(e)}"
+            logger.error(error_msg)
+            return f"Error: {error_msg}"
+
+    def _web_fetch(self, url: str) -> str:
+        """
+        Fetch and extract text content from a URL.
+
+        Args:
+            url: URL to fetch
+
+        Returns:
+            Extracted text content
+        """
+        if not url:
+            return "Error: No URL provided"
+
+        try:
+            # Fetch the URL with timeout
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            }
+            response = requests.get(url, headers=headers, timeout=10)
+            response.raise_for_status()
+
+            # Parse HTML and extract text
+            soup = BeautifulSoup(response.content, 'html.parser')
+
+            # Remove script and style elements
+            for script in soup(["script", "style"]):
+                script.decompose()
+
+            # Get text
+            text = soup.get_text()
+
+            # Clean up whitespace
+            lines = (line.strip() for line in text.splitlines())
+            chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+            text = '\n'.join(chunk for chunk in chunks if chunk)
+
+            # Limit to first 5000 characters to avoid token issues
+            if len(text) > 5000:
+                text = text[:5000] + "\n\n[Content truncated at 5000 characters]"
+
+            logger.info(f"web_fetch successfully fetched {len(text)} chars from: {url}")
+            return f"Content from {url}:\n\n{text}"
+
+        except requests.Timeout:
+            error_msg = f"Timeout fetching URL: {url}"
+            logger.error(error_msg)
+            return f"Error: {error_msg}"
+        except requests.RequestException as e:
+            error_msg = f"Failed to fetch URL: {str(e)}"
+            logger.error(error_msg)
+            return f"Error: {error_msg}"
+        except Exception as e:
+            error_msg = f"Error processing content: {str(e)}"
+            logger.error(error_msg)
+            return f"Error: {error_msg}"
+
+    def _file_read(self, path: str) -> str:
+        """
+        Read a file from the filesystem (skill files).
+
+        Args:
+            path: File path to read
+
+        Returns:
+            File contents
+        """
+        if not path:
+            return "Error: No file path provided"
+
+        try:
+            # If path doesn't start with skill_base_path, prepend it
+            if not path.startswith(self.skill_base_path):
+                full_path = os.path.join(self.skill_base_path, path)
+            else:
+                full_path = path
+
+            # Security check: ensure path is within skill base path
+            real_path = os.path.realpath(full_path)
+            real_base = os.path.realpath(self.skill_base_path)
+
+            if not real_path.startswith(real_base):
+                error_msg = f"Access denied: Path outside skill directory: {path}"
+                logger.error(error_msg)
+                return f"Error: {error_msg}"
+
+            # Read the file
+            with open(real_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+
+            logger.info(f"file_read successfully read {len(content)} chars from: {path}")
+            return content
+
+        except FileNotFoundError:
+            error_msg = f"File not found: {path}"
+            logger.error(error_msg)
+            return f"Error: {error_msg}"
+        except PermissionError:
+            error_msg = f"Permission denied reading file: {path}"
+            logger.error(error_msg)
+            return f"Error: {error_msg}"
+        except Exception as e:
+            error_msg = f"Error reading file: {str(e)}"
+            logger.error(error_msg)
+            return f"Error: {error_msg}"
+
+
+# Tool definitions for Claude API
+TOOL_DEFINITIONS = [
+    {
+        "name": "web_search",
+        "description": "Search the web for information about companies, people, funding, products, etc. Returns up to 10 search results with titles, URLs, and descriptions.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "The search query (e.g., 'EZX Inc Westfield NJ', 'Paul Savin founder', 'EZX Inc funding investors')"
+                }
+            },
+            "required": ["query"]
+        }
+    },
+    {
+        "name": "web_fetch",
+        "description": "Fetch and extract text content from a specific URL. Returns the main text content of the webpage.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string",
+                    "description": "The URL to fetch (e.g., 'https://www.ezxinc.com', 'https://www.linkedin.com/company/ezx-inc')"
+                }
+            },
+            "required": ["url"]
+        }
+    },
+    {
+        "name": "file_read",
+        "description": "Read a file from the skill directory (e.g., skill files, reference documents, evaluation criteria).",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string",
+                    "description": "The file path relative to /mnt/skills/user/ (e.g., 'company-evaluator/SKILL.md', 'company-evaluator/references/investment-criteria.md')"
+                }
+            },
+            "required": ["path"]
+        }
+    }
+]
