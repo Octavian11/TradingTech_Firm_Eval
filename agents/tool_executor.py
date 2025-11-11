@@ -24,13 +24,18 @@ logger = logging.getLogger(__name__)
 class ToolExecutor:
     """Executes research tools for Claude API evaluations."""
 
-    def __init__(self, skill_base_path: str = "/mnt/skills/user"):
+    def __init__(self, skill_base_path: str = None):
         """
         Initialize the Tool Executor.
 
         Args:
-            skill_base_path: Base path where skill files are located
+            skill_base_path: Base path where skill files are located.
+                           Defaults to the skills directory in the project root.
         """
+        if skill_base_path is None:
+            # Get project root (two levels up from this file) and point to skills directory
+            project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            skill_base_path = os.path.join(project_root, "skills")
         self.skill_base_path = skill_base_path
         self.ddgs = DDGS()
         logger.info("ToolExecutor initialized")
@@ -252,7 +257,7 @@ TOOL_DEFINITIONS = [
             "properties": {
                 "path": {
                     "type": "string",
-                    "description": "The file path relative to /mnt/skills/user/ (e.g., 'company-evaluator/SKILL.md', 'company-evaluator/references/investment-criteria.md')"
+                    "description": "The file path relative to the skills directory (e.g., 'company-evaluator/SKILL.md', 'company-evaluator/references/investment-criteria.md')"
                 }
             },
             "required": ["path"]
