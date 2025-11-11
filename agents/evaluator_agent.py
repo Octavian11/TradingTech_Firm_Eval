@@ -17,6 +17,7 @@ from typing import List, Dict
 from anthropic import Anthropic
 
 from .excel_manager import Company, EvaluationResult
+from .tool_executor import ToolExecutor, TOOL_DEFINITIONS
 
 logger = logging.getLogger(__name__)
 
@@ -64,6 +65,9 @@ class EvaluatorAgent:
             raise ValueError("ANTHROPIC_API_KEY environment variable not set")
 
         self.client = Anthropic(api_key=api_key)
+
+        # Initialize tool executor
+        self.tool_executor = ToolExecutor()
 
         thinking_status = f"enabled (budget: {thinking_budget})" if use_thinking else "disabled"
         logger.info(f"Initialized EvaluatorAgent with skill: {skill_name}, model: {model}, max_tokens: {max_tokens}, thinking: {thinking_status}")
@@ -211,7 +215,13 @@ RATIONALE: [Your detailed rationale with specific metrics and assessment]
 
     def _call_claude_api(self, prompt: str) -> str:
         """
-        Make API call to Claude.
+        Make API call to Claude with multi-turn tool handling.
+
+        Implements a conversation loop:
+        1. Send initial prompt with tools
+        2. Execute any tool_use blocks Claude returns
+        3. Send tool results back
+        4. Repeat until Claude returns final text response
 
         Args:
             prompt: The prompt to send
@@ -252,54 +262,141 @@ QUALITY REQUIREMENTS:
 
         logger.debug(f"Calling Claude API with prompt length: {len(prompt)} chars")
 
-        # Build API call parameters
-        # NOTE: We do NOT pass tools parameter here - the skill system provides
-        # web_search, web_fetch, and file_read automatically when the skill is loaded.
-        # Adding tools parameter would require a multi-turn conversation loop.
-        api_params = {
-            "model": self.model,
-            "max_tokens": self.max_tokens,
-            "temperature": self.temperature,
-            "system": system_prompt,
-            "messages": [
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ]
-        }
-
-        # Add thinking parameter if enabled
-        if self.use_thinking:
-            api_params["thinking"] = {
-                "type": "enabled",
-                "budget_tokens": self.thinking_budget
+        # Initialize conversation with user prompt
+        messages = [
+            {
+                "role": "user",
+                "content": prompt
             }
-            logger.debug(f"Extended thinking enabled with budget: {self.thinking_budget} tokens")
+        ]
 
-        message = self.client.messages.create(**api_params)
+        # Track all tool calls and thinking blocks across all turns
+        all_tool_calls = []
+        all_thinking_blocks = []
 
-        # Extract thinking content, response text, and tool calls
-        thinking_blocks = []
-        response_text = None
-        tool_calls = []
+        # Multi-turn conversation loop
+        max_turns = 20  # Prevent infinite loops
+        turn = 0
 
-        for content_block in message.content:
-            if content_block.type == "thinking":
-                thinking_blocks.append(content_block.thinking)
-                logger.info(f"Thinking output ({len(content_block.thinking)} chars): {content_block.thinking[:200]}...")
-            elif content_block.type == "text":
-                response_text = content_block.text
-            elif content_block.type == "tool_use":
-                tool_calls.append({
-                    "name": content_block.name,
-                    "input": content_block.input
+        while turn < max_turns:
+            turn += 1
+            logger.debug(f"API turn {turn}/{max_turns}")
+
+            # Build API call parameters
+            api_params = {
+                "model": self.model,
+                "max_tokens": self.max_tokens,
+                "temperature": self.temperature,
+                "system": system_prompt,
+                "messages": messages,
+                "tools": TOOL_DEFINITIONS
+            }
+
+            # Add thinking parameter if enabled
+            if self.use_thinking:
+                api_params["thinking"] = {
+                    "type": "enabled",
+                    "budget_tokens": self.thinking_budget
+                }
+
+            # Make API call
+            message = self.client.messages.create(**api_params)
+
+            # Extract content blocks
+            thinking_blocks = []
+            text_blocks = []
+            tool_use_blocks = []
+
+            for content_block in message.content:
+                if content_block.type == "thinking":
+                    thinking_blocks.append(content_block.thinking)
+                    all_thinking_blocks.append(content_block.thinking)
+                    logger.debug(f"Thinking block ({len(content_block.thinking)} chars): {content_block.thinking[:100]}...")
+                elif content_block.type == "text":
+                    text_blocks.append(content_block.text)
+                elif content_block.type == "tool_use":
+                    tool_use_blocks.append(content_block)
+                    all_tool_calls.append({
+                        "name": content_block.name,
+                        "input": content_block.input
+                    })
+                    logger.info(f"Tool request: {content_block.name}({content_block.input})")
+
+            # Check stop reason
+            stop_reason = message.stop_reason
+
+            # If we have tool uses, execute them and continue conversation
+            if tool_use_blocks:
+                logger.info(f"Executing {len(tool_use_blocks)} tools...")
+
+                # Build assistant message with tool uses
+                assistant_content = []
+
+                # Include any thinking or text blocks before tool uses
+                for block in message.content:
+                    if block.type in ["thinking", "text", "tool_use"]:
+                        assistant_content.append(block)
+
+                messages.append({
+                    "role": "assistant",
+                    "content": assistant_content
                 })
 
-        if not response_text:
-            # Fallback for older format
-            response_text = message.content[0].text if message.content else ""
+                # Execute tools and build tool results
+                tool_results = []
+                for tool_block in tool_use_blocks:
+                    result = self.tool_executor.execute_tool(
+                        tool_block.name,
+                        tool_block.input
+                    )
+                    tool_results.append({
+                        "type": "tool_result",
+                        "tool_use_id": tool_block.id,
+                        "content": result
+                    })
+                    logger.debug(f"Tool {tool_block.name} returned {len(result)} chars")
 
+                # Add tool results as user message
+                messages.append({
+                    "role": "user",
+                    "content": tool_results
+                })
+
+                # Continue loop to get next response
+                continue
+
+            # No tool uses - we have final response
+            if text_blocks:
+                final_response = "\n".join(text_blocks)
+                logger.info(f"Final response received ({len(final_response)} chars)")
+
+                # Validate and log quality metrics
+                self._log_quality_metrics(all_thinking_blocks, all_tool_calls)
+
+                # Log token usage
+                usage_msg = f"API call complete. Tokens: {message.usage.input_tokens} in, {message.usage.output_tokens} out"
+                if self.use_thinking and hasattr(message.usage, 'thinking_tokens'):
+                    usage_msg += f", {message.usage.thinking_tokens} thinking"
+                logger.info(usage_msg)
+
+                return final_response
+
+            # No tool uses and no text - unexpected
+            logger.warning(f"Unexpected response - no tools and no text. Stop reason: {stop_reason}")
+            break
+
+        # Exceeded max turns
+        logger.error(f"Exceeded maximum turns ({max_turns}) without getting final response")
+        return "Error: Evaluation incomplete - exceeded maximum conversation turns"
+
+    def _log_quality_metrics(self, thinking_blocks: List[str], tool_calls: List[Dict]) -> None:
+        """
+        Log quality validation metrics.
+
+        Args:
+            thinking_blocks: All thinking blocks from conversation
+            tool_calls: All tool calls from conversation
+        """
         # Validate extended thinking was used
         if self.use_thinking and not thinking_blocks:
             logger.warning(
@@ -346,14 +443,6 @@ QUALITY REQUIREMENTS:
             )
         else:
             logger.info("✓ PE/VC funding search performed")
-
-        # Log token usage (including thinking tokens if present)
-        usage_msg = f"API call complete. Tokens: {message.usage.input_tokens} in, {message.usage.output_tokens} out"
-        if self.use_thinking and hasattr(message.usage, 'thinking_tokens'):
-            usage_msg += f", {message.usage.thinking_tokens} thinking"
-        logger.info(usage_msg)
-
-        return response_text
 
     def _parse_batch_response(
         self,
