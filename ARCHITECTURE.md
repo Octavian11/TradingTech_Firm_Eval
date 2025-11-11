@@ -13,6 +13,8 @@ This document explains the multi-agent system design for the Investment Screenin
 ### Multi-Agent Solution
 - **Small context windows**: Process 5 companies per API call (default, configurable 1-10)
 - **Automatic rate limiting**: Max 25 records per run (prevents API overuse)
+- **Extended thinking**: 10,000 token budget for thorough reasoning (matching Desktop quality)
+- **Detailed analysis**: Prompts request specific metrics (employee count, revenue, ownership structure)
 - **Separation of concerns**: Each agent has a single responsibility
 - **Better error handling**: Errors isolated to specific agents
 - **Scalability**: Easy to add parallel processing later
@@ -68,6 +70,8 @@ This document explains the multi-agent system design for the Investment Screenin
 **Responsibilities:**
 - Make Claude API calls with company-evaluator skill
 - Process 1-10 companies per batch (default: 5)
+- Use extended thinking (10,000 token budget) for thorough reasoning
+- Request specific metrics: employee count, revenue estimates, ownership structure
 - Parse Claude's responses into structured verdicts
 - Handle API errors gracefully
 
@@ -82,6 +86,8 @@ This document explains the multi-agent system design for the Investment Screenin
 **No file operations** - purely API interactions.
 
 **Context window impact:** ✅ Controlled (5 companies per call by default, ~1000 tokens)
+
+**Extended thinking:** ✅ Enabled by default with 10,000 token budget for Desktop-quality analysis
 
 ---
 
@@ -106,6 +112,57 @@ This document explains the multi-agent system design for the Investment Screenin
 **New Feature:** Tracks records processed this run and stops at max_records_per_run limit.
 
 **Context window impact:** ✅ None (doesn't use Claude API directly)
+
+---
+
+## Extended Thinking for Desktop-Quality Analysis
+
+### Why Extended Thinking?
+
+The system uses Claude's extended thinking feature to match the quality of Claude Desktop evaluations:
+
+**Without extended thinking:**
+- Brief, surface-level analysis
+- Limited research depth
+- Missing specific metrics
+
+**With extended thinking (10,000 token budget):**
+- ✅ Thorough research with multiple tool calls
+- ✅ Specific metrics: employee count, revenue estimates, ownership structure
+- ✅ Comprehensive analysis matching Desktop quality
+- ✅ Better reasoning and evidence-based verdicts
+
+### How It Works
+
+1. **Reads skill files first**: Claude reviews evaluation criteria and methodology
+2. **Conducts comprehensive research**:
+   - Company website and online presence
+   - Employee count via LinkedIn/PitchBook
+   - Revenue estimates from public sources
+   - Ownership structure (founder-led, PE/VC-backed)
+   - Market positioning and competitive analysis
+3. **Thinks through evaluation**: 10,000 token budget for deep reasoning
+4. **Provides detailed rationale**: 2-4 sentences with specific findings
+
+### Configuration
+
+```python
+# Default configuration (recommended)
+EvaluatorAgent(
+    use_thinking=True,
+    thinking_budget=10000
+)
+```
+
+**Disable for faster (but lower quality) evaluations:**
+```bash
+python multi_agent_screening.py companies.xlsx --disable-thinking
+```
+
+**Adjust thinking budget:**
+```bash
+python multi_agent_screening.py companies.xlsx --thinking-budget 5000
+```
 
 ---
 
@@ -393,6 +450,8 @@ The multi-agent architecture provides:
 
 ✅ **Small context windows** (5 companies per API call by default, ~1,500 tokens)
 ✅ **Automatic rate limiting** (max 25 records per run, prevents API overuse)
+✅ **Extended thinking** (10,000 token budget for Desktop-quality analysis)
+✅ **Detailed metrics** (employee count, revenue, ownership structure in rationales)
 ✅ **Separation of concerns** (file I/O, API, coordination)
 ✅ **Better error handling** (isolated, recoverable)
 ✅ **Incremental saves** (crash-resistant)
@@ -404,5 +463,7 @@ The multi-agent architecture provides:
 - Batch size: 5 companies per API call
 - Max records per run: 25
 - Context window: ~1,500 tokens per call
+- Extended thinking: Enabled with 10,000 token budget
+- Output quality: Desktop-level detailed analysis
 
 Use `multi_agent_screening.py` for all production workloads. Run multiple times for large datasets (auto-resumes).

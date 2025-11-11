@@ -123,8 +123,8 @@ Examples:
     parser.add_argument(
         "--thinking-budget",
         type=int,
-        default=2000,
-        help="Token budget for extended thinking (default: 2000). Higher = more thorough reasoning."
+        default=10000,
+        help="Token budget for extended thinking (default: 10000). Higher = more thorough reasoning."
     )
     parser.add_argument(
         "--verbose",

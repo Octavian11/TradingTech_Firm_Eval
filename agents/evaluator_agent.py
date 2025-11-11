@@ -31,7 +31,7 @@ class EvaluatorAgent:
         max_tokens: int = 4096,
         temperature: float = 1.0,
         use_thinking: bool = True,
-        thinking_budget: int = 2000
+        thinking_budget: int = 10000
     ):
         """
         Initialize the Evaluator Agent.
@@ -42,7 +42,7 @@ class EvaluatorAgent:
             max_tokens: Maximum tokens for response
             temperature: Sampling temperature
             use_thinking: Enable extended thinking for better reasoning (default: True)
-            thinking_budget: Token budget for thinking (default: 2000)
+            thinking_budget: Token budget for thinking (default: 10000)
         """
         self.skill_name = skill_name
         self.model = model
@@ -109,15 +109,22 @@ class EvaluatorAgent:
         """Build prompt for evaluating multiple companies."""
         if len(companies) == 1:
             # Single company - simpler prompt
-            return f"""Use the "company-evaluator" skill to evaluate this company for investment/acquisition:
+            return f"""Use the "company-evaluator" skill to evaluate this company for investment/acquisition.
+
+IMPORTANT: First read all skill files to understand the evaluation criteria and research process.
 
 {companies[0].to_context_string()}
 
-Provide your verdict (GREEN/YELLOW/RED) and a CONCISE rationale (1-2 sentences maximum, suitable for Excel cell).
+Provide your verdict (GREEN/YELLOW/RED) and a detailed rationale that includes specific metrics when available:
+- Employee count (if discoverable)
+- Revenue estimates (if available)
+- Ownership structure (founder-led, PE-backed, etc.)
+- Key strengths or concerns
+- Overall assessment (2-4 sentences)
 
 Format your response EXACTLY like this:
 VERDICT: [GREEN/YELLOW/RED]
-RATIONALE: [Your concise 1-2 sentence explanation]"""
+RATIONALE: [Your detailed rationale with specific metrics and assessment]"""
 
         else:
             # Multiple companies - structured prompt
@@ -127,27 +134,34 @@ RATIONALE: [Your concise 1-2 sentence explanation]"""
 {company.to_context_string()}
 """)
 
-            prompt = f"""Use the "company-evaluator" skill to evaluate these {len(companies)} companies for investment/acquisition:
+            prompt = f"""Use the "company-evaluator" skill to evaluate these {len(companies)} companies for investment/acquisition.
+
+IMPORTANT: First read all skill files to understand the evaluation criteria and research process.
 
 {"".join(company_sections)}
 
 For EACH company, provide:
 1. A verdict: GREEN ✅ (pursue), YELLOW ⚠️ (research more), or RED ❌ (pass)
-2. A CONCISE rationale: 1-2 sentences maximum, suitable for Excel cell
+2. A detailed rationale that includes specific metrics when available:
+   - Employee count (if discoverable)
+   - Revenue estimates (if available)
+   - Ownership structure (founder-led, PE-backed, etc.)
+   - Key strengths or concerns
+   - Overall assessment (2-4 sentences)
 
 Format your response EXACTLY like this:
 
 COMPANY #1: {companies[0].name}
 VERDICT: [GREEN/YELLOW/RED]
-RATIONALE: [Your concise 1-2 sentence explanation]
+RATIONALE: [Your detailed rationale with specific metrics and assessment]
 
 COMPANY #2: {companies[1].name}
 VERDICT: [GREEN/YELLOW/RED]
-RATIONALE: [Your concise 1-2 sentence explanation]
+RATIONALE: [Your detailed rationale with specific metrics and assessment]
 """ + (f"""
 COMPANY #3: {companies[2].name}
 VERDICT: [GREEN/YELLOW/RED]
-RATIONALE: [Your concise 1-2 sentence explanation]
+RATIONALE: [Your detailed rationale with specific metrics and assessment]
 """ if len(companies) > 2 else "")
 
             return prompt
@@ -165,10 +179,17 @@ RATIONALE: [Your concise 1-2 sentence explanation]
         system_prompt = f"""You have access to the "company-evaluator" skill.
 
 IMPORTANT INSTRUCTIONS:
-1. Use the "company-evaluator" skill to evaluate companies for investment/acquisition potential
-2. Provide CONCISE rationales (1-2 sentences maximum) that fit well in Excel cells
-3. Follow the exact format requested in the user prompt
-4. Be clear and actionable in your verdicts"""
+1. First read all skill files to understand the evaluation criteria and research methodology
+2. Use the "company-evaluator" skill to thoroughly evaluate companies for investment/acquisition potential
+3. Conduct comprehensive research including:
+   - Company website and online presence
+   - Employee count and team information
+   - Revenue estimates and financial data
+   - Ownership structure (founder-led, PE/VC-backed, etc.)
+   - Market positioning and competitive advantages
+4. Provide detailed rationales (2-4 sentences) with specific metrics and findings
+5. Follow the exact format requested in the user prompt
+6. Be clear and actionable in your verdicts"""
 
         logger.debug(f"Calling Claude API with prompt length: {len(prompt)} chars")
 

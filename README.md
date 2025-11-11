@@ -84,12 +84,14 @@ The new multi-agent system consists of **3 specialized agents**:
 | Agent | Responsibility | Context Impact |
 |-------|---------------|----------------|
 | **ExcelManager** 📊 | Reads/writes Excel files, tracks progress | None (no API calls) |
-| **EvaluatorAgent** 🤖 | Calls Claude API with 1-10 companies per batch (default: 5) | ✅ Small (~1000 tokens avg) |
+| **EvaluatorAgent** 🤖 | Calls Claude API with 1-10 companies per batch (default: 5), uses extended thinking (10,000 tokens) | ✅ Small (~1000 tokens avg) |
 | **OrchestratorAgent** 🎯 | Coordinates workflow, enforces 25 record limit per run | None (no API calls) |
 
 **Key Benefits:**
 - ✅ Avoids context window issues (processes 5 companies per batch by default)
 - ✅ Automatic rate limiting (max 25 records per run, prevents API overuse)
+- ✅ Desktop-quality analysis (extended thinking with 10,000 token budget)
+- ✅ Detailed metrics (employee count, revenue, ownership structure)
 - ✅ Separation of concerns (file I/O, API calls, coordination)
 - ✅ Better error handling and recovery
 - ✅ Easier to test and maintain
