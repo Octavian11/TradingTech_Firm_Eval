@@ -115,46 +115,68 @@ class EvaluatorAgent:
     def _build_batch_prompt(self, companies: List[Company]) -> str:
         """Build prompt for evaluating multiple companies."""
         if len(companies) == 1:
-            # Single company - simpler prompt
-            return f"""Use the "company-evaluator" skill to evaluate this company for investment/acquisition.
+            # Single company - detailed prompt with explicit steps
+            return f"""Step 1: Read /mnt/skills/user/{self.skill_name}/SKILL.md
+Step 2: Read /mnt/skills/user/{self.skill_name}/references/investment-criteria.md
+Step 3: Evaluate the company below following the evaluation framework EXACTLY
 
-IMPORTANT: First read all skill files to understand the evaluation criteria and research process.
+DO NOT SKIP STEPS 1 AND 2.
 
+Company to evaluate:
 {companies[0].to_context_string()}
 
-Provide your verdict (GREEN/YELLOW/RED) and a detailed rationale that includes specific metrics when available:
-- Employee count (if discoverable)
-- Revenue estimates (if available)
-- Ownership structure (founder-led, PE-backed, etc.)
-- Key strengths or concerns
-- Overall assessment (2-4 sentences)
+CRITICAL RESEARCH REQUIREMENTS (minimum 4-6 tool calls):
+- web_fetch the company website
+- web_search for company info (employees, location, services)
+- web_search specifically for PE/VC funding or acquisitions
+- web_search for ownership structure and leadership
+- LinkedIn search for employee count verification
+- Additional searches as needed for thorough evaluation
+
+Provide your verdict (GREEN/YELLOW/RED) and a detailed rationale that includes specific metrics:
+- Employee count (verify via LinkedIn if possible)
+- Revenue estimates (if discoverable)
+- Ownership structure (founder-led, PE-backed, recently acquired, etc.)
+- Key strengths or concerns based on investment criteria
+- Overall assessment (2-4 sentences with evidence)
 
 Format your response EXACTLY like this:
 VERDICT: [GREEN/YELLOW/RED]
 RATIONALE: [Your detailed rationale with specific metrics and assessment]"""
 
         else:
-            # Multiple companies - structured prompt
+            # Multiple companies - structured prompt with explicit steps
             company_sections = []
             for i, company in enumerate(companies, 1):
                 company_sections.append(f"""COMPANY #{i}: {company.name}
 {company.to_context_string()}
 """)
 
-            prompt = f"""Use the "company-evaluator" skill to evaluate these {len(companies)} companies for investment/acquisition.
+            prompt = f"""Step 1: Read /mnt/skills/user/{self.skill_name}/SKILL.md
+Step 2: Read /mnt/skills/user/{self.skill_name}/references/investment-criteria.md
+Step 3: Evaluate each company below following the evaluation framework EXACTLY
 
-IMPORTANT: First read all skill files to understand the evaluation criteria and research process.
+DO NOT SKIP STEPS 1 AND 2.
 
+Companies to evaluate:
 {"".join(company_sections)}
+
+CRITICAL RESEARCH REQUIREMENTS FOR EACH COMPANY (minimum 4-6 tool calls per company):
+- web_fetch the company website
+- web_search for company info (employees, location, services)
+- web_search specifically for PE/VC funding or acquisitions
+- web_search for ownership structure and leadership
+- LinkedIn search for employee count verification
+- Additional searches as needed for thorough evaluation
 
 For EACH company, provide:
 1. A verdict: GREEN ✅ (pursue), YELLOW ⚠️ (research more), or RED ❌ (pass)
-2. A detailed rationale that includes specific metrics when available:
-   - Employee count (if discoverable)
-   - Revenue estimates (if available)
-   - Ownership structure (founder-led, PE-backed, etc.)
-   - Key strengths or concerns
-   - Overall assessment (2-4 sentences)
+2. A detailed rationale that includes specific metrics:
+   - Employee count (verify via LinkedIn if possible)
+   - Revenue estimates (if discoverable)
+   - Ownership structure (founder-led, PE-backed, recently acquired, etc.)
+   - Key strengths or concerns based on investment criteria
+   - Overall assessment (2-4 sentences with evidence)
 
 Format your response EXACTLY like this:
 
@@ -183,20 +205,33 @@ RATIONALE: [Your detailed rationale with specific metrics and assessment]
         Returns:
             Response text from Claude
         """
-        system_prompt = f"""You have access to the "company-evaluator" skill.
+        system_prompt = f"""You are an expert at evaluating acquisition targets for private equity and investment firms.
 
-IMPORTANT INSTRUCTIONS:
-1. First read all skill files to understand the evaluation criteria and research methodology
-2. Use the "company-evaluator" skill to thoroughly evaluate companies for investment/acquisition potential
-3. Conduct comprehensive research including:
-   - Company website and online presence
-   - Employee count and team information
-   - Revenue estimates and financial data
-   - Ownership structure (founder-led, PE/VC-backed, etc.)
-   - Market positioning and competitive advantages
-4. Provide detailed rationales (2-4 sentences) with specific metrics and findings
-5. Follow the exact format requested in the user prompt
-6. Be clear and actionable in your verdicts"""
+You have access to the company evaluation skill at:
+- /mnt/skills/user/{self.skill_name}/SKILL.md
+- /mnt/skills/user/{self.skill_name}/references/investment-criteria.md
+
+CRITICAL PROCESS (DO NOT SKIP):
+1. ALWAYS start by reading BOTH skill files using the file_read tool
+2. Follow the evaluation framework EXACTLY as written in SKILL.md
+3. Conduct thorough research (minimum 4-6 tool calls):
+   - web_fetch the company website
+   - web_search for company info (employees, location, services)
+   - web_search specifically for PE/VC funding or acquisitions
+   - web_search for ownership structure and leadership
+   - web_search LinkedIn for employee count verification
+   - Additional research as needed for comprehensive evaluation
+4. Apply ALL criteria from investment-criteria.md in order
+5. Output ONLY the Verdict and Rationale in the exact format specified
+
+Available tools: web_search, web_fetch, file_read
+
+QUALITY REQUIREMENTS:
+- Include specific metrics: employee count, revenue estimates, ownership details
+- Verify information from multiple sources when possible
+- Check specifically for PE/VC backing or recent acquisitions (disqualifiers)
+- Provide evidence-based rationales (2-4 sentences)
+- Be clear and actionable in your verdicts"""
 
         logger.debug(f"Calling Claude API with prompt length: {len(prompt)} chars")
 
@@ -224,9 +259,10 @@ IMPORTANT INSTRUCTIONS:
 
         message = self.client.messages.create(**api_params)
 
-        # Extract thinking content if present
+        # Extract thinking content and response text
         thinking_content = None
         response_text = None
+        tool_use_count = 0
 
         for content_block in message.content:
             if content_block.type == "thinking":
@@ -234,10 +270,22 @@ IMPORTANT INSTRUCTIONS:
                 logger.info(f"Thinking output ({len(thinking_content)} chars): {thinking_content[:200]}...")
             elif content_block.type == "text":
                 response_text = content_block.text
+            elif content_block.type == "tool_use":
+                tool_use_count += 1
 
         if not response_text:
             # Fallback for older format
             response_text = message.content[0].text if message.content else ""
+
+        # Validate research depth (minimum 4 tool calls recommended)
+        if tool_use_count < 4:
+            logger.warning(
+                f"⚠️  INSUFFICIENT RESEARCH: Only {tool_use_count} tool calls made. "
+                f"Recommended minimum: 4-6 tool calls for thorough evaluation. "
+                f"Results may be incomplete or less accurate."
+            )
+        else:
+            logger.info(f"✓ Research depth adequate: {tool_use_count} tool calls made")
 
         # Log token usage (including thinking tokens if present)
         usage_msg = f"API call complete. Tokens: {message.usage.input_tokens} in, {message.usage.output_tokens} out"
