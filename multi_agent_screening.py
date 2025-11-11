@@ -55,14 +55,17 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Basic usage with default settings (batch size 2)
+  # Basic usage with default settings (batch size 5, max 25 records)
   python multi_agent_screening.py companies.xlsx
 
   # Process 1 company at a time (smallest context window)
   python multi_agent_screening.py companies.xlsx --batch-size 1
 
-  # Process 3 companies at a time (faster, larger context)
-  python multi_agent_screening.py companies.xlsx --batch-size 3
+  # Process 10 companies at a time (faster, larger context)
+  python multi_agent_screening.py companies.xlsx --batch-size 10
+
+  # Process up to 50 records in one run
+  python multi_agent_screening.py companies.xlsx --max-records 50
 
   # Use custom skill and longer delay
   python multi_agent_screening.py companies.xlsx --skill my-evaluator --delay 2.0
@@ -79,10 +82,16 @@ Examples:
     parser.add_argument(
         "--batch-size",
         type=int,
-        default=2,
-        choices=[1, 2, 3],
-        help="Number of companies to process per API call (default: 2). "
-             "Smaller batches = smaller context windows but slower."
+        default=5,
+        help="Number of companies to process per API call (default: 5). "
+             "Recommended range: 1-10. Smaller batches = smaller context windows but slower."
+    )
+    parser.add_argument(
+        "--max-records",
+        type=int,
+        default=25,
+        help="Maximum number of records to process in a single run (default: 25). "
+             "Script will stop after processing this many records. Run again to process more."
     )
     parser.add_argument(
         "--skill",
@@ -135,6 +144,7 @@ Examples:
         logger.info(f"Configuration:")
         logger.info(f"  Excel file: {args.excel_file}")
         logger.info(f"  Batch size: {args.batch_size} companies per API call")
+        logger.info(f"  Max records per run: {args.max_records}")
         logger.info(f"  Skill: {args.skill}")
         logger.info(f"  Model: {args.model}")
         logger.info(f"  Delay: {args.delay}s between batches")
@@ -157,7 +167,8 @@ Examples:
             excel_manager=excel_manager,
             evaluator_agent=evaluator_agent,
             batch_size=args.batch_size,
-            delay_seconds=args.delay
+            delay_seconds=args.delay,
+            max_records_per_run=args.max_records
         )
         logger.info("  ✓ OrchestratorAgent initialized")
         logger.info("")
@@ -170,13 +181,13 @@ Examples:
         print("SCREENING COMPLETE")
         print("=" * 60)
         print(f"Batches processed: {results['batches']}")
-        print(f"Companies processed: {results['processed']}")
+        print(f"Companies processed this run: {results['processed_this_run']}")
         print(f"Errors: {results['errors']}")
         print()
         stats = results['statistics']
-        print(f"Total companies: {stats['total']}")
-        print(f"Processed: {stats['processed']}")
-        print(f"Pending: {stats['pending']}")
+        print(f"Total companies in file: {stats['total']}")
+        print(f"Total processed: {stats['processed']}")
+        print(f"Remaining pending: {stats['pending']}")
         print()
         print("VERDICTS:")
         print(f"  GREEN ✅ (pursue): {stats['green']}")
@@ -185,6 +196,10 @@ Examples:
         print("=" * 60)
         print(f"\nResults saved to: {args.excel_file}")
         print(f"Log file: multi_agent_screening.log")
+
+        # Show reminder if there are pending records
+        if stats['pending'] > 0:
+            print(f"\nNote: {stats['pending']} companies still pending. Run the script again to process more.")
 
         sys.exit(0)
 

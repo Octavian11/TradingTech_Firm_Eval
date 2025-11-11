@@ -28,8 +28,9 @@ class OrchestratorAgent:
         self,
         excel_manager: ExcelManager,
         evaluator_agent: EvaluatorAgent,
-        batch_size: int = 2,
-        delay_seconds: float = 1.0
+        batch_size: int = 5,
+        delay_seconds: float = 1.0,
+        max_records_per_run: int = 25
     ):
         """
         Initialize the Orchestrator.
@@ -37,20 +38,26 @@ class OrchestratorAgent:
         Args:
             excel_manager: ExcelManager instance
             evaluator_agent: EvaluatorAgent instance
-            batch_size: Number of companies to process per batch (1-3 recommended)
+            batch_size: Number of companies to process per batch (1-5 recommended)
             delay_seconds: Delay between batches for rate limiting
+            max_records_per_run: Maximum number of records to process in a single run (default: 25)
         """
         self.excel_manager = excel_manager
         self.evaluator_agent = evaluator_agent
-        self.batch_size = min(max(1, batch_size), 3)  # Clamp to 1-3
+        self.batch_size = min(max(1, batch_size), 10)  # Clamp to 1-10
         self.delay_seconds = delay_seconds
+        self.max_records_per_run = max_records_per_run
 
         logger.info(f"Initialized OrchestratorAgent with batch_size={self.batch_size}, "
-                   f"delay={self.delay_seconds}s")
+                   f"delay={self.delay_seconds}s, max_records_per_run={self.max_records_per_run}")
 
     def run(self) -> dict:
         """
         Run the complete screening workflow.
+
+        Stops when either:
+        - No more pending companies to process
+        - Reached max_records_per_run limit
 
         Returns:
             Dictionary with execution statistics
@@ -61,12 +68,20 @@ class OrchestratorAgent:
 
         start_stats = self.excel_manager.get_statistics()
         logger.info(f"Initial state: {start_stats['pending']} pending companies")
+        logger.info(f"Max records per run: {self.max_records_per_run}")
 
         batch_count = 0
         total_processed = 0
         total_errors = 0
+        records_processed_this_run = 0
 
         while True:
+            # Check if we've hit the max records limit
+            if records_processed_this_run >= self.max_records_per_run:
+                logger.info(f"Reached max records limit ({self.max_records_per_run}). Stopping.")
+                logger.info(f"Run the script again to process more companies.")
+                break
+
             # Get next batch of pending companies
             companies = self.excel_manager.get_pending_companies(limit=self.batch_size)
 
@@ -90,6 +105,7 @@ class OrchestratorAgent:
                 for result in results:
                     if result.processed == "Yes":
                         total_processed += 1
+                        records_processed_this_run += 1
                         logger.info(f"  ✓ {company_names[results.index(result)]}: {result.verdict}")
                     else:
                         total_errors += 1
@@ -112,7 +128,8 @@ class OrchestratorAgent:
         logger.info("WORKFLOW COMPLETE")
         logger.info("=" * 60)
         logger.info(f"Batches processed: {batch_count}")
-        logger.info(f"Companies processed: {total_processed}")
+        logger.info(f"Companies processed this run: {records_processed_this_run}")
+        logger.info(f"Total companies processed: {total_processed}")
         logger.info(f"Errors: {total_errors}")
         logger.info(f"Pending: {final_stats['pending']}")
         logger.info("")
@@ -125,6 +142,7 @@ class OrchestratorAgent:
         return {
             "batches": batch_count,
             "processed": total_processed,
+            "processed_this_run": records_processed_this_run,
             "errors": total_errors,
             "statistics": final_stats
         }

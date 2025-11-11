@@ -11,7 +11,8 @@ This document explains the multi-agent system design for the Investment Screenin
 - Difficult to maintain and test
 
 ### Multi-Agent Solution
-- **Small context windows**: Process 1-3 companies per API call
+- **Small context windows**: Process 5 companies per API call (default, configurable 1-10)
+- **Automatic rate limiting**: Max 25 records per run (prevents API overuse)
 - **Separation of concerns**: Each agent has a single responsibility
 - **Better error handling**: Errors isolated to specific agents
 - **Scalability**: Easy to add parallel processing later
@@ -66,7 +67,7 @@ This document explains the multi-agent system design for the Investment Screenin
 
 **Responsibilities:**
 - Make Claude API calls with company-evaluator skill
-- Process 1-3 companies per batch
+- Process 1-10 companies per batch (default: 5)
 - Parse Claude's responses into structured verdicts
 - Handle API errors gracefully
 
@@ -80,7 +81,7 @@ This document explains the multi-agent system design for the Investment Screenin
 
 **No file operations** - purely API interactions.
 
-**Context window impact:** ✅ Controlled (1-3 companies per call)
+**Context window impact:** ✅ Controlled (5 companies per call by default, ~1000 tokens)
 
 ---
 
@@ -90,16 +91,19 @@ This document explains the multi-agent system design for the Investment Screenin
 **Responsibilities:**
 - Coordinate between ExcelManager and EvaluatorAgent
 - Manage batch processing workflow
+- Enforce max records per run limit (default: 25)
 - Track overall progress
 - Handle rate limiting (delays between batches)
 - Generate summary reports
 
 **Key Methods:**
 ```python
-- run() → dict  # Run complete workflow
+- run() → dict  # Run complete workflow (stops at max_records_per_run)
 - process_single_batch() → dict  # Process one batch
 - get_progress() → dict  # Get current statistics
 ```
+
+**New Feature:** Tracks records processed this run and stops at max_records_per_run limit.
 
 **Context window impact:** ✅ None (doesn't use Claude API directly)
 
@@ -196,20 +200,32 @@ Processing 50 companies in a single API call:
 - **Total: ~15,000 tokens per call** (approaching limits)
 
 ### Solution
-Processing 2 companies per batch:
-- Prompt size: ~2 companies × 200 tokens each = 400 tokens
-- Response size: ~2 verdicts × 100 tokens each = 200 tokens
-- **Total: ~600 tokens per call** ✅
+Processing 5 companies per batch (default):
+- Prompt size: ~5 companies × 200 tokens each = 1,000 tokens
+- Response size: ~5 verdicts × 100 tokens each = 500 tokens
+- **Total: ~1,500 tokens per call** ✅
 
 ### Batch Size Recommendations
 
 | Batch Size | Context Window | Speed | Recommended For |
 |------------|---------------|-------|-----------------|
-| 1 company | Smallest (~300 tokens) | Slowest | Maximum reliability, very large datasets |
-| 2 companies | Small (~600 tokens) | Balanced | **Default - best balance** |
-| 3 companies | Medium (~900 tokens) | Faster | Speed priority, good data quality |
+| 1 company | Smallest (~300 tokens) | Slowest | Maximum reliability, sensitive data |
+| 3 companies | Small (~900 tokens) | Moderate | Conservative approach |
+| 5 companies | Medium (~1,500 tokens) | **Default - balanced** | Most use cases |
+| 10 companies | Large (~3,000 tokens) | Fastest | Speed priority, trusted data quality |
 
-**We default to batch_size=2** for optimal balance.
+**We default to batch_size=5** for optimal balance of speed and reliability.
+
+### Max Records Per Run
+
+**Default: 25 records per run**
+
+The system automatically stops after processing 25 records. This:
+- Prevents excessive API usage in a single run
+- Allows for incremental progress review
+- Keeps sessions manageable
+
+To process more, simply run the script again (it auto-skips completed records).
 
 ## Error Handling
 
@@ -243,28 +259,38 @@ After each batch:
 
 ## Usage Examples
 
-### Basic Usage (Batch Size 2 - Default)
+### Basic Usage (Batch Size 5, Max 25 Records - Default)
 ```bash
 python multi_agent_screening.py companies.xlsx
 ```
 
-Context window: ~600 tokens per API call
+- Context window: ~1,500 tokens per API call
+- Processes up to 25 records per run
+- Run again to process more
 
 ### Conservative (Batch Size 1)
 ```bash
 python multi_agent_screening.py companies.xlsx --batch-size 1
 ```
 
-Context window: ~300 tokens per API call
-Best for: Maximum reliability, very large datasets
+- Context window: ~300 tokens per API call
+- Best for: Maximum reliability, sensitive data
 
-### Fast Mode (Batch Size 3)
+### Fast Mode (Batch Size 10)
 ```bash
-python multi_agent_screening.py companies.xlsx --batch-size 3
+python multi_agent_screening.py companies.xlsx --batch-size 10
 ```
 
-Context window: ~900 tokens per API call
-Best for: Speed, when you have good quality data
+- Context window: ~3,000 tokens per API call
+- Best for: Speed priority, trusted data quality
+
+### Process 50 Records
+```bash
+python multi_agent_screening.py companies.xlsx --max-records 50
+```
+
+- Processes up to 50 records in one run
+- Uses default batch size of 5
 
 ### Custom Configuration
 ```bash
@@ -353,9 +379,10 @@ python multi_agent_screening.py companies.xlsx
 
 | Feature | Single-Agent | Multi-Agent |
 |---------|--------------|-------------|
-| Context window | Large (all companies) | Small (1-3 companies) |
-| Architecture | Monolithic | Modular |
-| Batch processing | No | Yes (configurable) |
+| Context window | Large (all companies) | Small (5 companies default) |
+| Architecture | Monolithic | Modular (3 agents) |
+| Batch processing | No | Yes (1-10 configurable) |
+| Max records per run | Unlimited | 25 (configurable) |
 | Error isolation | No | Yes |
 | Testability | Difficult | Easy |
 | Scalability | Limited | High |
@@ -364,12 +391,18 @@ python multi_agent_screening.py companies.xlsx
 
 The multi-agent architecture provides:
 
-✅ **Small context windows** (1-3 companies per API call)
+✅ **Small context windows** (5 companies per API call by default, ~1,500 tokens)
+✅ **Automatic rate limiting** (max 25 records per run, prevents API overuse)
 ✅ **Separation of concerns** (file I/O, API, coordination)
 ✅ **Better error handling** (isolated, recoverable)
 ✅ **Incremental saves** (crash-resistant)
 ✅ **Resume support** (skip already processed)
-✅ **Scalability** (easy to parallelize)
+✅ **Scalability** (easy to parallelize, configurable batch sizes)
 ✅ **Maintainability** (clear responsibilities)
 
-Use `multi_agent_screening.py` for all production workloads with 10+ companies.
+**Default Configuration:**
+- Batch size: 5 companies per API call
+- Max records per run: 25
+- Context window: ~1,500 tokens per call
+
+Use `multi_agent_screening.py` for all production workloads. Run multiple times for large datasets (auto-resumes).

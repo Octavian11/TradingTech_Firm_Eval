@@ -41,7 +41,7 @@ The multi-agent system uses a 3-agent architecture to avoid context window issue
    python multi_agent_screening.py companies_to_screen.xlsx
    ```
 
-   Processes 2 companies per API call by default (small context window!)
+   Processes 5 companies per API call, up to 25 records per run (small context window!)
 
 3. **Check results:**
    Open `companies_to_screen.xlsx` to see verdicts and rationales!
@@ -84,11 +84,12 @@ The new multi-agent system consists of **3 specialized agents**:
 | Agent | Responsibility | Context Impact |
 |-------|---------------|----------------|
 | **ExcelManager** 📊 | Reads/writes Excel files, tracks progress | None (no API calls) |
-| **EvaluatorAgent** 🤖 | Calls Claude API with 1-3 companies per batch | ✅ Small (600 tokens avg) |
-| **OrchestratorAgent** 🎯 | Coordinates workflow between agents | None (no API calls) |
+| **EvaluatorAgent** 🤖 | Calls Claude API with 1-10 companies per batch (default: 5) | ✅ Small (~1000 tokens avg) |
+| **OrchestratorAgent** 🎯 | Coordinates workflow, enforces 25 record limit per run | None (no API calls) |
 
 **Key Benefits:**
-- ✅ Avoids context window issues (processes 1-3 companies at a time)
+- ✅ Avoids context window issues (processes 5 companies per batch by default)
+- ✅ Automatic rate limiting (max 25 records per run, prevents API overuse)
 - ✅ Separation of concerns (file I/O, API calls, coordination)
 - ✅ Better error handling and recovery
 - ✅ Easier to test and maintain
@@ -99,18 +100,22 @@ The new multi-agent system consists of **3 specialized agents**:
 
 **Multi-Agent System:**
 ```bash
-# Basic usage (batch size 2 - default)
+# Basic usage (batch size 5, processes up to 25 records - default)
 python multi_agent_screening.py companies.xlsx
 
 # Conservative mode (1 company per API call - smallest context)
 python multi_agent_screening.py companies.xlsx --batch-size 1
 
-# Fast mode (3 companies per API call)
-python multi_agent_screening.py companies.xlsx --batch-size 3
+# Fast mode (10 companies per API call)
+python multi_agent_screening.py companies.xlsx --batch-size 10
+
+# Process up to 50 records in one run
+python multi_agent_screening.py companies.xlsx --max-records 50
 
 # Custom configuration
 python multi_agent_screening.py companies.xlsx \
-  --batch-size 2 \
+  --batch-size 5 \
+  --max-records 25 \
   --skill company-evaluator \
   --delay 2.0 \
   --verbose
@@ -139,16 +144,17 @@ python investment_screening_agent.py companies.xlsx --model claude-opus-4-202505
 **Scenario:** You have a list of 50 potential acquisition targets and need to quickly screen them.
 
 1. Export your list to Excel with company names and any available data
-2. Run: `python multi_agent_screening.py targets.xlsx --batch-size 2`
-3. Get coffee ☕ (takes ~3 minutes for 50 companies)
+2. Run: `python multi_agent_screening.py targets.xlsx --max-records 50`
+3. Get coffee ☕ (takes ~3-4 minutes for 50 companies)
 4. Review verdicts and focus on GREEN ✅ companies first
 
 **Time savings:** Manual research = ~15 min/company × 50 = 12.5 hours
-Multi-agent system = ~3 minutes total 🚀
+Multi-agent system = ~3-4 minutes total 🚀
 
 **Why multi-agent for 50 companies?**
-- Small context window per API call (only 2 companies)
+- Small context window per API call (5 companies by default)
 - No risk of hitting token limits
+- Automatic rate limiting (default: 25 records per run, run twice for 50 companies)
 - Incremental saves (won't lose progress if interrupted)
 - Better error handling and recovery
 
