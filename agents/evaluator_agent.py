@@ -101,15 +101,15 @@ class EvaluatorAgent:
         """Build prompt for evaluating multiple companies."""
         if len(companies) == 1:
             # Single company - simpler prompt
-            return f"""Evaluate this company for investment/acquisition:
+            return f"""Use the "company-evaluator" skill to evaluate this company for investment/acquisition:
 
 {companies[0].to_context_string()}
 
-Provide your verdict (GREEN/YELLOW/RED) and rationale (2-4 sentences).
+Provide your verdict (GREEN/YELLOW/RED) and a CONCISE rationale (1-2 sentences maximum, suitable for Excel cell).
 
 Format your response EXACTLY like this:
 VERDICT: [GREEN/YELLOW/RED]
-RATIONALE: [Your 2-4 sentence explanation]"""
+RATIONALE: [Your concise 1-2 sentence explanation]"""
 
         else:
             # Multiple companies - structured prompt
@@ -119,27 +119,27 @@ RATIONALE: [Your 2-4 sentence explanation]"""
 {company.to_context_string()}
 """)
 
-            prompt = f"""Evaluate these {len(companies)} companies for investment/acquisition:
+            prompt = f"""Use the "company-evaluator" skill to evaluate these {len(companies)} companies for investment/acquisition:
 
 {"".join(company_sections)}
 
 For EACH company, provide:
 1. A verdict: GREEN ✅ (pursue), YELLOW ⚠️ (research more), or RED ❌ (pass)
-2. A rationale: 2-4 sentences explaining your verdict
+2. A CONCISE rationale: 1-2 sentences maximum, suitable for Excel cell
 
 Format your response EXACTLY like this:
 
 COMPANY #1: {companies[0].name}
 VERDICT: [GREEN/YELLOW/RED]
-RATIONALE: [Your 2-4 sentence explanation]
+RATIONALE: [Your concise 1-2 sentence explanation]
 
 COMPANY #2: {companies[1].name}
 VERDICT: [GREEN/YELLOW/RED]
-RATIONALE: [Your 2-4 sentence explanation]
+RATIONALE: [Your concise 1-2 sentence explanation]
 """ + (f"""
 COMPANY #3: {companies[2].name}
 VERDICT: [GREEN/YELLOW/RED]
-RATIONALE: [Your 2-4 sentence explanation]
+RATIONALE: [Your concise 1-2 sentence explanation]
 """ if len(companies) > 2 else "")
 
             return prompt
@@ -154,10 +154,13 @@ RATIONALE: [Your 2-4 sentence explanation]
         Returns:
             Response text from Claude
         """
-        system_prompt = f"""You have access to the '{self.skill_name}' skill.
-Use this skill to evaluate companies for investment/acquisition potential.
+        system_prompt = f"""You have access to the "company-evaluator" skill.
 
-IMPORTANT: Provide clear, structured responses following the exact format requested."""
+IMPORTANT INSTRUCTIONS:
+1. Use the "company-evaluator" skill to evaluate companies for investment/acquisition potential
+2. Provide CONCISE rationales (1-2 sentences maximum) that fit well in Excel cells
+3. Follow the exact format requested in the user prompt
+4. Be clear and actionable in your verdicts"""
 
         logger.debug(f"Calling Claude API with prompt length: {len(prompt)} chars")
 
