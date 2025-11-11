@@ -118,9 +118,10 @@ class EvaluatorAgent:
             # Single company - detailed prompt with explicit steps
             return f"""Step 1: Read /mnt/skills/user/{self.skill_name}/SKILL.md
 Step 2: Read /mnt/skills/user/{self.skill_name}/references/investment-criteria.md
-Step 3: Evaluate the company below following the evaluation framework EXACTLY
+Step 3: Use your thinking process to plan your research strategy
+Step 4: Evaluate the company below following the evaluation framework EXACTLY
 
-DO NOT SKIP STEPS 1 AND 2.
+DO NOT SKIP STEPS 1, 2, AND 3.
 
 Company to evaluate:
 {companies[0].to_context_string()}
@@ -132,6 +133,12 @@ CRITICAL RESEARCH REQUIREMENTS (minimum 4-6 tool calls):
 - web_search for ownership structure and leadership
 - LinkedIn search for employee count verification
 - Additional searches as needed for thorough evaluation
+
+THINKING REQUIREMENTS:
+- Use thinking to plan your research strategy before starting
+- Use thinking to reason through EACH criterion from investment-criteria.md
+- Use thinking to weigh conflicting information
+- Use thinking to arrive at a well-reasoned verdict
 
 Provide your verdict (GREEN/YELLOW/RED) and a detailed rationale that includes specific metrics:
 - Employee count (verify via LinkedIn if possible)
@@ -154,9 +161,10 @@ RATIONALE: [Your detailed rationale with specific metrics and assessment]"""
 
             prompt = f"""Step 1: Read /mnt/skills/user/{self.skill_name}/SKILL.md
 Step 2: Read /mnt/skills/user/{self.skill_name}/references/investment-criteria.md
-Step 3: Evaluate each company below following the evaluation framework EXACTLY
+Step 3: Use your thinking process to plan your research strategy for each company
+Step 4: Evaluate each company below following the evaluation framework EXACTLY
 
-DO NOT SKIP STEPS 1 AND 2.
+DO NOT SKIP STEPS 1, 2, AND 3.
 
 Companies to evaluate:
 {"".join(company_sections)}
@@ -168,6 +176,12 @@ CRITICAL RESEARCH REQUIREMENTS FOR EACH COMPANY (minimum 4-6 tool calls per comp
 - web_search for ownership structure and leadership
 - LinkedIn search for employee count verification
 - Additional searches as needed for thorough evaluation
+
+THINKING REQUIREMENTS:
+- Use thinking to plan your research strategy for each company
+- Use thinking to reason through EACH criterion from investment-criteria.md
+- Use thinking to weigh conflicting information
+- Use thinking to arrive at well-reasoned verdicts
 
 For EACH company, provide:
 1. A verdict: GREEN ✅ (pursue), YELLOW ⚠️ (research more), or RED ❌ (pass)
@@ -213,20 +227,23 @@ You have access to the company evaluation skill at:
 
 CRITICAL PROCESS (DO NOT SKIP):
 1. ALWAYS start by reading BOTH skill files using the file_read tool
-2. Follow the evaluation framework EXACTLY as written in SKILL.md
-3. Conduct thorough research (minimum 4-6 tool calls):
+2. Use your thinking process to plan your research strategy
+3. Follow the evaluation framework EXACTLY as written in SKILL.md
+4. Conduct thorough research (minimum 4-6 tool calls):
    - web_fetch the company website
    - web_search for company info (employees, location, services)
    - web_search specifically for PE/VC funding or acquisitions
    - web_search for ownership structure and leadership
    - web_search LinkedIn for employee count verification
    - Additional research as needed for comprehensive evaluation
-4. Apply ALL criteria from investment-criteria.md in order
-5. Output ONLY the Verdict and Rationale in the exact format specified
+5. Use thinking to reason through EACH criterion from investment-criteria.md systematically
+6. Use thinking to weigh conflicting information and arrive at a well-reasoned verdict
+7. Output ONLY the Verdict and Rationale in the exact format specified
 
 Available tools: web_search, web_fetch, file_read
 
 QUALITY REQUIREMENTS:
+- Use extended thinking throughout the evaluation process
 - Include specific metrics: employee count, revenue estimates, ownership details
 - Verify information from multiple sources when possible
 - Check specifically for PE/VC backing or recent acquisitions (disqualifiers)
@@ -234,6 +251,52 @@ QUALITY REQUIREMENTS:
 - Be clear and actionable in your verdicts"""
 
         logger.debug(f"Calling Claude API with prompt length: {len(prompt)} chars")
+
+        # Define tools for research
+        tools = [
+            {
+                "name": "web_search",
+                "description": "Search the web for information about companies, people, funding, etc.",
+                "input_schema": {
+                    "type": "object",
+                    "properties": {
+                        "query": {
+                            "type": "string",
+                            "description": "The search query"
+                        }
+                    },
+                    "required": ["query"]
+                }
+            },
+            {
+                "name": "web_fetch",
+                "description": "Fetch and read content from a specific URL",
+                "input_schema": {
+                    "type": "object",
+                    "properties": {
+                        "url": {
+                            "type": "string",
+                            "description": "The URL to fetch"
+                        }
+                    },
+                    "required": ["url"]
+                }
+            },
+            {
+                "name": "file_read",
+                "description": "Read a file from the filesystem (skill files, references, etc.)",
+                "input_schema": {
+                    "type": "object",
+                    "properties": {
+                        "path": {
+                            "type": "string",
+                            "description": "The file path to read"
+                        }
+                    },
+                    "required": ["path"]
+                }
+            }
+        ]
 
         # Build API call parameters
         api_params = {
@@ -246,7 +309,8 @@ QUALITY REQUIREMENTS:
                     "role": "user",
                     "content": prompt
                 }
-            ]
+            ],
+            "tools": tools
         }
 
         # Add thinking parameter if enabled
@@ -259,25 +323,39 @@ QUALITY REQUIREMENTS:
 
         message = self.client.messages.create(**api_params)
 
-        # Extract thinking content and response text
-        thinking_content = None
+        # Extract thinking content, response text, and tool calls
+        thinking_blocks = []
         response_text = None
-        tool_use_count = 0
+        tool_calls = []
 
         for content_block in message.content:
             if content_block.type == "thinking":
-                thinking_content = content_block.thinking
-                logger.info(f"Thinking output ({len(thinking_content)} chars): {thinking_content[:200]}...")
+                thinking_blocks.append(content_block.thinking)
+                logger.info(f"Thinking output ({len(content_block.thinking)} chars): {content_block.thinking[:200]}...")
             elif content_block.type == "text":
                 response_text = content_block.text
             elif content_block.type == "tool_use":
-                tool_use_count += 1
+                tool_calls.append({
+                    "name": content_block.name,
+                    "input": content_block.input
+                })
 
         if not response_text:
             # Fallback for older format
             response_text = message.content[0].text if message.content else ""
 
+        # Validate extended thinking was used
+        if self.use_thinking and not thinking_blocks:
+            logger.warning(
+                "⚠️  NO THINKING DETECTED: Extended thinking is enabled but no thinking blocks found. "
+                "Results may lack depth and reasoning quality."
+            )
+        elif thinking_blocks:
+            total_thinking_chars = sum(len(block) for block in thinking_blocks)
+            logger.info(f"✓ Extended thinking used: {len(thinking_blocks)} blocks, {total_thinking_chars} total characters")
+
         # Validate research depth (minimum 4 tool calls recommended)
+        tool_use_count = len(tool_calls)
         if tool_use_count < 4:
             logger.warning(
                 f"⚠️  INSUFFICIENT RESEARCH: Only {tool_use_count} tool calls made. "
@@ -286,6 +364,32 @@ QUALITY REQUIREMENTS:
             )
         else:
             logger.info(f"✓ Research depth adequate: {tool_use_count} tool calls made")
+
+        # Log tool calls for debugging
+        if tool_calls:
+            logger.debug("Tool calls made:")
+            for i, call in enumerate(tool_calls, 1):
+                logger.debug(f"  {i}. {call['name']}: {call['input']}")
+
+        # Validate PE/VC funding search
+        pe_search_found = any(
+            'funding' in str(call['input']).lower() or
+            'investor' in str(call['input']).lower() or
+            'private equity' in str(call['input']).lower() or
+            'venture capital' in str(call['input']).lower() or
+            'pe-backed' in str(call['input']).lower() or
+            'vc-backed' in str(call['input']).lower() or
+            'acquisition' in str(call['input']).lower()
+            for call in tool_calls if call['name'] in ['web_search', 'web_fetch']
+        )
+
+        if not pe_search_found:
+            logger.warning(
+                "⚠️  NO PE/VC SEARCH DETECTED: No searches found for funding/investors/PE/VC. "
+                "This is a critical disqualifier that should be checked for every company."
+            )
+        else:
+            logger.info("✓ PE/VC funding search performed")
 
         # Log token usage (including thinking tokens if present)
         usage_msg = f"API call complete. Tokens: {message.usage.input_tokens} in, {message.usage.output_tokens} out"
