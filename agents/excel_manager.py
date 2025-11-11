@@ -118,8 +118,10 @@ class ExcelManager:
             List of Company objects that need processing
         """
         # Filter for unprocessed companies (handle NaN/None values)
+        # Exclude both completed ("YES") and failed ("ERROR") companies
         processed_col = self.df["Processed?"].fillna("No").astype(str)
         pending_mask = (processed_col.str.upper() != "YES") & \
+                      (processed_col.str.upper() != "ERROR") & \
                       (self.df["Name"].notna())
 
         pending_df = self.df[pending_mask]

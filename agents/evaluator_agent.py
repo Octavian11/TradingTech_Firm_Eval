@@ -28,7 +28,7 @@ class EvaluatorAgent:
         self,
         skill_name: str = "company-evaluator",
         model: str = "claude-sonnet-4-5-20250929",
-        max_tokens: int = 4096,
+        max_tokens: int = 16000,
         temperature: float = 1.0,
         use_thinking: bool = True,
         thinking_budget: int = 10000
@@ -39,7 +39,7 @@ class EvaluatorAgent:
         Args:
             skill_name: Name of the Claude skill to use
             model: Claude model ID
-            max_tokens: Maximum tokens for response
+            max_tokens: Maximum tokens for response (must be > thinking_budget, default: 16000)
             temperature: Sampling temperature
             use_thinking: Enable extended thinking for better reasoning (default: True)
             thinking_budget: Token budget for thinking (default: 10000)
@@ -51,6 +51,13 @@ class EvaluatorAgent:
         self.use_thinking = use_thinking
         self.thinking_budget = thinking_budget
 
+        # Validate that max_tokens > thinking_budget when thinking is enabled
+        if use_thinking and max_tokens <= thinking_budget:
+            raise ValueError(
+                f"max_tokens ({max_tokens}) must be greater than thinking_budget ({thinking_budget}). "
+                f"Recommended: max_tokens >= thinking_budget + 5000 to allow for response content."
+            )
+
         # Initialize Anthropic client
         api_key = os.environ.get("ANTHROPIC_API_KEY")
         if not api_key:
@@ -59,7 +66,7 @@ class EvaluatorAgent:
         self.client = Anthropic(api_key=api_key)
 
         thinking_status = f"enabled (budget: {thinking_budget})" if use_thinking else "disabled"
-        logger.info(f"Initialized EvaluatorAgent with skill: {skill_name}, model: {model}, thinking: {thinking_status}")
+        logger.info(f"Initialized EvaluatorAgent with skill: {skill_name}, model: {model}, max_tokens: {max_tokens}, thinking: {thinking_status}")
 
     def evaluate_batch(self, companies: List[Company]) -> List[EvaluationResult]:
         """

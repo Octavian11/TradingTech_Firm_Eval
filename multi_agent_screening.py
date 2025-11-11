@@ -104,6 +104,12 @@ Examples:
         help="Claude model to use (default: claude-sonnet-4-5-20250929)"
     )
     parser.add_argument(
+        "--max-tokens",
+        type=int,
+        default=16000,
+        help="Maximum tokens for response, must be > thinking-budget (default: 16000)"
+    )
+    parser.add_argument(
         "--delay",
         type=float,
         default=1.0,
@@ -158,6 +164,7 @@ Examples:
         logger.info(f"  Max records per run: {args.max_records}")
         logger.info(f"  Skill: {args.skill}")
         logger.info(f"  Model: {args.model}")
+        logger.info(f"  Max tokens: {args.max_tokens}")
         logger.info(f"  Delay: {args.delay}s between batches")
         thinking_status = "disabled" if args.disable_thinking else f"enabled (budget: {args.thinking_budget} tokens)"
         logger.info(f"  Extended thinking: {thinking_status}")
@@ -172,6 +179,7 @@ Examples:
         evaluator_agent = EvaluatorAgent(
             skill_name=args.skill,
             model=args.model,
+            max_tokens=args.max_tokens,
             temperature=args.temperature,
             use_thinking=not args.disable_thinking,
             thinking_budget=args.thinking_budget
