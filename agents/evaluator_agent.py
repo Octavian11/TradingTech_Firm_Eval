@@ -120,8 +120,8 @@ class EvaluatorAgent:
         """Build prompt for evaluating multiple companies."""
         if len(companies) == 1:
             # Single company - detailed prompt with explicit steps
-            return f"""Step 1: Read /mnt/skills/user/{self.skill_name}/SKILL.md
-Step 2: Read /mnt/skills/user/{self.skill_name}/references/investment-criteria.md
+            return f"""Step 1: Read {self.skill_name}/SKILL.md
+Step 2: Read {self.skill_name}/references/investment-criteria.md
 Step 3: Use your thinking process to plan your research strategy
 Step 4: Evaluate the company below following the evaluation framework EXACTLY
 
@@ -163,8 +163,8 @@ RATIONALE: [Your detailed rationale with specific metrics and assessment]"""
 {company.to_context_string()}
 """)
 
-            prompt = f"""Step 1: Read /mnt/skills/user/{self.skill_name}/SKILL.md
-Step 2: Read /mnt/skills/user/{self.skill_name}/references/investment-criteria.md
+            prompt = f"""Step 1: Read {self.skill_name}/SKILL.md
+Step 2: Read {self.skill_name}/references/investment-criteria.md
 Step 3: Use your thinking process to plan your research strategy for each company
 Step 4: Evaluate each company below following the evaluation framework EXACTLY
 
@@ -232,8 +232,8 @@ RATIONALE: [Your detailed rationale with specific metrics and assessment]
         system_prompt = f"""You are an expert at evaluating acquisition targets for private equity and investment firms.
 
 You have access to the company evaluation skill at:
-- /mnt/skills/user/{self.skill_name}/SKILL.md
-- /mnt/skills/user/{self.skill_name}/references/investment-criteria.md
+- {self.skill_name}/SKILL.md
+- {self.skill_name}/references/investment-criteria.md
 
 CRITICAL PROCESS (DO NOT SKIP):
 1. ALWAYS start by reading BOTH skill files using the file_read tool
