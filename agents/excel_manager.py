@@ -117,8 +117,9 @@ class ExcelManager:
         Returns:
             List of Company objects that need processing
         """
-        # Filter for unprocessed companies
-        pending_mask = (self.df["Processed?"].str.upper() != "YES") & \
+        # Filter for unprocessed companies (handle NaN/None values)
+        processed_col = self.df["Processed?"].fillna("No").astype(str)
+        pending_mask = (processed_col.str.upper() != "YES") & \
                       (self.df["Name"].notna())
 
         pending_df = self.df[pending_mask]
@@ -169,14 +170,18 @@ class ExcelManager:
 
     def get_statistics(self) -> Dict[str, int]:
         """Get summary statistics."""
+        # Convert columns to string to handle NaN/None values safely
+        processed_col = self.df["Processed?"].fillna("No").astype(str)
+        verdict_col = self.df["Verdict"].fillna("").astype(str)
+
         stats = {
             "total": len(self.df),
-            "processed": len(self.df[self.df["Processed?"].str.upper() == "YES"]),
-            "pending": len(self.df[self.df["Processed?"].str.upper() == "NO"]),
-            "error": len(self.df[self.df["Processed?"].str.upper() == "ERROR"]),
-            "green": len(self.df[self.df["Verdict"].str.contains("GREEN", na=False, case=False)]),
-            "yellow": len(self.df[self.df["Verdict"].str.contains("YELLOW", na=False, case=False)]),
-            "red": len(self.df[self.df["Verdict"].str.contains("RED", na=False, case=False)]),
+            "processed": len(self.df[processed_col.str.upper() == "YES"]),
+            "pending": len(self.df[processed_col.str.upper() == "NO"]),
+            "error": len(self.df[processed_col.str.upper() == "ERROR"]),
+            "green": len(self.df[verdict_col.str.contains("GREEN", case=False)]),
+            "yellow": len(self.df[verdict_col.str.contains("YELLOW", case=False)]),
+            "red": len(self.df[verdict_col.str.contains("RED", case=False)]),
         }
         return stats
 
