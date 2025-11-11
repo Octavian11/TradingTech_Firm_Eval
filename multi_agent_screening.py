@@ -116,6 +116,17 @@ Examples:
         help="Sampling temperature 0.0-1.0 (default: 1.0)"
     )
     parser.add_argument(
+        "--disable-thinking",
+        action="store_true",
+        help="Disable extended thinking for faster but less thoughtful evaluations (default: thinking enabled)"
+    )
+    parser.add_argument(
+        "--thinking-budget",
+        type=int,
+        default=2000,
+        help="Token budget for extended thinking (default: 2000). Higher = more thorough reasoning."
+    )
+    parser.add_argument(
         "--verbose",
         action="store_true",
         help="Enable verbose logging"
@@ -148,6 +159,8 @@ Examples:
         logger.info(f"  Skill: {args.skill}")
         logger.info(f"  Model: {args.model}")
         logger.info(f"  Delay: {args.delay}s between batches")
+        thinking_status = "disabled" if args.disable_thinking else f"enabled (budget: {args.thinking_budget} tokens)"
+        logger.info(f"  Extended thinking: {thinking_status}")
         logger.info("")
 
         # Initialize agents
@@ -159,7 +172,9 @@ Examples:
         evaluator_agent = EvaluatorAgent(
             skill_name=args.skill,
             model=args.model,
-            temperature=args.temperature
+            temperature=args.temperature,
+            use_thinking=not args.disable_thinking,
+            thinking_budget=args.thinking_budget
         )
         logger.info("  ✓ EvaluatorAgent initialized")
 

@@ -29,7 +29,9 @@ class EvaluatorAgent:
         skill_name: str = "company-evaluator",
         model: str = "claude-sonnet-4-5-20250929",
         max_tokens: int = 4096,
-        temperature: float = 1.0
+        temperature: float = 1.0,
+        use_thinking: bool = True,
+        thinking_budget: int = 2000
     ):
         """
         Initialize the Evaluator Agent.
@@ -39,11 +41,15 @@ class EvaluatorAgent:
             model: Claude model ID
             max_tokens: Maximum tokens for response
             temperature: Sampling temperature
+            use_thinking: Enable extended thinking for better reasoning (default: True)
+            thinking_budget: Token budget for thinking (default: 2000)
         """
         self.skill_name = skill_name
         self.model = model
         self.max_tokens = max_tokens
         self.temperature = temperature
+        self.use_thinking = use_thinking
+        self.thinking_budget = thinking_budget
 
         # Initialize Anthropic client
         api_key = os.environ.get("ANTHROPIC_API_KEY")
@@ -51,7 +57,9 @@ class EvaluatorAgent:
             raise ValueError("ANTHROPIC_API_KEY environment variable not set")
 
         self.client = Anthropic(api_key=api_key)
-        logger.info(f"Initialized EvaluatorAgent with skill: {skill_name}, model: {model}")
+
+        thinking_status = f"enabled (budget: {thinking_budget})" if use_thinking else "disabled"
+        logger.info(f"Initialized EvaluatorAgent with skill: {skill_name}, model: {model}, thinking: {thinking_status}")
 
     def evaluate_batch(self, companies: List[Company]) -> List[EvaluationResult]:
         """
@@ -164,24 +172,50 @@ IMPORTANT INSTRUCTIONS:
 
         logger.debug(f"Calling Claude API with prompt length: {len(prompt)} chars")
 
-        message = self.client.messages.create(
-            model=self.model,
-            max_tokens=self.max_tokens,
-            temperature=self.temperature,
-            system=system_prompt,
-            messages=[
+        # Build API call parameters
+        api_params = {
+            "model": self.model,
+            "max_tokens": self.max_tokens,
+            "temperature": self.temperature,
+            "system": system_prompt,
+            "messages": [
                 {
                     "role": "user",
                     "content": prompt
                 }
             ]
-        )
+        }
 
-        response_text = message.content[0].text
+        # Add thinking parameter if enabled
+        if self.use_thinking:
+            api_params["thinking"] = {
+                "type": "enabled",
+                "budget_tokens": self.thinking_budget
+            }
+            logger.debug(f"Extended thinking enabled with budget: {self.thinking_budget} tokens")
 
-        # Log token usage
-        logger.info(f"API call complete. Tokens: {message.usage.input_tokens} in, "
-                   f"{message.usage.output_tokens} out")
+        message = self.client.messages.create(**api_params)
+
+        # Extract thinking content if present
+        thinking_content = None
+        response_text = None
+
+        for content_block in message.content:
+            if content_block.type == "thinking":
+                thinking_content = content_block.thinking
+                logger.info(f"Thinking output ({len(thinking_content)} chars): {thinking_content[:200]}...")
+            elif content_block.type == "text":
+                response_text = content_block.text
+
+        if not response_text:
+            # Fallback for older format
+            response_text = message.content[0].text if message.content else ""
+
+        # Log token usage (including thinking tokens if present)
+        usage_msg = f"API call complete. Tokens: {message.usage.input_tokens} in, {message.usage.output_tokens} out"
+        if self.use_thinking and hasattr(message.usage, 'thinking_tokens'):
+            usage_msg += f", {message.usage.thinking_tokens} thinking"
+        logger.info(usage_msg)
 
         return response_text
 
