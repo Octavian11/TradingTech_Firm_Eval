@@ -60,11 +60,27 @@ Check against criteria in this order:
 **1. AUTOMATIC RED FLAGS (Immediate rejection):**
 - PE/VC ownership (any %) - search specifically for funding/investors
 - Non-US headquarters - verify location
-- **Software product company:**
-  - **RED LIGHT**: Pure software (minimal services, primarily licensing)
-  - **YELLOW LIGHT**: Software + substantial services (unknown revenue mix)
-  - **Acceptable (Tier 2)**: Confirmed >70% services revenue
-  - Note: Revenue percentage is evaluated AFTER initial screening, not during it
+- **Software product company - USE THIS DECISION TREE:**
+
+  **STEP 1**: Does website mention ANY of these service phrases?
+  - "Managed service" / "delivered as a service" / "as-a-service"
+  - "24/7 monitoring" / "24/7 support" / "proactive monitoring"
+  - "Fully managed" / "we operate" / "we handle production"
+  - "Operations-as-a-Service" / "SLA-backed"
+
+  **IF YES** → **YELLOW LIGHT** (borderline case, needs due diligence)
+  **IF NO** → Continue to STEP 2
+
+  **STEP 2**: Is website ONLY about software licensing/products with no service mentions?
+  - Only talks about "buy our software" / "license our platform"
+  - No mention of operating, managing, or supporting anything
+  - Pure software product marketing
+
+  **IF YES** → **RED LIGHT** (pure software)
+  **IF NO** → **YELLOW LIGHT** (mixed signals, needs due diligence)
+
+  **CRITICAL RULE**: You CANNOT determine revenue mix (>70% services) from public information. If ANY services are mentioned alongside software, default to YELLOW, not RED.
+
 - Generic IT staffing - not specialized trading tech
 - Already acquired/part of larger company - look for "a [Company] company"
 
@@ -96,25 +112,44 @@ Does the company clearly fit one of these categories?
 
 If fits neither Tier 1 nor Tier 2 = RED LIGHT
 
-**4. BUSINESS MODEL (Website Language):**
+**4. BUSINESS MODEL - MECHANICAL DECISION RULES:**
 
-**Critical Distinction:**
-- ✅ **Operating others' platforms** (TARGET): Provides managed services for Bloomberg, Charles River, Aladdin, etc.
-- ⚠️ **Operating own platform as a service** (BORDERLINE): Delivers proprietary platform primarily as managed service
-- ❌ **Building competing platforms** (NOT TARGET): Sells software licenses to replace Bloomberg/Charles River
+**RULE 1: Service Language Present?**
+Search website for ANY of these phrases:
+- "Managed service" / "delivered as a service" / "as-a-service"
+- "24/7 monitoring" / "24/7 support" / "proactive monitoring"
+- "Fully managed" / "we operate" / "we handle production"
+- "Operations-as-a-Service" / "SLA-backed"
+- "Ongoing support" / "continuous monitoring"
 
-**Service Model Indicators to Look For:**
-- "Fully managed service" / "delivered as a service"
-- "24/7 monitoring" / "proactive support"
-- "We handle certification, testing, production monitoring"
-- "Operations-as-a-service" / "SLA-backed"
+**IF FOUND** → Company mentions services → Continue to RULE 2
+**IF NOT FOUND** → Pure product company → Continue to RULE 3
 
-**Verdict Guidance for Software Companies:**
-- ✅ Managed services (operating others' platforms): GREEN if Tier 1, YELLOW if Tier 2
-- ⚠️ Mixed model with substantial services: YELLOW LIGHT (needs due diligence to verify >70%)
-- ⚠️ Own platform delivered primarily as service: YELLOW LIGHT (borderline case)
-- ❌ Pure software products (minimal services): RED LIGHT
-- ❌ Project-only: "consulting engagements", "implementation projects", "we build then hand off" = RED LIGHT
+**RULE 2: Services + Software Products Together?**
+Company has both:
+- Proprietary software products (own platform/tools) AND
+- Service language from RULE 1
+
+**VERDICT**: **YELLOW LIGHT** - Cannot determine revenue mix from public info. This is the "operating own platform as a service" borderline case. Needs due diligence to verify if >70% services revenue.
+
+**DO NOT** try to determine if services are "primary" or "secondary" - you cannot know this from public information.
+
+**RULE 3: Pure Software/Products Only?**
+Website only discusses:
+- Software licensing / "buy our platform"
+- Product features and capabilities
+- NO service language at all
+
+**VERDICT**: **RED LIGHT** - Pure software product company
+
+**RULE 4: Services-Only (No Proprietary Products)?**
+Company provides services using OTHER vendors' platforms:
+- Operates Bloomberg/Charles River/Aladdin for clients
+- No proprietary platform being sold
+
+**VERDICT**: **GREEN if Tier 1**, **YELLOW if Tier 2** - This is the target profile
+
+**DO NOT EVALUATE**: Whether services are "substantial" or what the revenue split is - impossible to know from public info.
 
 **5. CUSTOMER BASE:**
 - ✅ Institutional B2B: Asset managers, broker-dealers, banks
@@ -147,20 +182,25 @@ If fits neither Tier 1 nor Tier 2 = RED LIGHT
   - Fits **Tier 2** category (acceptable but lower priority than Tier 1)
   - Borderline size (8-12 or 100-120 employees)
   - Unclear if fully managed services or mixed with projects
-  - Software company with substantial services but cannot verify if >70% services revenue
+  - **Software company that mentions managed services/24x7 support** (cannot verify >70% services from public info)
+  - **Proprietary platform + service language** (borderline "operating own platform as service" case)
   - Limited public information available
   - Recently founded (<3 years) but fits category
   - Worth proceeding to due diligence to clarify
+
+**KEY**: If company has software products BUT website mentions managed services, 24/7 support, or operations → MUST be YELLOW, NOT RED
 
 **RED LIGHT ❌** = Does not fit thesis, do not pursue
 - Fails on ANY critical publicly verifiable requirement:
   - PE/VC backed
   - Non-US headquarters
   - Wrong size (<10 or >150 employees with institutionalization)
-  - Pure software product company (minimal services, primarily licensing)
+  - **Pure software product company** (ONLY software/licensing, ZERO service mentions, no "managed service", no "24/7 support", no "we operate")
   - Generic IT staffing or project consulting
   - Does NOT fit Tier 1 or Tier 2 categories
   - Too institutionalized (4+ offices, 800+ clients)
+
+**IMPORTANT**: If website mentions BOTH software products AND managed services → That's YELLOW, not RED
 
 ### Step 5: Format Output for Excel
 
@@ -202,13 +242,31 @@ Rationale: CJC is a market data managed services provider (perfect Tier 1 fit) o
 - Don't repeat obvious information from the verdict
 
 ### Common Pitfalls to Avoid
-- Don't confuse "implements then leaves" with "operates ongoing"
-- Don't automatically reject software companies if they emphasize managed services
-- Don't assume you can determine revenue mix from public info - use YELLOW when uncertain
+- ❌ **CRITICAL ERROR**: Giving RED to software company that mentions managed services → Should be YELLOW
+- ❌ Don't assume you can determine revenue mix from public info (number of products, positioning, etc.)
+- ❌ Don't use indirect signals to conclude "primarily software" or "primarily services" - you CANNOT know this
+- ❌ Don't automatically reject companies with proprietary platforms if they mention service delivery
+- ✅ **CORRECT**: If website mentions BOTH products AND services → YELLOW (needs due diligence)
+- ✅ **CORRECT**: Only give RED if website has ZERO service mentions (pure software licensing only)
 - Don't confuse "operating own platform as a service" with "operating others' platforms"
 - Don't miss PE/VC backing (search thoroughly)
 - Don't overlook size issues (150+ employees = too big)
 - Don't forget: must be US-based
+
+### TROUBLESHOOTING: "Is This RED or YELLOW?"
+
+**SCENARIO**: Company has proprietary software products + website mentions "managed service" or "24/7 support"
+
+**WRONG THINKING**:
+- "They emphasize products, so must be primarily software" → RED ❌
+- "They have 8+ products, so must be software-heavy" → RED ❌
+- "Competitive positioning suggests software vendor" → RED ❌
+
+**CORRECT THINKING**:
+- Website has service language present → Cannot determine revenue mix → YELLOW ✅
+- Follow the mechanical rule → Products + Services = YELLOW ✅
+
+**REMEMBER**: You can ONLY give RED if website has ZERO service mentions (pure software licensing only)
 
 ## Example Evaluations
 
@@ -234,18 +292,18 @@ Rationale: CJC is a market data managed services provider (perfect Tier 1 fit) o
 **Rationale**: Fits Tier 1 (market data operations) and right size. Website mentions both ongoing entitlements administration AND implementation projects - unclear which is primary. Worth additional research to clarify if managed services are core offering or if it's primarily project-based.
 
 ### Example 2c: Yellow Light - Own Platform as Managed Service
-**Company**: 10-person trading infrastructure firm with proprietary platform delivered as managed service
+**Company**: Trading infrastructure software company with multiple proprietary products (FIX engine, OMS, connectivity hub). Website mentions products but also states "delivered as a fully managed Service" and "24/7 monitoring"
 
 **Verdict**: YELLOW LIGHT ⚠️
 
-**Rationale**: Company operates own trading infrastructure platform but delivers it primarily as fully managed service with 24/7 monitoring and support. Right size (10 employees) and US-based with institutional clients. Cannot determine revenue mix from public information - needs due diligence to verify if >70% services revenue vs software licensing.
+**Rationale**: Company has proprietary software products BUT website explicitly mentions managed services and 24/7 monitoring. This triggers the YELLOW rule: cannot determine revenue mix from public info - could be software-heavy OR services-heavy. Borderline "operating own platform as service" case that requires due diligence to verify if >70% services revenue. US-based, serves institutional clients, fits trading infrastructure category.
 
-### Example 3: Red Light - Wrong Business Model
-**Company**: OMS software vendor with 80 employees selling their own trading platform
+### Example 3: Red Light - Pure Software Product
+**Company**: OMS software vendor selling proprietary trading platform. Website focuses entirely on software licensing, product features, and "buy our platform". Zero mentions of managed services, 24/7 support, or operations.
 
 **Verdict**: RED LIGHT ❌
 
-**Rationale**: Software product company that sells proprietary OMS platform rather than providing managed services for other vendors' platforms. Hassan's thesis requires services providers (not software vendors) who operate Bloomberg/Charles River/Aladdin for clients.
+**Rationale**: Pure software product company with no service mentions. Website is 100% about licensing their OMS platform with zero managed services, operational support, or "delivered as a service" language. Clear software vendor model, not services provider. Does not fit thesis.
 
 ### Example 4: Red Light - Too Large
 **Company**: Market data consultancy with 4 offices, 800+ clients, 200+ employees, ISO certified
