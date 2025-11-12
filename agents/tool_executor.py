@@ -3,7 +3,7 @@
 Tool Executor - Handles execution of research tools for Claude evaluations.
 
 Implements three tools:
-1. web_search: Search the web using DuckDuckGo (free, no API key needed)
+1. web_search: Search the web using Brave Search API
 2. web_fetch: Fetch and extract content from URLs
 3. file_read: Read skill files from the filesystem
 
@@ -16,7 +16,6 @@ import logging
 from typing import Dict, Any, Optional
 import requests
 from bs4 import BeautifulSoup
-from duckduckgo_search import DDGS
 
 logger = logging.getLogger(__name__)
 
@@ -24,20 +23,26 @@ logger = logging.getLogger(__name__)
 class ToolExecutor:
     """Executes research tools for Claude API evaluations."""
 
-    def __init__(self, skill_base_path: str = None):
+    def __init__(self, skill_base_path: str = None, brave_api_key: str = None):
         """
         Initialize the Tool Executor.
 
         Args:
             skill_base_path: Base path where skill files are located.
                            Defaults to the skills directory in the project root.
+            brave_api_key: Brave Search API key. If not provided, will try to load from env.
         """
         if skill_base_path is None:
             # Get project root (two levels up from this file) and point to skills directory
             project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             skill_base_path = os.path.join(project_root, "skills")
         self.skill_base_path = skill_base_path
-        self.ddgs = DDGS()
+
+        # Get Brave Search API key
+        self.brave_api_key = brave_api_key or os.environ.get("BRAVE_SEARCH_API_KEY")
+        if not self.brave_api_key:
+            logger.warning("BRAVE_SEARCH_API_KEY not set - web search will fail")
+
         logger.info("ToolExecutor initialized")
 
     def execute_tool(self, tool_name: str, tool_input: Dict[str, Any]) -> str:
@@ -72,7 +77,7 @@ class ToolExecutor:
 
     def _web_search(self, query: str) -> str:
         """
-        Search the web using DuckDuckGo.
+        Search the web using Brave Search API.
 
         Args:
             query: Search query
@@ -83,9 +88,27 @@ class ToolExecutor:
         if not query:
             return "Error: No search query provided"
 
+        if not self.brave_api_key:
+            return "Error: BRAVE_SEARCH_API_KEY not configured"
+
         try:
-            # Get up to 10 results from DuckDuckGo
-            results = list(self.ddgs.text(query, max_results=10))
+            # Call Brave Search API
+            url = "https://api.search.brave.com/res/v1/web/search"
+            headers = {
+                "Accept": "application/json",
+                "Accept-Encoding": "gzip",
+                "X-Subscription-Token": self.brave_api_key
+            }
+            params = {
+                "q": query,
+                "count": 10  # Get up to 10 results
+            }
+
+            response = requests.get(url, headers=headers, params=params, timeout=10)
+            response.raise_for_status()
+
+            data = response.json()
+            results = data.get("web", {}).get("results", [])
 
             if not results:
                 return f"No results found for query: {query}"
@@ -95,19 +118,23 @@ class ToolExecutor:
 
             for i, result in enumerate(results, 1):
                 title = result.get('title', 'No title')
-                body = result.get('body', 'No description')
-                href = result.get('href', 'No URL')
+                description = result.get('description', 'No description')
+                url = result.get('url', 'No URL')
 
                 formatted_results.append(
                     f"{i}. {title}\n"
-                    f"   URL: {href}\n"
-                    f"   {body}\n"
+                    f"   URL: {url}\n"
+                    f"   {description}\n"
                 )
 
             result_text = "\n".join(formatted_results)
             logger.info(f"web_search returned {len(results)} results for: {query}")
             return result_text
 
+        except requests.exceptions.RequestException as e:
+            error_msg = f"Search failed: {str(e)}"
+            logger.error(error_msg)
+            return f"Error: {error_msg}"
         except Exception as e:
             error_msg = f"Search failed: {str(e)}"
             logger.error(error_msg)

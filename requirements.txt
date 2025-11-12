@@ -8,7 +8,7 @@ pandas>=2.0.0
 openpyxl>=3.1.0
 
 # Research tools for multi-turn evaluation
-duckduckgo-search>=6.0.0
+# Note: Brave Search API requires BRAVE_SEARCH_API_KEY environment variable
 beautifulsoup4>=4.12.0
 requests>=2.31.0
 
