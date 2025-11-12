@@ -60,7 +60,11 @@ Check against criteria in this order:
 **1. AUTOMATIC RED FLAGS (Immediate rejection):**
 - PE/VC ownership (any %) - search specifically for funding/investors
 - Non-US headquarters - verify location
-- Software product company (not services) - check if they sell their own platform
+- **Software product company:**
+  - **RED LIGHT**: Pure software (minimal services, primarily licensing)
+  - **YELLOW LIGHT**: Software + substantial services (unknown revenue mix)
+  - **Acceptable (Tier 2)**: Confirmed >70% services revenue
+  - Note: Revenue percentage is evaluated AFTER initial screening, not during it
 - Generic IT staffing - not specialized trading tech
 - Already acquired/part of larger company - look for "a [Company] company"
 
@@ -93,10 +97,24 @@ Does the company clearly fit one of these categories?
 If fits neither Tier 1 nor Tier 2 = RED LIGHT
 
 **4. BUSINESS MODEL (Website Language):**
-- ✅ Managed services: "24/7 support", "operations-as-a-service", "ongoing support", "SLA-backed"
-- ⚠️ Mixed model: Both implementation projects AND ongoing support mentioned
-- ❌ Project-only: "consulting engagements", "implementation projects", "we build then hand off"
-- ❌ Software products: Selling their own platform rather than operating others' platforms
+
+**Critical Distinction:**
+- ✅ **Operating others' platforms** (TARGET): Provides managed services for Bloomberg, Charles River, Aladdin, etc.
+- ⚠️ **Operating own platform as a service** (BORDERLINE): Delivers proprietary platform primarily as managed service
+- ❌ **Building competing platforms** (NOT TARGET): Sells software licenses to replace Bloomberg/Charles River
+
+**Service Model Indicators to Look For:**
+- "Fully managed service" / "delivered as a service"
+- "24/7 monitoring" / "proactive support"
+- "We handle certification, testing, production monitoring"
+- "Operations-as-a-service" / "SLA-backed"
+
+**Verdict Guidance for Software Companies:**
+- ✅ Managed services (operating others' platforms): GREEN if Tier 1, YELLOW if Tier 2
+- ⚠️ Mixed model with substantial services: YELLOW LIGHT (needs due diligence to verify >70%)
+- ⚠️ Own platform delivered primarily as service: YELLOW LIGHT (borderline case)
+- ❌ Pure software products (minimal services): RED LIGHT
+- ❌ Project-only: "consulting engagements", "implementation projects", "we build then hand off" = RED LIGHT
 
 **5. CUSTOMER BASE:**
 - ✅ Institutional B2B: Asset managers, broker-dealers, banks
@@ -129,16 +147,17 @@ If fits neither Tier 1 nor Tier 2 = RED LIGHT
   - Fits **Tier 2** category (acceptable but lower priority than Tier 1)
   - Borderline size (8-12 or 100-120 employees)
   - Unclear if fully managed services or mixed with projects
+  - Software company with substantial services but cannot verify if >70% services revenue
   - Limited public information available
   - Recently founded (<3 years) but fits category
-  - Worth 10-15 minutes more research before ruling out
+  - Worth proceeding to due diligence to clarify
 
 **RED LIGHT ❌** = Does not fit thesis, do not pursue
 - Fails on ANY critical publicly verifiable requirement:
   - PE/VC backed
   - Non-US headquarters
   - Wrong size (<10 or >150 employees with institutionalization)
-  - Software product company (not services)
+  - Pure software product company (minimal services, primarily licensing)
   - Generic IT staffing or project consulting
   - Does NOT fit Tier 1 or Tier 2 categories
   - Too institutionalized (4+ offices, 800+ clients)
@@ -184,9 +203,11 @@ Rationale: CJC is a market data managed services provider (perfect Tier 1 fit) o
 
 ### Common Pitfalls to Avoid
 - Don't confuse "implements then leaves" with "operates ongoing"
+- Don't automatically reject software companies if they emphasize managed services
+- Don't assume you can determine revenue mix from public info - use YELLOW when uncertain
+- Don't confuse "operating own platform as a service" with "operating others' platforms"
 - Don't miss PE/VC backing (search thoroughly)
 - Don't overlook size issues (150+ employees = too big)
-- Don't approve software products unless services-heavy
 - Don't forget: must be US-based
 
 ## Example Evaluations
@@ -211,6 +232,13 @@ Rationale: CJC is a market data managed services provider (perfect Tier 1 fit) o
 **Verdict**: YELLOW LIGHT ⚠️
 
 **Rationale**: Fits Tier 1 (market data operations) and right size. Website mentions both ongoing entitlements administration AND implementation projects - unclear which is primary. Worth additional research to clarify if managed services are core offering or if it's primarily project-based.
+
+### Example 2c: Yellow Light - Own Platform as Managed Service
+**Company**: 10-person trading infrastructure firm with proprietary platform delivered as managed service
+
+**Verdict**: YELLOW LIGHT ⚠️
+
+**Rationale**: Company operates own trading infrastructure platform but delivers it primarily as fully managed service with 24/7 monitoring and support. Right size (10 employees) and US-based with institutional clients. Cannot determine revenue mix from public information - needs due diligence to verify if >70% services revenue vs software licensing.
 
 ### Example 3: Red Light - Wrong Business Model
 **Company**: OMS software vendor with 80 employees selling their own trading platform
@@ -262,7 +290,9 @@ Rationale: CJC is a market data managed services provider (perfect Tier 1 fit) o
 
 ### Common Pitfalls to Avoid
 - Don't confuse "implements then leaves" with "operates ongoing"
+- Don't automatically reject software companies if they emphasize managed services
+- Don't assume you can determine revenue mix from public info - use YELLOW when uncertain
+- Don't confuse "operating own platform as a service" with "operating others' platforms"
 - Don't miss PE/VC backing (search thoroughly before saying founder-owned)
 - Don't overlook size signals (150+ employees + 4 offices = too big)
-- Don't approve software products unless service-heavy based on website
 - Don't forget: MUST be US-based

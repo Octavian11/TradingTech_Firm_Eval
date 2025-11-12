@@ -76,9 +76,31 @@ These categories are acceptable but lower priority:
 - Services-led SaaS model
 
 ### Key Business Model Distinction
-- ✅ **WANT**: Companies that OPERATE infrastructure (managed services, ongoing 24/7 support)
-- ❌ **DON'T WANT**: Companies that just implement/consult then leave
-- ❌ **DON'T WANT**: Software product companies (unless services-heavy with >70% services revenue)
+
+**The Core Question: Own Platform vs. Others' Platforms?**
+
+**✅ TARGET - Operating Others' Platforms:**
+- Companies that OPERATE infrastructure like Bloomberg, Charles River, Aladdin FOR clients
+- Managed services providers who run other vendors' platforms
+- Example: "We manage your Bloomberg terminals, handle entitlements, monitor data feeds"
+- Hassan's edge: He was a CUSTOMER of these services at Verition/Lazard/Barclays
+
+**❌ NOT TARGET - Building Competing Platforms:**
+- Companies that BUILD their own OMS, trading platform, or surveillance system
+- Software vendors trying to REPLACE Bloomberg/Charles River/Aladdin
+- Example: "Our proprietary OMS competes with Charles River"
+- Why avoid: Different business model, typically software licensing heavy
+
+**⚠️ BORDERLINE - Operating Own Platform as Service:**
+- Companies that built proprietary platform but deliver it PRIMARILY as managed service
+- Platform is means to deliver service, not product being sold
+- Example: "Our trading infrastructure delivered as fully managed 24/7 service"
+- **Verdict**: YELLOW LIGHT (needs due diligence to verify >70% services revenue)
+- **Hassan's Test**: "Would I have hired this as a customer at Verition?"
+  - If YES (they'd operate something for me) → potentially acceptable
+  - If NO (they'd sell me software to operate myself) → wrong model
+
+**Revenue Mix Note**: Revenue percentage (>70% services) is evaluated AFTER initial screening during due diligence, not from public information alone.
 
 ### Recurring Revenue Signals (Public Indicators)
 Look for these signals on the website and marketing materials:
@@ -98,7 +120,10 @@ If the company emphasizes "implementation projects" or "consulting engagements" 
 - ❌ Not US-based - verify headquarters location
 
 ### Business Model
-- ❌ Software product companies (unless services-heavy >70% based on website description)
+- ❌ **Pure software product companies** (minimal services, primarily licensing)
+- ⚠️ **Software + substantial services** (unknown revenue mix - needs due diligence)
+- ✅ **Confirmed >70% services revenue** (acceptable as Tier 2)
+- Note: Revenue percentage is evaluated AFTER initial screening during due diligence, not from public info
 - ❌ Generic IT staffing (not specialized trading tech)
 - ❌ Project-based consulting only (no ongoing operations)
 - ❌ Implementation-only firms (they implement then leave)
@@ -132,18 +157,20 @@ Company meets MOST requirements but needs additional research:
 - Fits **Tier 2** category (acceptable but lower priority than Tier 1)
 - Borderline size (8-12 employees or 100-120 employees)
 - Unclear if fully managed services or mix with project work
+- Software company with substantial services but cannot verify if >70% services revenue
+- Operating own platform as managed service (borderline case)
 - Limited public information available (need more research)
 - Some project language but also operational support mentioned
 - Founded recently (<3 years) but fits category
 
-**Next Step**: Additional web research or light outreach to clarify before advancing.
+**Next Step**: Proceed to due diligence to verify revenue mix, service model, and fit. Can reach out for confidential information.
 
 ### RED LIGHT ❌ - Does Not Fit Thesis
 Company fails on ANY critical publicly verifiable requirement:
 - PE/VC backed or part of larger company
 - Non-US headquarters
 - Wrong size (<10 or >150 employees with multiple offices)
-- Software product company (not services)
+- Pure software product company (minimal services, primarily licensing)
 - Generic IT staffing or consulting
 - Does NOT fit Tier 1 or Tier 2 categories
 - Project-based only (no ongoing operations)
