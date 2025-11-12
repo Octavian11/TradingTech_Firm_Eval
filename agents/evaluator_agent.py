@@ -13,8 +13,9 @@ No file operations - purely API interactions.
 
 import os
 import logging
+import time
 from typing import List, Dict
-from anthropic import Anthropic
+from anthropic import Anthropic, RateLimitError
 
 from .excel_manager import Company, EvaluationResult
 from .tool_executor import ToolExecutor, TOOL_DEFINITIONS
@@ -372,8 +373,27 @@ QUALITY REQUIREMENTS:
                     "budget_tokens": self.thinking_budget
                 }
 
-            # Make API call
-            message = self.client.messages.create(**api_params)
+            # Make API call with retry logic for rate limits
+            max_retries = 4
+            retry_delays = [2, 4, 8, 16]  # Exponential backoff in seconds
+
+            for retry_attempt in range(max_retries + 1):
+                try:
+                    message = self.client.messages.create(**api_params)
+                    break  # Success - exit retry loop
+
+                except RateLimitError as e:
+                    if retry_attempt < max_retries:
+                        wait_time = retry_delays[retry_attempt]
+                        logger.warning(
+                            f"Rate limit hit (429). Retry {retry_attempt + 1}/{max_retries} "
+                            f"after {wait_time}s... (Error: {str(e)[:100]})"
+                        )
+                        time.sleep(wait_time)
+                    else:
+                        # Final retry failed - re-raise the error
+                        logger.error(f"Rate limit error after {max_retries} retries: {e}")
+                        raise
 
             # Extract content blocks
             thinking_blocks = []
