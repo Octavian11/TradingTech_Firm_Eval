@@ -564,7 +564,3 @@ site:crunchbase.com "[Company Name]" funding
 **Only mark GREEN if ALL checkboxes are ✓ with high confidence**
 
 ---
-
-**Document Version:** 1.0  
-**Last Updated:** November 12, 2025  
-**Purpose:** Ensure consistent, thorough company evaluations across 200+ targets

@@ -29,21 +29,46 @@ file_read: /mnt/skills/user/company-evaluator/references/investment-criteria.md
 ```
 
 ### Step 2: Research the Company
-Use web tools to gather information about the company:
 
-**Required Information:**
-- Company name, location, founding year
-- Number of employees
-- Revenue estimate (if available)
-- Business model: What services do they provide?
-- Customer base: Who do they serve?
-- Ownership structure: Founder-owned, PE-backed, or public?
-- Service categories: Which of the three Tier 1 categories do they fit?
+**CRITICAL: Follow the comprehensive search strategy document for systematic research.**
 
-**Research Tools:**
-1. `web_fetch` on the company's website URL
-2. `web_search` for company information (employees, revenue, ownership, founder)
-3. Look for signals: LinkedIn company page, news articles, funding announcements
+Reference: `/company-evaluation-search-strategy.md` for complete methodology.
+
+**Research Strategy Overview:**
+
+**Stage 1: Initial Discovery (4-5 searches)**
+1. `web_fetch` company website → Extract service/product language
+2. `web_search` general company info → Find LinkedIn, employee mentions
+3. `web_search` LinkedIn employee count → Verify size
+4. `web_search` ownership & founding → Identify key people
+
+**Stage 2: PE/VC Detection (CRITICAL - 3-4 searches)**
+5. `web_search` broad funding search → Initial PE/VC detection
+6. `web_search` `site:pitchbook.com "[Company]"` → Most reliable PE/VC source
+7. `web_search` `site:crunchbase.com "[Company]"` → Alternative funding database
+8. **IF investor name found in snippet** → `web_search` "[Company]" "[Investor Name]" to verify
+9. `web_search` acquisition/portfolio check → Verify independence
+
+**Stage 3: Business Model Classification (2-3 searches)**
+10. `web_search` service model verification → Find service indicators
+11. `web_search` platform/product investigation → Determine if software vendor
+12. `web_fetch` services/solutions pages → Get detailed descriptions
+
+**Stage 4: Verification (As Needed)**
+- Additional employee searches if count unclear
+- Additional PE/VC searches if uncertain
+- Additional business model searches if mixed signals
+
+**Minimum Search Count:**
+- **GREEN verdict**: 10-12 searches (high confidence needed)
+- **YELLOW verdict**: 8-10 searches (acceptable uncertainty)
+- **RED verdict**: 6-8 searches (can stop early if disqualifying factor found)
+
+**Critical PE/VC Search Requirements:**
+- MUST search PitchBook directly: `site:pitchbook.com`
+- MUST search for "funding investors venture capital private equity"
+- IF snippet mentions investor name → MUST verify with specific search
+- Parse snippets for: "raised $X", "backed by", "portfolio company", "Series A/B/C"
 
 **Key Questions to Answer:**
 - Is this a managed services provider or software product company?
