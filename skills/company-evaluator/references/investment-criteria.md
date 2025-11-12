@@ -160,6 +160,31 @@ If the company emphasizes "implementation projects" or "consulting engagements" 
 
 ## VERDICT GUIDANCE (Public Information Only)
 
+**MANDATORY FINAL CHECK BEFORE VERDICT:**
+
+Run through this checklist IN ORDER before giving any verdict:
+
+**CHECK 1**: Did website mention service language?
+- "Managed service" / "delivered as a service" / "24/7 monitoring" / "fully managed" / "we operate" / "support services"
+
+→ **If YES**, go to CHECK 2
+→ **If NO**, go to CHECK 3
+
+**CHECK 2**: Does company also have proprietary software products?
+- Own platform, own OMS, own FIX engine, own connectivity tools, etc.
+
+→ **If YES** → **VERDICT: YELLOW LIGHT**. STOP here. Do NOT reason about "core business" or "primary revenue". The mechanical rule applies: Products + Service language = YELLOW.
+→ **If NO** → Continue to full GREEN/YELLOW evaluation below
+
+**CHECK 3**: Website ONLY discusses software/products with ZERO service mentions?
+
+→ **If YES** → **VERDICT: RED LIGHT** (pure software)
+→ **If NO** → **VERDICT: YELLOW LIGHT** (unclear)
+
+**STOP AT CHECK 2 IF ANSWER IS YES** - Do not override with reasoning about business model.
+
+---
+
 ### GREEN LIGHT ✅ - Advance to Due Diligence
 Company meets ALL publicly verifiable requirements:
 - 10-100 employees (LinkedIn verified)

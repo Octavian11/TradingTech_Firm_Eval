@@ -13,6 +13,7 @@ research capabilities, enabling Desktop-like evaluations via API.
 
 import os
 import logging
+import time
 from typing import Dict, Any, Optional
 import requests
 from bs4 import BeautifulSoup
@@ -23,7 +24,7 @@ logger = logging.getLogger(__name__)
 class ToolExecutor:
     """Executes research tools for Claude API evaluations."""
 
-    def __init__(self, skill_base_path: str = None, brave_api_key: str = None):
+    def __init__(self, skill_base_path: str = None, brave_api_key: str = None, search_delay: float = None):
         """
         Initialize the Tool Executor.
 
@@ -31,6 +32,8 @@ class ToolExecutor:
             skill_base_path: Base path where skill files are located.
                            Defaults to the skills directory in the project root.
             brave_api_key: Brave Search API key. If not provided, will try to load from env.
+            search_delay: Delay in seconds between search requests to respect rate limits.
+                         Defaults to 1.5 seconds. Can be configured via BRAVE_SEARCH_DELAY env var.
         """
         if skill_base_path is None:
             # Get project root (two levels up from this file) and point to skills directory
@@ -43,7 +46,13 @@ class ToolExecutor:
         if not self.brave_api_key:
             logger.warning("BRAVE_SEARCH_API_KEY not set - web search will fail")
 
-        logger.info("ToolExecutor initialized")
+        # Configure search delay for rate limiting (free tier has limits)
+        if search_delay is None:
+            search_delay = float(os.environ.get("BRAVE_SEARCH_DELAY", "1.5"))
+        self.search_delay = search_delay
+        self.last_search_time = 0  # Track last search to enforce delay
+
+        logger.info(f"ToolExecutor initialized (search delay: {self.search_delay}s)")
 
     def execute_tool(self, tool_name: str, tool_input: Dict[str, Any]) -> str:
         """
@@ -91,6 +100,13 @@ class ToolExecutor:
         if not self.brave_api_key:
             return "Error: BRAVE_SEARCH_API_KEY not configured"
 
+        # Rate limiting: enforce delay between consecutive searches
+        time_since_last_search = time.time() - self.last_search_time
+        if time_since_last_search < self.search_delay:
+            sleep_time = self.search_delay - time_since_last_search
+            logger.debug(f"Rate limiting: sleeping {sleep_time:.2f}s before search")
+            time.sleep(sleep_time)
+
         try:
             # Call Brave Search API
             url = "https://api.search.brave.com/res/v1/web/search"
@@ -105,6 +121,7 @@ class ToolExecutor:
             }
 
             response = requests.get(url, headers=headers, params=params, timeout=10)
+            self.last_search_time = time.time()  # Update last search time
             response.raise_for_status()
 
             data = response.json()
@@ -131,6 +148,15 @@ class ToolExecutor:
             logger.info(f"web_search returned {len(results)} results for: {query}")
             return result_text
 
+        except requests.exceptions.HTTPError as e:
+            if e.response.status_code == 429:
+                error_msg = f"Rate limit exceeded. Consider increasing BRAVE_SEARCH_DELAY (current: {self.search_delay}s)"
+                logger.error(error_msg)
+                return f"Error: {error_msg}"
+            else:
+                error_msg = f"Search failed: {str(e)}"
+                logger.error(error_msg)
+                return f"Error: {error_msg}"
         except requests.exceptions.RequestException as e:
             error_msg = f"Search failed: {str(e)}"
             logger.error(error_msg)

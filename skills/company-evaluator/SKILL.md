@@ -167,6 +167,25 @@ Company provides services using OTHER vendors' platforms:
 
 ### Step 4: Determine Verdict (Top-of-Funnel Screening)
 
+**BEFORE GIVING ANY VERDICT - MANDATORY FINAL CHECK:**
+
+**Question 1**: Did website mention ANY service language?
+- "Managed service" / "delivered as a service" / "24/7 monitoring" / "fully managed" / "we operate"
+
+**If YES, proceed to Question 2. If NO, proceed to Question 3.**
+
+**Question 2**: Does company also have proprietary software products?
+- **If YES** → **STOP. Give YELLOW LIGHT.** Do not reason about which is "core" or "primary". End evaluation here.
+- **If NO** → Proceed to evaluate if GREEN or YELLOW based on Tier 1/Tier 2
+
+**Question 3**: Website has ZERO service mentions (pure software/products only)?
+- **If YES** → **RED LIGHT** (pure software)
+- **If NO** → Something unclear, give YELLOW
+
+**CRITICAL**: Do NOT continue past Question 2 if answer is YES. The verdict is YELLOW and reasoning stops there.
+
+---
+
 **GREEN LIGHT ✅** = Pass initial screening, advance to confidential due diligence
 - Meets ALL publicly verifiable requirements:
   - 10-100 employees (LinkedIn verified)
@@ -261,12 +280,18 @@ Rationale: CJC is a market data managed services provider (perfect Tier 1 fit) o
 - "They emphasize products, so must be primarily software" → RED ❌
 - "They have 8+ products, so must be software-heavy" → RED ❌
 - "Competitive positioning suggests software vendor" → RED ❌
+- "Website says 'break away from vendors' so core business is software" → RED ❌
+- "Building competing platform vs operating others' platforms, so RED" → RED ❌
 
 **CORRECT THINKING**:
 - Website has service language present → Cannot determine revenue mix → YELLOW ✅
 - Follow the mechanical rule → Products + Services = YELLOW ✅
+- Apply MANDATORY FINAL CHECK questions → Q1:YES, Q2:YES → YELLOW ✅
 
-**REMEMBER**: You can ONLY give RED if website has ZERO service mentions (pure software licensing only)
+**REAL EXAMPLE THAT MUST BE YELLOW**:
+Company sells proprietary FIX platform and says "break away from vendors" BUT also says "delivered as fully managed Service" → This is YELLOW, not RED. The service language presence triggers YELLOW automatically.
+
+**REMEMBER**: You can ONLY give RED if website has ZERO service mentions (pure software licensing only). ANY service mention + products = YELLOW.
 
 ## Example Evaluations
 
@@ -292,11 +317,11 @@ Rationale: CJC is a market data managed services provider (perfect Tier 1 fit) o
 **Rationale**: Fits Tier 1 (market data operations) and right size. Website mentions both ongoing entitlements administration AND implementation projects - unclear which is primary. Worth additional research to clarify if managed services are core offering or if it's primarily project-based.
 
 ### Example 2c: Yellow Light - Own Platform as Managed Service
-**Company**: Trading infrastructure software company with multiple proprietary products (FIX engine, OMS, connectivity hub). Website mentions products but also states "delivered as a fully managed Service" and "24/7 monitoring"
+**Company**: Trading infrastructure company selling proprietary FIX connectivity platform (iServer, FIXengine, FIXhub). Website says products "enable clients to control their own FIX infrastructure" and "break away from vendors". Also mentions "delivered as a fully managed Service" and "support/certification services".
 
 **Verdict**: YELLOW LIGHT ⚠️
 
-**Rationale**: Company has proprietary software products BUT website explicitly mentions managed services and 24/7 monitoring. This triggers the YELLOW rule: cannot determine revenue mix from public info - could be software-heavy OR services-heavy. Borderline "operating own platform as service" case that requires due diligence to verify if >70% services revenue. US-based, serves institutional clients, fits trading infrastructure category.
+**Rationale**: MANDATORY FINAL CHECK applied: (1) Website mentions service language? YES - "delivered as a fully managed Service" + "support services". (2) Company has proprietary products? YES - multiple software products. → VERDICT: YELLOW LIGHT per mechanical rule. Cannot determine revenue mix from public info. Despite competitive positioning against other platforms, presence of service language triggers YELLOW rule automatically. Requires due diligence to verify if >70% services revenue. US-based, serves trading firms, fits Tier 1 category.
 
 ### Example 3: Red Light - Pure Software Product
 **Company**: OMS software vendor selling proprietary trading platform. Website focuses entirely on software licensing, product features, and "buy our platform". Zero mentions of managed services, 24/7 support, or operations.
