@@ -258,11 +258,16 @@ SEARCH 1: Broad funding search
 SEARCH 2: PitchBook direct search with EXACT company name (MANDATORY - DO NOT SKIP)
 - web_search: site:pitchbook.com "[Full Legal Company Name]"
 - Example: site:pitchbook.com "Market Data Management Solutions"
-- PARSE SNIPPET CAREFULLY for: "Private Equity-Backed", "VC-Backed", investor names, "The [Investor] has invested"
+- PARSE SNIPPET CAREFULLY for: "Private Equity-Backed", "VC-Backed", "Financing Status", investor names, "The [Investor] has invested"
+- **CRITICAL PAYWALL RULE**: If PitchBook profile EXISTS (URL found in results) BUT snippet is vague/paywalled:
+  → This is a RED FLAG - PitchBook profiles usually mean institutional investors
+  → DO NOT give GREEN - Default to YELLOW (uncertain) or search harder for confirmation
+  → PitchBook profiles are NOT created for small bootstrapped companies
 
 SEARCH 3: PitchBook search with variations/acronyms (MANDATORY if Search 2 finds nothing)
 - web_search: site:pitchbook.com "[Company Acronym]" OR "[Short Name]"
 - Example: site:pitchbook.com "MDMS" OR "Market Data Management"
+- Same PAYWALL RULE applies: Profile existence = RED FLAG
 
 SEARCH 4: Crunchbase search (MANDATORY)
 - web_search: site:crunchbase.com "[Company Name]" funding
@@ -271,7 +276,12 @@ SEARCH 4: Crunchbase search (MANDATORY)
 SEARCH 5: Portfolio company / acquisition check
 - web_search: "[Company]" "portfolio company" OR "acquired by" OR "backed by"
 
-SEARCH 6: IF ANY investor name appears in ANY snippet → IMMEDIATE VERIFICATION (MANDATORY)
+SEARCH 6: Direct search for PE/VC status phrases (MANDATORY for GREEN verdicts)
+- web_search: "[Company Name]" "Private Equity-Backed" OR "VC-Backed" OR "Financing Status"
+- Example: "Market Data Management Solutions" "Private Equity-Backed" OR "VC-Backed"
+- This catches paywalled information that leaked into web snippets, press releases, or databases
+
+SEARCH 7: IF ANY investor name appears in ANY snippet → IMMEDIATE VERIFICATION (MANDATORY)
 - web_search: "[Company Name]" "[Exact Investor Name from snippet]"
 - Example: If snippet mentions "Vareton Group" → search: "Market Data Management Solutions" "Vareton Group"
 - This search confirms or denies the investor relationship definitively
@@ -287,16 +297,20 @@ SEARCH 6: IF ANY investor name appears in ANY snippet → IMMEDIATE VERIFICATION
 - Investor names like: Sequoia, Accel, a16z, KKR, Blackstone, Vareton Group, etc. → RED
 
 **FAILSAFE FOR GREEN VERDICTS (Check BEFORE giving GREEN):**
-Before marking a company GREEN, ask yourself these 6 questions:
+Before marking a company GREEN, ask yourself these 7 questions:
 1. Did I search PitchBook with the exact full company name? (site:pitchbook.com "[Full Name]")
 2. Did I search PitchBook with variations/acronyms? (if exact name found nothing)
 3. Did I search Crunchbase? (site:crunchbase.com)
-4. Did I carefully parse ALL snippets for investor names?
-5. If ANY investor name appeared in ANY snippet, did I verify it with "[Company]" "[Investor]" search?
-6. Am I 100% confident NO PE/VC backing exists?
+4. **Did I find a PitchBook or Crunchbase profile for this company?**
+   → If YES: Profile existence = RED FLAG. Do NOT give GREEN unless profile clearly says "No Funding" or "Bootstrapped"
+   → PitchBook/Crunchbase don't profile small bootstrapped companies - profile existence suggests institutional backing
+5. Did I carefully parse ALL snippets for investor names?
+6. If ANY investor name appeared in ANY snippet, did I verify it with "[Company]" "[Investor]" search?
+7. Am I 100% confident NO PE/VC backing exists?
 
 → IF ANY ANSWER IS "NO" OR "UNCERTAIN" → GIVE YELLOW (NOT GREEN)
-→ ONLY give GREEN if all 6 answers are "YES" with high confidence
+→ ONLY give GREEN if all 7 answers are "YES" with high confidence
+→ SPECIAL RULE: If PitchBook/Crunchbase profile found → Default to YELLOW (not GREEN) unless proven bootstrapped
 
 STAGE 3: Business Model Classification (2-3 searches)
 - web_search: "[Company]" "managed services" OR "operations" OR "24/7" → Service indicators
