@@ -248,12 +248,54 @@ STAGE 1: Initial Discovery (4-5 searches)
 - web_search: "[Company]" site:linkedin.com/company employees → Get employee count
 - web_search: "[Company]" founder CEO owner leadership → Identify key people, year founded
 
-STAGE 2: PE/VC Detection (CRITICAL - 3-4 searches)
-- web_search: "[Company]" funding investors venture capital private equity → Initial detection
-- web_search: site:pitchbook.com "[Company]" → Most reliable PE/VC source (MANDATORY)
-- web_search: site:crunchbase.com "[Company]" funding → Alternative database
-- **IF investor name appears in snippet → IMMEDIATELY search: "[Company]" "[Investor Name]"**
-- web_search: "[Company]" "portfolio company" OR "acquired by" → Check independence
+STAGE 2: PE/VC Detection (CRITICAL - MANDATORY 4-6 searches)
+**THIS IS THE MOST IMPORTANT SCREENING CRITERION - ANY PE/VC = AUTOMATIC RED**
+
+SEARCH 1: Broad funding search
+- web_search: "[Company Name]" funding investors venture capital private equity
+
+SEARCH 2: PitchBook direct search with EXACT company name (MANDATORY - DO NOT SKIP)
+- web_search: site:pitchbook.com "[Full Legal Company Name]"
+- Example: site:pitchbook.com "Market Data Management Solutions"
+- PARSE SNIPPET CAREFULLY for: "Private Equity-Backed", "VC-Backed", investor names, "The [Investor] has invested"
+
+SEARCH 3: PitchBook search with variations/acronyms (MANDATORY if Search 2 finds nothing)
+- web_search: site:pitchbook.com "[Company Acronym]" OR "[Short Name]"
+- Example: site:pitchbook.com "MDMS" OR "Market Data Management"
+
+SEARCH 4: Crunchbase search (MANDATORY)
+- web_search: site:crunchbase.com "[Company Name]" funding
+- PARSE SNIPPET for: funding rounds, investor names, "Last Funding Type"
+
+SEARCH 5: Portfolio company / acquisition check
+- web_search: "[Company]" "portfolio company" OR "acquired by" OR "backed by"
+
+SEARCH 6: IF ANY investor name appears in ANY snippet → IMMEDIATE VERIFICATION (MANDATORY)
+- web_search: "[Company Name]" "[Exact Investor Name from snippet]"
+- Example: If snippet mentions "Vareton Group" → search: "Market Data Management Solutions" "Vareton Group"
+- This search confirms or denies the investor relationship definitively
+
+**CRITICAL PE/VC SNIPPET INDICATORS (Any one of these = AUTOMATIC RED):**
+- "Private Equity-Backed" → RED
+- "VC-Backed" → RED
+- "The [Investor Name] has invested in [Company]" → RED
+- "raised $X in Series A/B/C/D" → RED
+- "[Company], a portfolio company of [Investor]" → RED
+- "backed by [Investor Name]" → RED
+- "led by [VC Firm]" → RED
+- Investor names like: Sequoia, Accel, a16z, KKR, Blackstone, Vareton Group, etc. → RED
+
+**FAILSAFE FOR GREEN VERDICTS (Check BEFORE giving GREEN):**
+Before marking a company GREEN, ask yourself these 6 questions:
+1. Did I search PitchBook with the exact full company name? (site:pitchbook.com "[Full Name]")
+2. Did I search PitchBook with variations/acronyms? (if exact name found nothing)
+3. Did I search Crunchbase? (site:crunchbase.com)
+4. Did I carefully parse ALL snippets for investor names?
+5. If ANY investor name appeared in ANY snippet, did I verify it with "[Company]" "[Investor]" search?
+6. Am I 100% confident NO PE/VC backing exists?
+
+→ IF ANY ANSWER IS "NO" OR "UNCERTAIN" → GIVE YELLOW (NOT GREEN)
+→ ONLY give GREEN if all 6 answers are "YES" with high confidence
 
 STAGE 3: Business Model Classification (2-3 searches)
 - web_search: "[Company]" "managed services" OR "operations" OR "24/7" → Service indicators
@@ -265,11 +307,11 @@ STAGE 4: Verification (As needed)
 - Additional searches if PE/VC uncertain (default to YELLOW if unsure)
 - Additional searches if business model mixed
 
-**PE/VC DETECTION RULES:**
-- Parse snippets for: "raised $X", "Series A/B/C", "backed by", "portfolio company", "Private Equity-Backed"
-- If investor name in snippet → MUST verify with specific "[Company]" "[Investor]" search
-- PitchBook search is MANDATORY for all GREEN verdicts
-- If uncertain about PE/VC → Give YELLOW (not GREEN)
+**CONSERVATIVE DEFAULT FOR PE/VC:**
+- If uncertain about PE/VC after 4-6 searches → YELLOW (NOT GREEN)
+- If investor name appears but cannot verify → YELLOW (NOT GREEN)
+- If PitchBook/Crunchbase paywalled but snippet unclear → YELLOW (NOT GREEN)
+- Only mark GREEN if PE/VC search is thorough AND conclusive
 
 **MINIMUM SEARCH COUNTS:**
 - GREEN verdict: 10-12 searches (thorough PE/VC verification required)
