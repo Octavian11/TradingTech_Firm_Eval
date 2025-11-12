@@ -237,28 +237,59 @@ You have access to the company evaluation skill at:
 
 CRITICAL PROCESS (DO NOT SKIP):
 1. ALWAYS start by reading BOTH skill files using the file_read tool
-2. Use your thinking process to plan your research strategy
-3. Follow the evaluation framework EXACTLY as written in SKILL.md
-4. Conduct thorough research (minimum 4-6 tool calls):
-   - web_fetch the company website
-   - web_search for company info (employees, location, services)
-   - web_search specifically for PE/VC funding or acquisitions
-   - web_search for ownership structure and leadership
-   - web_search LinkedIn for employee count verification
-   - Additional research as needed for comprehensive evaluation
-5. Use thinking to reason through EACH criterion from investment-criteria.md systematically
-6. Use thinking to weigh conflicting information and arrive at a well-reasoned verdict
-7. Output ONLY the Verdict and Rationale in the exact format specified
+2. Use thinking to plan your multi-stage research strategy
+3. Follow the comprehensive search strategy from SKILL.md EXACTLY
+
+**MANDATORY SEARCH STRATEGY (10-12 searches minimum for GREEN verdict):**
+
+STAGE 1: Initial Discovery (4-5 searches)
+- web_fetch: Company website → Extract service/product language, team, offices
+- web_search: "[Company]" [Location] employees services → Find LinkedIn URL, employee mentions
+- web_search: "[Company]" site:linkedin.com/company employees → Get employee count
+- web_search: "[Company]" founder CEO owner leadership → Identify key people, year founded
+
+STAGE 2: PE/VC Detection (CRITICAL - 3-4 searches)
+- web_search: "[Company]" funding investors venture capital private equity → Initial detection
+- web_search: site:pitchbook.com "[Company]" → Most reliable PE/VC source (MANDATORY)
+- web_search: site:crunchbase.com "[Company]" funding → Alternative database
+- **IF investor name appears in snippet → IMMEDIATELY search: "[Company]" "[Investor Name]"**
+- web_search: "[Company]" "portfolio company" OR "acquired by" → Check independence
+
+STAGE 3: Business Model Classification (2-3 searches)
+- web_search: "[Company]" "managed services" OR "operations" OR "24/7" → Service indicators
+- web_search: "[Company]" platform products software proprietary → Software detection
+- web_fetch: [website]/services OR /solutions → Detailed service descriptions
+
+STAGE 4: Verification (As needed)
+- Additional searches if employee count unclear
+- Additional searches if PE/VC uncertain (default to YELLOW if unsure)
+- Additional searches if business model mixed
+
+**PE/VC DETECTION RULES:**
+- Parse snippets for: "raised $X", "Series A/B/C", "backed by", "portfolio company", "Private Equity-Backed"
+- If investor name in snippet → MUST verify with specific "[Company]" "[Investor]" search
+- PitchBook search is MANDATORY for all GREEN verdicts
+- If uncertain about PE/VC → Give YELLOW (not GREEN)
+
+**MINIMUM SEARCH COUNTS:**
+- GREEN verdict: 10-12 searches (thorough PE/VC verification required)
+- YELLOW verdict: 8-10 searches (acceptable uncertainty)
+- RED verdict: 6-8 searches (can stop if disqualifying factor found)
+
+4. Use thinking to reason through EACH criterion systematically
+5. Apply MANDATORY FINAL CHECK before verdict (as specified in SKILL.md)
+6. Output ONLY the Verdict and Rationale in the exact format specified
 
 Available tools: web_search, web_fetch, file_read
 
 QUALITY REQUIREMENTS:
 - Use extended thinking throughout the evaluation process
-- Include specific metrics: employee count, revenue estimates, ownership details
-- Verify information from multiple sources when possible
-- Check specifically for PE/VC backing or recent acquisitions (disqualifiers)
-- Provide evidence-based rationales (2-4 sentences)
-- Be clear and actionable in your verdicts"""
+- Follow the staged search strategy (don't stop after 4-5 searches)
+- Parse search result snippets for investor names and verify them
+- Always search PitchBook directly for PE/VC verification
+- Include specific metrics: employee count, ownership details
+- Be conservative: uncertain about PE/VC → YELLOW (not GREEN)
+- Provide evidence-based rationales (2-4 sentences)"""
 
         logger.debug(f"Calling Claude API with prompt length: {len(prompt)} chars")
 
