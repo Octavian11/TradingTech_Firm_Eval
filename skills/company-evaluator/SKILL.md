@@ -110,8 +110,8 @@ Check against criteria in this order:
 - Already acquired/part of larger company - look for "a [Company] company"
 
 **2. SIZE ASSESSMENT (LinkedIn + Website):**
-- 10-100 employees = likely fits target EBITDA range (✅)
-- <10 employees = likely too small (❌)
+- 5-100 employees = likely fits target EBITDA range (✅)
+- <5 employees = likely too small (❌)
 - >150 employees + multiple offices = likely too institutionalized (❌)
 - 100-150 employees = borderline (⚠️)
 - Additional signals of too large:
@@ -213,7 +213,7 @@ Company provides services using OTHER vendors' platforms:
 
 **GREEN LIGHT ✅** = Pass initial screening, advance to confidential due diligence
 - Meets ALL publicly verifiable requirements:
-  - 10-100 employees (LinkedIn verified)
+  - 5-100 employees (LinkedIn verified)
   - US-based headquarters
   - Founder-owned (no PE/VC detected)
   - Fits **Tier 1** category with managed services model
@@ -224,7 +224,7 @@ Company provides services using OTHER vendors' platforms:
 **YELLOW LIGHT ⚠️** = Needs additional research before deciding
 - Meets MOST requirements but has questions:
   - Fits **Tier 2** category (acceptable but lower priority than Tier 1)
-  - Borderline size (8-12 or 100-120 employees)
+  - Borderline size (100-120 employees)
   - Unclear if fully managed services or mixed with projects
   - **Software company that mentions managed services/24x7 support** (cannot verify >70% services from public info)
   - **Proprietary platform + service language** (borderline "operating own platform as service" case)
@@ -238,7 +238,7 @@ Company provides services using OTHER vendors' platforms:
 - Fails on ANY critical publicly verifiable requirement:
   - PE/VC backed
   - Non-US headquarters
-  - Wrong size (<10 or >150 employees with institutionalization)
+  - Wrong size (<5 or >150 employees with institutionalization)
   - **Pure software product company** (ONLY software/licensing, ZERO service mentions, no "managed service", no "24/7 support", no "we operate")
   - Generic IT staffing or project consulting
   - Does NOT fit Tier 1 or Tier 2 categories

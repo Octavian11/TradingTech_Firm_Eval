@@ -507,12 +507,12 @@ site:crunchbase.com "[Company Name]" funding
 **AUTOMATIC RED if:**
 - Any PE/VC backing detected (even 1%)
 - Non-US headquarters confirmed
-- Employee count <10 or >150 with institutionalization
+- Employee count <5 or >150 with institutionalization
 - Pure software product (no service indicators)
 
 **GREEN only if:**
 - Thorough PE/VC search (10+ searches) finds nothing
-- Employee count verified in 10-100 range
+- Employee count verified in 5-100 range
 - US-based confirmed
 - Category fit confirmed (Tier 1 or Tier 2)
 - Business model confirmed (managed services)

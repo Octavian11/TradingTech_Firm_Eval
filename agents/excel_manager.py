@@ -55,6 +55,8 @@ class EvaluationResult:
     verdict: str
     rationale: str
     processed: str  # "Yes", "No", or "Error"
+    est_revenue: str = ""  # Estimated revenue for user manual review
+    est_employees: str = ""  # Estimated employee count for user manual review
 
 
 class ExcelManager:
@@ -88,6 +90,8 @@ class ExcelManager:
                 "Notes": None,
                 "Verdict": None,
                 "Rationale": None,
+                "Est Revenue Claude": None,
+                "Est Employees Claude": None,
                 "Processed?": "No"
             }
 
@@ -155,6 +159,8 @@ class ExcelManager:
         for result in results:
             self.df.at[result.index, "Verdict"] = result.verdict
             self.df.at[result.index, "Rationale"] = result.rationale
+            self.df.at[result.index, "Est Revenue Claude"] = result.est_revenue
+            self.df.at[result.index, "Est Employees Claude"] = result.est_employees
             self.df.at[result.index, "Processed?"] = result.processed
 
             logger.info(f"Updated row {result.index}: {result.verdict}")
