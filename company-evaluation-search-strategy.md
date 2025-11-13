@@ -119,9 +119,13 @@ PURPOSE: Find PitchBook profile (most reliable PE/VC source)
 
 **Critical: If PitchBook appears in results:**
 1. Note the PitchBook URL
-2. Check snippet for investor mentions
-3. Look for "Private Equity-Backed" or "VC-Backed" in snippet
-4. If snippet mentions investors → Proceed to Search 8
+2. Check snippet for "Private Equity-Backed", "VC-Backed", "Financing Status", investor names
+3. **PAYWALL RULE**: If PitchBook profile EXISTS but snippet is vague/limited:
+   - This is a **RED FLAG** - PitchBook profiles are NOT created for small bootstrapped companies
+   - Profile existence suggests institutional investors (PE/VC)
+   - **Do NOT give GREEN verdict** - Default to YELLOW (uncertain) or search harder for confirmation
+   - Example: MDMS has PitchBook profile showing "Financing Status: Private Equity-Backed" but page is paywalled
+4. If snippet mentions investors → Proceed to Search 9 for verification
 
 ### Search 7: Crunchbase Search
 ```
@@ -135,7 +139,23 @@ PURPOSE: Alternative funding database
 - Investor names
 - "Last Funding Type" mentions
 
-### Search 8: Investor Name Verification (IF investors found)
+### Search 8: Direct PE/VC Status Phrase Search (MANDATORY for GREEN)
+```
+TOOL: web_search
+QUERY: "[Company Name]" "Private Equity-Backed" OR "VC-Backed" OR "Financing Status"
+PURPOSE: Catch paywalled information that leaked to other sources
+```
+
+**Why this search is critical:**
+- PitchBook pages show exact phrase "Financing Status: Private Equity-Backed" (see MDMS example)
+- Pages are often paywalled (403 errors)
+- BUT this phrase may leak into press releases, databases, or cached web pages
+- Searches for the EXACT language used on paywalled pages
+
+**Example:**
+`"Market Data Management Solutions" "Private Equity-Backed" OR "VC-Backed"`
+
+### Search 9: Investor Name Verification (IF investors found)
 ```
 TOOL: web_search
 QUERY: "[Company Name]" "[Investor Name from snippet]"
@@ -148,7 +168,7 @@ If snippet mentioned "Vareton Group", search:
 
 **This search will definitively confirm or deny the relationship.**
 
-### Search 9: Acquisition/Portfolio Check
+### Search 10: Acquisition/Portfolio Check
 ```
 TOOL: web_search
 QUERY: "[Company Name]" "portfolio company" OR "acquired by" OR "a [parent] company"
@@ -159,7 +179,7 @@ PURPOSE: Check if part of larger organization
 
 ## Stage 3: Business Model Classification (2-3 searches)
 
-### Search 10: Service Model Deep Dive
+### Search 11: Service Model Deep Dive
 ```
 TOOL: web_search
 QUERY: "[Company Name]" "managed services" OR "operations" OR "24/7" OR "support"
@@ -173,7 +193,7 @@ PURPOSE: Find service indicators
 - "Production support"
 - "SLA-backed"
 
-### Search 11: Platform/Product Investigation
+### Search 12: Platform/Product Investigation
 ```
 TOOL: web_search
 QUERY: "[Company Name]" platform products software proprietary
@@ -291,12 +311,15 @@ QUERY: "[Company Name]" clients customers case studies
 **Checklist:**
 - [ ] Searched PitchBook directly (site:pitchbook.com)
 - [ ] Searched Crunchbase (site:crunchbase.com)
+- [ ] Searched for exact phrases: "Private Equity-Backed" OR "VC-Backed" OR "Financing Status"
 - [ ] Used "funding" and "investors" keywords
 - [ ] Searched for "portfolio company" or "acquired by"
 - [ ] If investor name found → Verified with specific search
+- [ ] **PAYWALL CHECK:** If PitchBook/Crunchbase profile found → Treated as RED FLAG (not ignored)
 
 **If ALL checkboxes ✓ and NO PE/VC found → Proceed with confidence**
 **If ANY box ✗ → Continue searching before marking GREEN**
+**If PitchBook/Crunchbase profile exists → Do NOT give GREEN (use YELLOW or search harder)**
 
 ### After Stage 1 (Employee Count), Verify:
 
@@ -314,10 +337,15 @@ QUERY: "[Company Name]" clients customers case studies
 ### PE/VC Detection:
 ```
 IF PitchBook snippet shows "Private Equity-Backed" → RED (automatic)
+IF PitchBook snippet shows "Financing Status" → RED (automatic)
 IF PitchBook snippet mentions investor name → RED (automatic)
+IF PitchBook/Crunchbase PROFILE EXISTS (even if paywalled) → RED FLAG (do NOT give GREEN)
+  → PAYWALL RULE: Profile existence suggests institutional investors
+  → These databases don't profile small bootstrapped companies
+  → Default to YELLOW (uncertain) or search harder for confirmation
 IF Crunchbase shows funding rounds → RED (automatic)
 IF snippet says "raised $X" → RED (automatic)
-IF 4+ searches done and nothing found → Proceed cautiously
+IF 6+ searches done and no profile/funding found → Proceed cautiously
 IF uncertain → YELLOW (not GREEN)
 ```
 
@@ -365,19 +393,27 @@ IF services only + no products → Evaluate category fit
 1. `web_fetch: https://mdms.com` → Found services description
 2. `"Market Data Management Solutions" MDMS New York employees` → Found company info
 3. `"MDMS Inc" market data funding investors venture capital` → Generic search
-4. `site:pitchbook.com "Market Data Management Solutions"` → **FOUND PITCHBOOK**
-5. **Parse snippet:** "The Vareton Group has invested in Market Data Management Solutions"
-6. `"Market Data Management Solutions" "Vareton Group"` → **CONFIRMED PE BACKING**
+4. `site:pitchbook.com "Market Data Management Solutions"` → **FOUND PITCHBOOK PROFILE**
+   - URL: https://pitchbook.com/profiles/company/527137-57
+   - **PAYWALL DETECTED**: Snippet may be limited/vague
+   - **PAYWALL RULE TRIGGERED**: PitchBook profile existence = RED FLAG
+5. `"Market Data Management Solutions" "Private Equity-Backed" OR "VC-Backed"` → **Search for exact phrases**
+6. `site:crunchbase.com "Market Data Management Solutions" funding` → Cross-check alternative source
+7. `"Market Data Management Solutions" "Vareton Group"` → **Verify investor if name appears in any snippet**
 
-### Critical Difference:
-- Search #4 found PitchBook (which API also found)
-- Search #5 revealed investor name in snippet
-- Search #6 confirmed the relationship
-- **Without #6, the PE backing might be missed**
+### Critical PAYWALL Handling:
+- PitchBook page shows "Financing Status: Private Equity-Backed" but page is paywalled (403 error)
+- **Even if snippet doesn't show "PE-Backed", the profile existence is a RED FLAG**
+- PAYWALL RULE: PitchBook doesn't profile small bootstrapped companies
+- Profile existence alone suggests institutional backing
+- Search #5 targets the exact phrase from the paywalled page
+- This phrase may leak into press releases, cached pages, or other databases
 
 ### Result:
-- ✅ Found PE backing (Vareton Group)
+- ✅ Found PitchBook profile (RED FLAG per PAYWALL RULE)
+- ✅ Confirmed PE backing (Vareton Group via additional searches)
 - **Verdict: RED** (automatic disqualification)
+- **Fallback if investor unconfirmed: YELLOW** (profile exists but can't confirm details)
 
 ---
 
@@ -386,18 +422,22 @@ IF services only + no products → Evaluate category fit
 ### ❌ Don't Do This:
 1. **Only searching "company name funding"** → Too generic
 2. **Skipping PitchBook direct search** → Most reliable PE/VC source
-3. **Not verifying investor names found in snippets** → False negatives
-4. **Marking GREEN without thorough PE/VC search** → Dangerous false positive
-5. **Assuming "privately held" = no PE backing** → Many PE-backed companies are private
-6. **Stopping after 3-4 searches** → Not enough for reliable screening
+3. **Ignoring PitchBook profile if snippet is vague** → FALSE POSITIVE! Profile existence = RED FLAG
+4. **Not searching for "Private Equity-Backed" exact phrases** → Misses paywalled information
+5. **Not verifying investor names found in snippets** → False negatives
+6. **Marking GREEN without thorough PE/VC search** → Dangerous false positive
+7. **Assuming "privately held" = no PE backing** → Many PE-backed companies are private
+8. **Stopping after 3-4 searches** → Not enough for reliable screening
 
 ### ✅ Do This:
 1. **Always search PitchBook directly** → site:pitchbook.com
-2. **Parse snippets for investor names** → Then verify with specific search
-3. **Search 8-12 times minimum** → Thorough is better than fast
-4. **Default to YELLOW when uncertain** → Conservative approach
-5. **Verify employee count from LinkedIn** → Most reliable source
-6. **Cross-reference multiple sources** → Consistency check
+2. **Apply PAYWALL RULE** → Profile exists (even if paywalled) = RED FLAG, don't give GREEN
+3. **Search for exact PE/VC phrases** → "Private Equity-Backed" OR "VC-Backed" OR "Financing Status"
+4. **Parse snippets for investor names** → Then verify with specific search
+5. **Search 8-12 times minimum** → Thorough is better than fast
+6. **Default to YELLOW when uncertain** → Conservative approach (false negative < false positive)
+7. **Verify employee count from LinkedIn** → Most reliable source
+8. **Cross-reference multiple sources** → Consistency check
 
 ---
 
