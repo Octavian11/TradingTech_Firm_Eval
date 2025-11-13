@@ -152,9 +152,15 @@ Provide your verdict (GREEN/YELLOW/RED) and a detailed rationale that includes s
 - Key strengths or concerns based on investment criteria
 - Overall assessment (2-4 sentences with evidence)
 
-Format your response EXACTLY like this:
+**CRITICAL OUTPUT FORMATTING:**
+- DO NOT include your thinking process, working notes, or evaluation steps in the final output
+- DO NOT include headers like "FINAL EVALUATION" or "Based on my research"
+- ONLY output the clean formatted verdict and rationale below
+- Rationale should be 2-4 concise sentences with key metrics
+
+Format your response EXACTLY like this (and NOTHING ELSE):
 VERDICT: [GREEN/YELLOW/RED]
-RATIONALE: [Your detailed rationale with specific metrics and assessment]"""
+RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]"""
 
         else:
             # Multiple companies - structured prompt with explicit steps
@@ -197,19 +203,25 @@ For EACH company, provide:
    - Key strengths or concerns based on investment criteria
    - Overall assessment (2-4 sentences with evidence)
 
-Format your response EXACTLY like this:
+**CRITICAL OUTPUT FORMATTING:**
+- DO NOT include your thinking process, working notes, or evaluation steps in the final output
+- DO NOT include headers like "FINAL EVALUATION" or "Based on my research"
+- ONLY output the clean formatted verdicts and rationales below
+- Each rationale should be 2-4 concise sentences with key metrics
+
+Format your response EXACTLY like this (and NOTHING ELSE):
 
 COMPANY #1: {companies[0].name}
 VERDICT: [GREEN/YELLOW/RED]
-RATIONALE: [Your detailed rationale with specific metrics and assessment]
+RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 
 COMPANY #2: {companies[1].name}
 VERDICT: [GREEN/YELLOW/RED]
-RATIONALE: [Your detailed rationale with specific metrics and assessment]
+RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 """ + (f"""
 COMPANY #3: {companies[2].name}
 VERDICT: [GREEN/YELLOW/RED]
-RATIONALE: [Your detailed rationale with specific metrics and assessment]
+RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 """ if len(companies) > 2 else "")
 
             return prompt
