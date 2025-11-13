@@ -368,7 +368,7 @@ Key Lesson: "We operate" + "24/7" + NO products + NO PE/VC = GREEN (very rare!)
 
 3. Mixed Models = YELLOW (Example: EZX)
    - Software products + managed services = YELLOW
-   - Size concerns (too small <10 or too large >100) = YELLOW
+   - Size concerns (too small <5 or too large >100) = YELLOW
    - When uncertain about business model → YELLOW
 
 4. GREEN is EXTREMELY RARE (<5% of companies)
