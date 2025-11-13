@@ -253,6 +253,129 @@ CRITICAL PROCESS (DO NOT SKIP):
 2. Use thinking to plan your multi-stage research strategy
 3. Follow the comprehensive search strategy from SKILL.md EXACTLY
 
+**REFERENCE EXAMPLES - Learn from these before evaluating:**
+
+❌ RED EXAMPLE #1: Market Data Management Solutions (MDMS)
+Company Profile:
+- Location: New York, NY (US-based) ✓
+- Size: ~50 employees ✓
+- Industry: Market data/financial services ✓
+
+Why RED - PE/VC Disqualification:
+- Search: site:pitchbook.com "Market Data Management Solutions" → Found PitchBook profile
+- Search: "Market Data Management Solutions" "Private Equity-Backed" → Found confirmation
+- Search: "Market Data Management Solutions" "Vareton Group" → Found investor relationship
+- CRITICAL FINDING: "The Vareton Group has invested in Market Data Management Solutions"
+
+Verdict: RED ❌
+Rationale: PE-backed by Vareton Group per PitchBook profile. Any PE/VC ownership = automatic disqualification regardless of other positive factors.
+
+Key Lesson: PitchBook profile existence + investor name verification = RED
+
+---
+
+❌ RED EXAMPLE #2: BST Americas
+Company Profile:
+- Location: US-based ✓
+- Size: ~13 employees ✓
+- Industry: Market data/Bloomberg ecosystem ✓
+- Ownership: Founder-owned, no PE/VC detected ✓
+
+Why RED - Wrong Business Model (Management Consultant):
+- Website analysis: "vendor contract negotiation", "cost optimization", "compliance advisory"
+- Search: "BST Americas" "services" → Found "help clients negotiate better rates with Bloomberg"
+- Search: "BST Americas" "optimization" → Found "invoice audit", "spend management"
+- NO OPERATIONS FOUND: No "24/7 monitoring", no "we operate", no "production support"
+
+CRITICAL DISTINCTION:
+✗ "We help you negotiate Bloomberg contracts" = CONSULTING (not operations)
+✗ "We optimize your vendor spending" = ADVISORY (not operations)
+✗ "We audit your invoices" = CONSULTING (not operations)
+
+Verdict: RED ❌
+Rationale: Management consultancy providing vendor negotiation and cost optimization advisory services. Does NOT operate mission-critical infrastructure. Wrong business model - consulting, not operations.
+
+Key Lesson: "Negotiation", "optimization", "advisory" = consulting red flags → RED
+
+---
+
+⚠️ YELLOW EXAMPLE: EZX Inc
+Company Profile:
+- Location: Westfield, NJ (US-based) ✓
+- Size: 8-10 employees (verified via LinkedIn)
+- Ownership: Founder-owned (Paul Savin, founded 2004), no PE/VC ✓
+- Industry: Trading infrastructure/FIX connectivity ✓
+
+Why YELLOW - Mixed Business Model:
+- Website analysis: Found BOTH products AND services language
+- Products found: iServer, FIXengine, FIXhub, EZX OMS (proprietary software)
+- Services found: "delivered as a fully managed Service", "24/7 operations", "production monitoring"
+- Search: "EZX Inc" "managed service" → Confirmed managed service delivery
+- Search: "EZX Inc" "products software" → Confirmed multiple software products
+
+BUSINESS MODEL CLASSIFICATION:
+✓ Has proprietary software products (software vendor aspect)
+✓ Has "fully managed service" delivery (operations aspect)
+→ MIXED MODEL: Software + Services hybrid
+
+Verdict: YELLOW ⚠️
+Rationale: Founder-owned with no PE/VC backing. Small team (8-10 employees). Mixed business model with proprietary software products AND managed service delivery. Size and mixed model create uncertainty.
+
+Key Lesson: Products + "managed service" language = YELLOW (not pure operations)
+
+---
+
+✅ GREEN EXAMPLE (Hypothetical): MarketOps Solutions LLC
+Company Profile:
+- Location: Chicago, IL (US-based) ✓
+- Size: 25 employees (verified via LinkedIn) ✓
+- Ownership: Founder-owned (founded 2016), no PE/VC ✓
+- Industry: Market data operations ✓
+
+Why GREEN - Pure Operations Provider:
+- Website analysis: "We operate your Bloomberg and Refinitiv platforms 24/7"
+- Services found: "24/7 NOC for market data infrastructure", "production environment management"
+- Search: "MarketOps Solutions" "we operate" → Found "we operate mission-critical trading infrastructure"
+- Search: "MarketOps Solutions" "24/7" → Found "round-the-clock monitoring", "NOC team"
+- Search: site:pitchbook.com "MarketOps Solutions" → NO profile found ✓
+- Search: "MarketOps Solutions" "Private Equity-Backed" → NO results ✓
+
+OPERATIONS INDICATORS FOUND:
+✓ "We operate your platforms" (not "we help you select platforms")
+✓ "24/7 monitoring and operations" (not "advisory services")
+✓ "Production environment management" (not "vendor negotiation")
+✓ "NOC team provides technical support" (not "staff augmentation")
+✓ NO consulting/advisory language found
+✓ NO proprietary software products (pure services)
+
+Verdict: GREEN ✅
+Rationale: US-based with 25 employees. Founder-owned with no PE/VC backing detected across comprehensive searches. Pure operations provider running mission-critical market data infrastructure 24/7 for clients. Clear Tier 1 fit - platform operations with NOC and technical support team.
+
+Key Lesson: "We operate" + "24/7" + NO products + NO PE/VC = GREEN (very rare!)
+
+---
+
+**CRITICAL LESSONS FROM EXAMPLES:**
+
+1. PE/VC = AUTOMATIC RED (Example: MDMS)
+   - PitchBook/Crunchbase profile existence is a red flag
+   - Always verify investor names found in snippets
+   - Any PE/VC backing → RED regardless of other factors
+
+2. Consulting/Advisory = RED, Operations = Potential GREEN (Example: BST vs MarketOps)
+   - RED FLAGS: "negotiate contracts", "optimize spending", "advisory", "invoice audit", "staff augmentation"
+   - GREEN FLAGS: "we operate", "24/7 monitoring", "production support", "NOC team", "we manage production"
+
+3. Mixed Models = YELLOW (Example: EZX)
+   - Software products + managed services = YELLOW
+   - Size concerns (too small <10 or too large >100) = YELLOW
+   - When uncertain about business model → YELLOW
+
+4. GREEN is EXTREMELY RARE (<5% of companies)
+   - Must pass ALL criteria: size, location, no PE/VC, pure operations
+   - When uncertain → Default to YELLOW, not GREEN
+   - Only mark GREEN if 100% confident on all factors
+
 **MANDATORY SEARCH STRATEGY (10-12 searches minimum for GREEN verdict):**
 
 STAGE 1: Initial Discovery (4-5 searches)
@@ -324,10 +447,40 @@ Before marking a company GREEN, ask yourself these 7 questions:
 → ONLY give GREEN if all 7 answers are "YES" with high confidence
 → SPECIAL RULE: If PitchBook/Crunchbase profile found → Default to YELLOW (not GREEN) unless proven bootstrapped
 
-STAGE 3: Business Model Classification (2-3 searches)
-- web_search: "[Company]" "managed services" OR "operations" OR "24/7" → Service indicators
-- web_search: "[Company]" platform products software proprietary → Software detection
+STAGE 3: Business Model Classification (CRITICAL - 3-4 searches)
+**IMPORTANT: Check for consulting RED FLAGS before operations GREEN FLAGS**
+
+STEP 3A: Check for Consulting Red Flags (MANDATORY - Check FIRST)
+- web_search: "[Company]" "contract negotiation" OR "vendor negotiation" OR "cost optimization"
+- web_search: "[Company]" "advisory" OR "consulting" OR "staff augmentation" OR "invoice audit"
+- IF ANY consulting red flags found → Likely CONSULTING (not operations) → Lean toward RED
+
+**CONSULTING RED FLAGS (Any of these = HIGH RISK for RED):**
+- "contract negotiation" / "vendor negotiation"
+- "cost optimization" / "spend management" / "invoice audit"
+- "advisory services" / "consulting services"
+- "staff augmentation" / "temporary consultants"
+- "we help you select" / "we help you negotiate"
+- "optimization" as core service (not infrastructure optimization)
+
+STEP 3B: Check for Operations Green Flags (ONLY if 3A shows NO strong consulting signals)
+- web_search: "[Company]" "we operate" OR "we manage production" OR "24/7 monitoring"
+- web_search: "[Company]" "NOC" OR "operations center" OR "production support"
+- web_search: "[Company]" platform products software proprietary → Software product detection
 - web_fetch: [website]/services OR /solutions → Detailed service descriptions
+
+**OPERATIONS GREEN FLAGS (Need at least 2 for GREEN consideration):**
+- "We operate your infrastructure" / "We manage your production"
+- "24/7 monitoring" / "24x7 operations" / "round-the-clock"
+- "NOC team" / "operations center" / "technical support team"
+- "Production environment management"
+- "Uptime SLA" / "SLA-backed operations"
+
+**BUSINESS MODEL DECISION TREE:**
+IF consulting red flags found + NO operations green flags → RED (consulting firm)
+IF operations green flags found + proprietary products found → YELLOW (mixed model)
+IF operations green flags found + NO products + NO consulting → Potential GREEN (pure operations)
+IF uncertain or mixed signals → YELLOW (default to caution)
 
 STAGE 4: Verification (As needed)
 - Additional searches if employee count unclear
