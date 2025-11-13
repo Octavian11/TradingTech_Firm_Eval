@@ -112,6 +112,8 @@ class EvaluatorAgent:
                     index=company.index,
                     verdict="ERROR",
                     rationale=f"API error: {str(e)}",
+                    est_revenue="Not found",
+                    est_employees="Not found",
                     processed="Error"
                 )
                 for company in companies
@@ -155,11 +157,13 @@ Provide your verdict (GREEN/YELLOW/RED) and a detailed rationale that includes s
 **CRITICAL OUTPUT FORMATTING:**
 - DO NOT include your thinking process, working notes, or evaluation steps in the final output
 - DO NOT include headers like "FINAL EVALUATION" or "Based on my research"
-- ONLY output the clean formatted verdict and rationale below
+- ONLY output the clean formatted verdict, revenue estimate, employee estimate, and rationale below
 - Rationale should be 2-4 concise sentences with key metrics
 
 Format your response EXACTLY like this (and NOTHING ELSE):
 VERDICT: [GREEN/YELLOW/RED]
+EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review ONLY]
+EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - for USER manual review ONLY]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]"""
 
         else:
@@ -206,21 +210,27 @@ For EACH company, provide:
 **CRITICAL OUTPUT FORMATTING:**
 - DO NOT include your thinking process, working notes, or evaluation steps in the final output
 - DO NOT include headers like "FINAL EVALUATION" or "Based on my research"
-- ONLY output the clean formatted verdicts and rationales below
+- ONLY output the clean formatted verdicts, revenue estimates, employee estimates, and rationales below
 - Each rationale should be 2-4 concise sentences with key metrics
 
 Format your response EXACTLY like this (and NOTHING ELSE):
 
 COMPANY #1: {companies[0].name}
 VERDICT: [GREEN/YELLOW/RED]
+EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review ONLY]
+EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - for USER manual review ONLY]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 
 COMPANY #2: {companies[1].name}
 VERDICT: [GREEN/YELLOW/RED]
+EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review ONLY]
+EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - for USER manual review ONLY]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 """ + (f"""
 COMPANY #3: {companies[2].name}
 VERDICT: [GREEN/YELLOW/RED]
+EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review ONLY]
+EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - for USER manual review ONLY]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 """ if len(companies) > 2 else "")
 
@@ -378,11 +388,21 @@ Key Lesson: "We operate" + "24/7" + NO products + NO PE/VC = GREEN (very rare!)
 
 **MANDATORY SEARCH STRATEGY (10-12 searches minimum for GREEN verdict):**
 
-STAGE 1: Initial Discovery (4-5 searches)
+STAGE 1: Initial Discovery (6-7 searches)
 - web_fetch: Company website → Extract service/product language, team, offices
 - web_search: "[Company]" [Location] employees services → Find LinkedIn URL, employee mentions
 - web_search: "[Company]" site:linkedin.com/company employees → Get employee count
 - web_search: "[Company]" founder CEO owner leadership → Identify key people, year founded
+- web_search: "[Company]" revenue OR "$" OR "million" → Find revenue estimates (for USER manual review ONLY)
+- web_search: "[Company]" employees count size team → Find employee count estimates (for USER manual review ONLY)
+
+**CRITICAL: Revenue and employee searches are for EXTRACTION ONLY (not verdict logic):**
+- Extract what you find: "$33M", "17 employees", "11-50 employees", etc.
+- Store ranges as-is (e.g., "11-50"), don't calculate midpoints
+- If not found, write "Not found"
+- DO NOT analyze revenue-per-employee ratios
+- DO NOT use revenue to influence verdict
+- These metrics are for USER manual review after screening
 
 STAGE 2: PE/VC Detection (CRITICAL - MANDATORY 4-6 searches)
 **THIS IS THE MOST IMPORTANT SCREENING CRITERION - ANY PE/VC = AUTOMATIC RED**
@@ -735,11 +755,13 @@ QUALITY REQUIREMENTS:
 
         if len(companies) == 1:
             # Single company - simple parsing
-            verdict, rationale = self._parse_single_verdict(response_text)
+            verdict, est_revenue, est_employees, rationale = self._parse_single_verdict(response_text)
             results.append(EvaluationResult(
                 index=companies[0].index,
                 verdict=verdict,
                 rationale=rationale,
+                est_revenue=est_revenue,
+                est_employees=est_employees,
                 processed="Yes" if verdict != "ERROR" else "Error"
             ))
         else:
@@ -747,24 +769,28 @@ QUALITY REQUIREMENTS:
             sections = self._split_response_by_company(response_text, companies)
 
             for company, section_text in zip(companies, sections):
-                verdict, rationale = self._parse_single_verdict(section_text)
+                verdict, est_revenue, est_employees, rationale = self._parse_single_verdict(section_text)
                 results.append(EvaluationResult(
                     index=company.index,
                     verdict=verdict,
                     rationale=rationale,
+                    est_revenue=est_revenue,
+                    est_employees=est_employees,
                     processed="Yes" if verdict != "ERROR" else "Error"
                 ))
 
         return results
 
-    def _parse_single_verdict(self, text: str) -> tuple[str, str]:
+    def _parse_single_verdict(self, text: str) -> tuple[str, str, str, str]:
         """
-        Parse verdict and rationale from text.
+        Parse verdict, revenue estimate, employee estimate, and rationale from text.
 
         Returns:
-            Tuple of (verdict, rationale)
+            Tuple of (verdict, est_revenue, est_employees, rationale)
         """
         verdict = "UNKNOWN"
+        est_revenue = "Not found"
+        est_employees = "Not found"
         rationale = text.strip()
 
         lines = text.strip().split('\n')
@@ -792,6 +818,20 @@ QUALITY REQUIREMENTS:
             elif 'RED' in text_upper and '❌' not in text_upper:
                 verdict = "RED ❌"
 
+        # Try to extract EST_REVENUE
+        for line in lines:
+            line_upper = line.upper().strip()
+            if 'EST_REVENUE:' in line_upper:
+                est_revenue = line.split(':', 1)[1].strip()
+                break
+
+        # Try to extract EST_EMPLOYEES
+        for line in lines:
+            line_upper = line.upper().strip()
+            if 'EST_EMPLOYEES:' in line_upper:
+                est_employees = line.split(':', 1)[1].strip()
+                break
+
         # Try to extract rationale
         for i, line in enumerate(lines):
             if 'RATIONALE:' in line.upper():
@@ -810,7 +850,7 @@ QUALITY REQUIREMENTS:
         if not rationale:
             rationale = "No rationale provided."
 
-        return verdict, rationale
+        return verdict, est_revenue, est_employees, rationale
 
     def _split_response_by_company(
         self,
