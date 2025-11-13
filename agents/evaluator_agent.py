@@ -162,8 +162,8 @@ Provide your verdict (GREEN/YELLOW/RED) and a detailed rationale that includes s
 
 Format your response EXACTLY like this (and NOTHING ELSE):
 VERDICT: [GREEN/YELLOW/RED]
-EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review ONLY]
-EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - for USER manual review ONLY]
+EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review, does NOT influence verdict]
+EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <5 or >150]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]"""
 
         else:
@@ -217,20 +217,20 @@ Format your response EXACTLY like this (and NOTHING ELSE):
 
 COMPANY #1: {companies[0].name}
 VERDICT: [GREEN/YELLOW/RED]
-EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review ONLY]
-EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - for USER manual review ONLY]
+EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review, does NOT influence verdict]
+EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <5 or >150]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 
 COMPANY #2: {companies[1].name}
 VERDICT: [GREEN/YELLOW/RED]
-EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review ONLY]
-EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - for USER manual review ONLY]
+EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review, does NOT influence verdict]
+EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <5 or >150]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 """ + (f"""
 COMPANY #3: {companies[2].name}
 VERDICT: [GREEN/YELLOW/RED]
-EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review ONLY]
-EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - for USER manual review ONLY]
+EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review, does NOT influence verdict]
+EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <5 or >150]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 """ if len(companies) > 2 else "")
 
@@ -391,18 +391,30 @@ Key Lesson: "We operate" + "24/7" + NO products + NO PE/VC = GREEN (very rare!)
 STAGE 1: Initial Discovery (6-7 searches)
 - web_fetch: Company website → Extract service/product language, team, offices
 - web_search: "[Company]" [Location] employees services → Find LinkedIn URL, employee mentions
-- web_search: "[Company]" site:linkedin.com/company employees → Get employee count
+- web_search: "[Company]" site:linkedin.com/company employees → Get employee count (PRIMARY for verdict)
 - web_search: "[Company]" founder CEO owner leadership → Identify key people, year founded
-- web_search: "[Company]" revenue OR "$" OR "million" → Find revenue estimates (for USER manual review ONLY)
-- web_search: "[Company]" employees count size team → Find employee count estimates (for USER manual review ONLY)
+- web_search: "[Company]" revenue OR "$" OR "million" → Find revenue estimates
+- web_search: "[Company]" employees count size team → Find additional employee count mentions
 
-**CRITICAL: Revenue and employee searches are for EXTRACTION ONLY (not verdict logic):**
-- Extract what you find: "$33M", "17 employees", "11-50 employees", etc.
-- Store ranges as-is (e.g., "11-50"), don't calculate midpoints
-- If not found, write "Not found"
-- DO NOT analyze revenue-per-employee ratios
+**CRITICAL CLARIFICATION - Revenue vs Employee Count:**
+
+EMPLOYEE COUNT (DOES influence verdict):
+- LinkedIn employee count is PRIMARY source for verdict decisions
+- MUST be 5-100 employees to qualify for GREEN/YELLOW
+- <5 employees = too small (automatic RED)
+- >150 employees with institutionalization = too large (automatic RED)
+- 100-150 employees = borderline (YELLOW)
+- Also extract employee count for EST_EMPLOYEES field (for user to verify your verdict)
+- May be ranges like "11-50" or specific counts like "17"
+- Use LinkedIn count for verdict sizing, but report all sources found
+
+REVENUE (does NOT influence verdict - for USER manual review ONLY):
+- Extract what you find: "$33M", "$10-20M", "Not found"
+- Store ranges as-is, don't calculate midpoints
 - DO NOT use revenue to influence verdict
-- These metrics are for USER manual review after screening
+- DO NOT analyze revenue-per-employee ratios
+- Revenue is ONLY for USER post-screening manual analysis
+- User will manually check for software vendor patterns (high $/employee)
 
 STAGE 2: PE/VC Detection (CRITICAL - MANDATORY 4-6 searches)
 **THIS IS THE MOST IMPORTANT SCREENING CRITERION - ANY PE/VC = AUTOMATIC RED**
