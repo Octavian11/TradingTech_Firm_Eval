@@ -114,6 +114,7 @@ class EvaluatorAgent:
                     rationale=f"API error: {str(e)}",
                     est_revenue="Not found",
                     est_employees="Not found",
+                    tier_fit="Not specified",
                     processed="Error"
                 )
                 for company in companies
@@ -157,13 +158,14 @@ Provide your verdict (GREEN/YELLOW/RED) and a detailed rationale that includes s
 **CRITICAL OUTPUT FORMATTING:**
 - DO NOT include your thinking process, working notes, or evaluation steps in the final output
 - DO NOT include headers like "FINAL EVALUATION" or "Based on my research"
-- ONLY output the clean formatted verdict, revenue estimate, employee estimate, and rationale below
+- ONLY output the clean formatted verdict, revenue estimate, employee estimate, tier fit, and rationale below
 - Rationale should be 2-4 concise sentences with key metrics
 
 Format your response EXACTLY like this (and NOTHING ELSE):
 VERDICT: [GREEN/YELLOW/RED]
 EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review, does NOT influence verdict]
 EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <5 or >150]
+TIER_FIT: [Tier 1 or Tier 2 - categorize company regardless of verdict]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]"""
 
         else:
@@ -210,7 +212,7 @@ For EACH company, provide:
 **CRITICAL OUTPUT FORMATTING:**
 - DO NOT include your thinking process, working notes, or evaluation steps in the final output
 - DO NOT include headers like "FINAL EVALUATION" or "Based on my research"
-- ONLY output the clean formatted verdicts, revenue estimates, employee estimates, and rationales below
+- ONLY output the clean formatted verdicts, revenue estimates, employee estimates, tier fit, and rationales below
 - Each rationale should be 2-4 concise sentences with key metrics
 
 Format your response EXACTLY like this (and NOTHING ELSE):
@@ -219,18 +221,21 @@ COMPANY #1: {companies[0].name}
 VERDICT: [GREEN/YELLOW/RED]
 EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review, does NOT influence verdict]
 EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <5 or >150]
+TIER_FIT: [Tier 1 or Tier 2 - categorize company regardless of verdict]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 
 COMPANY #2: {companies[1].name}
 VERDICT: [GREEN/YELLOW/RED]
 EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review, does NOT influence verdict]
 EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <5 or >150]
+TIER_FIT: [Tier 1 or Tier 2 - categorize company regardless of verdict]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 """ + (f"""
 COMPANY #3: {companies[2].name}
 VERDICT: [GREEN/YELLOW/RED]
 EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review, does NOT influence verdict]
 EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <5 or >150]
+TIER_FIT: [Tier 1 or Tier 2 - categorize company regardless of verdict]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 """ if len(companies) > 2 else "")
 
@@ -767,13 +772,14 @@ QUALITY REQUIREMENTS:
 
         if len(companies) == 1:
             # Single company - simple parsing
-            verdict, est_revenue, est_employees, rationale = self._parse_single_verdict(response_text)
+            verdict, est_revenue, est_employees, tier_fit, rationale = self._parse_single_verdict(response_text)
             results.append(EvaluationResult(
                 index=companies[0].index,
                 verdict=verdict,
                 rationale=rationale,
                 est_revenue=est_revenue,
                 est_employees=est_employees,
+                tier_fit=tier_fit,
                 processed="Yes" if verdict != "ERROR" else "Error"
             ))
         else:
@@ -781,28 +787,30 @@ QUALITY REQUIREMENTS:
             sections = self._split_response_by_company(response_text, companies)
 
             for company, section_text in zip(companies, sections):
-                verdict, est_revenue, est_employees, rationale = self._parse_single_verdict(section_text)
+                verdict, est_revenue, est_employees, tier_fit, rationale = self._parse_single_verdict(section_text)
                 results.append(EvaluationResult(
                     index=company.index,
                     verdict=verdict,
                     rationale=rationale,
                     est_revenue=est_revenue,
                     est_employees=est_employees,
+                    tier_fit=tier_fit,
                     processed="Yes" if verdict != "ERROR" else "Error"
                 ))
 
         return results
 
-    def _parse_single_verdict(self, text: str) -> tuple[str, str, str, str]:
+    def _parse_single_verdict(self, text: str) -> tuple[str, str, str, str, str]:
         """
-        Parse verdict, revenue estimate, employee estimate, and rationale from text.
+        Parse verdict, revenue estimate, employee estimate, tier fit, and rationale from text.
 
         Returns:
-            Tuple of (verdict, est_revenue, est_employees, rationale)
+            Tuple of (verdict, est_revenue, est_employees, tier_fit, rationale)
         """
         verdict = "UNKNOWN"
         est_revenue = "Not found"
         est_employees = "Not found"
+        tier_fit = "Not specified"
         rationale = text.strip()
 
         lines = text.strip().split('\n')
@@ -844,6 +852,13 @@ QUALITY REQUIREMENTS:
                 est_employees = line.split(':', 1)[1].strip()
                 break
 
+        # Try to extract TIER_FIT
+        for line in lines:
+            line_upper = line.upper().strip()
+            if 'TIER_FIT:' in line_upper or 'TIER FIT:' in line_upper:
+                tier_fit = line.split(':', 1)[1].strip()
+                break
+
         # Try to extract rationale
         for i, line in enumerate(lines):
             if 'RATIONALE:' in line.upper():
@@ -862,7 +877,7 @@ QUALITY REQUIREMENTS:
         if not rationale:
             rationale = "No rationale provided."
 
-        return verdict, est_revenue, est_employees, rationale
+        return verdict, est_revenue, est_employees, tier_fit, rationale
 
     def _split_response_by_company(
         self,

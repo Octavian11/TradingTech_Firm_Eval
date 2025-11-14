@@ -57,6 +57,7 @@ class EvaluationResult:
     processed: str  # "Yes", "No", or "Error"
     est_revenue: str = ""  # Estimated revenue for user manual review
     est_employees: str = ""  # Estimated employee count for user manual review
+    tier_fit: str = ""  # Tier 1 or Tier 2 category fit
 
 
 class ExcelManager:
@@ -92,6 +93,7 @@ class ExcelManager:
                 "Rationale": None,
                 "Est Revenue Claude": None,
                 "Est Employees Claude": None,
+                "Tier Fit": None,
                 "Processed?": "No"
             }
 
@@ -161,6 +163,7 @@ class ExcelManager:
             self.df.at[result.index, "Rationale"] = result.rationale
             self.df.at[result.index, "Est Revenue Claude"] = result.est_revenue
             self.df.at[result.index, "Est Employees Claude"] = result.est_employees
+            self.df.at[result.index, "Tier Fit"] = result.tier_fit
             self.df.at[result.index, "Processed?"] = result.processed
 
             logger.info(f"Updated row {result.index}: {result.verdict}")
