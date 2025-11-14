@@ -335,6 +335,44 @@ Key Lesson: Products + "managed service" language = YELLOW (not pure operations)
 
 ---
 
+⚠️ YELLOW EXAMPLE #2: BornTec (Post-Divestiture Case)
+Company Profile:
+- Location: Chicago, IL (US-based) ✓
+- Size: ~17 employees (verified via LinkedIn) ✓
+- Industry: Trade surveillance/financial technology ✓
+- Ownership: Founder-owned, no PE/VC detected ✓
+
+Why YELLOW - Business Model Transition (Default to YELLOW for Uncertainty):
+- Search: "BornTec" services → Found historical "managed hosting", "colocation", "24/7 monitoring"
+- Search: "BornTec" "TNS" "acquisition" → Found divestiture: "BornTec sold managed hosting/colocation business to Transaction Network Services (TNS) in 2015"
+- Search: "BornTec" "CrossCheck" → Current focus on CrossCheck software platform for trade surveillance
+- Website: 403 error (cannot access current service descriptions)
+
+CRITICAL FINDINGS:
+✓ Historical operations provider (managed hosting, colocation)
+✓ Divested operations business to TNS in 2015
+✓ Current focus on CrossCheck software platform
+? Unclear if any managed services still provided alongside software
+? Cannot verify current revenue mix from public information
+
+BUSINESS MODEL DECISION:
+- Past = operations provider (managed hosting/colocation)
+- Present = software platform focus (CrossCheck)
+- Divestiture creates uncertainty about current business mix
+- Historical services + current software = CANNOT determine if services still active
+- Website inaccessible (403 error) = cannot verify current offerings
+
+**DEFAULT TO YELLOW FOR UNCERTAINTY:**
+Post-divestiture companies have business model transitions that require manual review.
+Better to mark YELLOW (user manually reviews) than RED (miss potential target if services still exist).
+
+Verdict: YELLOW ⚠️
+Rationale: BornTec sold managed hosting/colocation division to TNS in 2015, now focused on CrossCheck surveillance software. Historical operations provider transitioned to current software focus creates uncertainty about business mix. Post-divestiture model unclear from public info - needs due diligence to verify if managed services still active alongside software.
+
+Key Lesson: Divestiture/transition + uncertainty = YELLOW (not RED). Let user manually assess post-transition model.
+
+---
+
 ✅ GREEN EXAMPLE (Hypothetical): MarketOps Solutions LLC
 Company Profile:
 - Location: Chicago, IL (US-based) ✓
@@ -376,15 +414,64 @@ Key Lesson: "We operate" + "24/7" + NO products + NO PE/VC = GREEN (very rare!)
    - RED FLAGS: "negotiate contracts", "optimize spending", "advisory", "invoice audit", "staff augmentation"
    - GREEN FLAGS: "we operate", "24/7 monitoring", "production support", "NOC team", "we manage production"
 
-3. Mixed Models = YELLOW (Example: EZX)
+3. Mixed Models = YELLOW (Examples: EZX, BornTec)
    - Software products + managed services = YELLOW
    - Size concerns (too small <5 or too large >100) = YELLOW
    - When uncertain about business model → YELLOW
+   - **Post-divestiture/transitions = YELLOW** (business model changed, needs manual review)
 
-4. GREEN is EXTREMELY RARE (<5% of companies)
+4. Divestiture/Acquisition = DEFAULT TO YELLOW (Example: BornTec)
+   - Company sold division or was acquired = business model likely changed
+   - Historical operations + current software focus = uncertainty about current mix
+   - Cannot determine from public info if services still active → YELLOW
+   - Better to mark YELLOW (user reviews) than RED (miss potential target)
+
+5. GREEN is EXTREMELY RARE (<5% of companies)
    - Must pass ALL criteria: size, location, no PE/VC, pure operations
    - When uncertain → Default to YELLOW, not GREEN
    - Only mark GREEN if 100% confident on all factors
+
+**CRITICAL: DEFAULT TO YELLOW FOR UNCERTAINTY (Prefer False Positives over False Negatives)**
+
+User's Priority: Better to have RED companies marked YELLOW (false positive - user manually rejects) than to have potential targets marked RED (false negative - miss opportunity).
+
+**ALWAYS default to YELLOW instead of RED for these scenarios:**
+1. **Post-divestiture companies** - Business sold part of operations (e.g., sold managed hosting, now focused on software)
+   - Rationale: "Company sold [division] to [acquirer] in [year], now focused on [current business]. Business model transition creates uncertainty - needs due diligence to verify current operations mix."
+   - Verdict: YELLOW (not RED) - let user manually assess post-transition model
+
+2. **Historical services + current software focus** - Website/searches mention past managed services but current focus is software
+   - Rationale: "Found historical managed services mentions but current focus on software products. Unclear if services still active."
+   - Verdict: YELLOW (not RED) - let user verify current business mix
+
+3. **Mixed signals about business model** - Some sources say services, others say software
+   - Rationale: "Mixed signals: some sources mention [services], others emphasize [software]. Cannot determine primary model from public info."
+   - Verdict: YELLOW (not RED) - uncertainty = default YELLOW
+
+4. **Borderline employee counts** - Close to thresholds (4-6 employees or 90-110 employees)
+   - Rationale: "Employee count [X] is borderline [too small/sweet spot]. Size uncertainty warrants manual review."
+   - Verdict: YELLOW (not RED) for borderline sizing
+
+5. **Recent pivots or transitions** - Company changed focus/model in last 2-3 years
+   - Rationale: "Recent business model transition from [old] to [new]. Current state unclear from public info."
+   - Verdict: YELLOW (not RED) - let user assess current state
+
+**ONLY mark RED if 100% CONFIDENT on disqualifying factor:**
+- ✓ Confirmed PE/VC backing with investor name verified
+- ✓ Non-US headquarters confirmed (not just US presence)
+- ✓ Clear size mismatch: <5 employees verified OR >150 with 4+ offices
+- ✓ Pure software with ZERO service mentions ever (no "managed service", no "24/7 support", no historical operations)
+- ✓ Pure consulting with ZERO operations (only advisory/negotiation services)
+
+**NEVER mark RED if:**
+- Any uncertainty about business model
+- Found divestiture/acquisition news (model may have changed)
+- Mixed signals between sources
+- Historical services mentions (even if current focus is software)
+- Borderline sizing (close to thresholds)
+- Recent pivots or transitions
+
+**Remember: User manually reviews ALL YELLOW/GREEN verdicts. It's better to be loose (YELLOW) than tight (RED).**
 
 **MANDATORY SEARCH STRATEGY (10-12 searches minimum for GREEN verdict):**
 
