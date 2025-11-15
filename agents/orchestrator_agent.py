@@ -28,7 +28,7 @@ class OrchestratorAgent:
         self,
         excel_manager: ExcelManager,
         evaluator_agent: EvaluatorAgent,
-        batch_size: int = 5,
+        batch_size: int = 3,
         delay_seconds: float = 1.0,
         max_records_per_run: int = 25
     ):
@@ -38,7 +38,7 @@ class OrchestratorAgent:
         Args:
             excel_manager: ExcelManager instance
             evaluator_agent: EvaluatorAgent instance
-            batch_size: Number of companies to process per batch (1-5 recommended)
+            batch_size: Number of companies to process per batch (1-3 recommended)
             delay_seconds: Delay between batches for rate limiting
             max_records_per_run: Maximum number of records to process in a single run (default: 25)
         """
