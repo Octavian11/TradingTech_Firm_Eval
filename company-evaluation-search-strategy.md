@@ -94,7 +94,30 @@ PURPOSE: Identify key people and ownership structure
 
 ## Stage 2: PE/VC Detection (CRITICAL - 3-4 searches)
 
-**This is the most important screening criterion. PE/VC backing is automatic disqualification.**
+**This is the most important screening criterion. EQUITY PE/VC backing is automatic disqualification.**
+
+**CRITICAL DISTINCTION - EQUITY vs DEBT:**
+
+**EQUITY INVESTMENT = AUTOMATIC RED (DISQUALIFYING):**
+- Private Equity ownership (PE firms taking stake in company)
+- Venture Capital investment (VC firms taking equity stake)
+- Institutional investors owning company shares
+- "Portfolio company" of PE/VC firms
+- Keywords: "Private Equity-Backed", "VC-Backed", "Series A/B/C/D", "equity investment"
+
+**DEBT FINANCING = NOT DISQUALIFYING (Can be Yellow or Green):**
+- Bank loans, lines of credit, credit facilities
+- Revenue-based financing (RBF) / MRR-based credit lines
+- Venture debt (debt, not equity - lender gets interest, NOT ownership)
+- SaaS Capital credit facilities (MRR-based debt lending)
+- Lighter Capital, Clearco, Pipe (revenue-based lenders)
+- Keywords: "credit facility", "line of credit", "debt financing", "loan", "MRR-based lending"
+
+**WHY THIS MATTERS:**
+- Equity PE/VC = Investor OWNS the company → Not founder-owned → RED
+- Debt financing = Founder still OWNS company, just borrowed money → Still founder-owned → Can be GREEN/YELLOW
+- Example: DataBP with SaaS Capital credit facility = DEBT (not equity) → YELLOW (not auto-RED)
+- Example: MDMS with Vareton Group equity = EQUITY PE-backed → RED
 
 ### Search 5: Broad Funding Search
 ```
@@ -119,13 +142,19 @@ PURPOSE: Find PitchBook profile (most reliable PE/VC source)
 
 **Critical: If PitchBook appears in results:**
 1. Note the PitchBook URL
-2. Check snippet for "Private Equity-Backed", "VC-Backed", "Financing Status", investor names
-3. **PAYWALL RULE**: If PitchBook profile EXISTS but snippet is vague/limited:
-   - This is a **RED FLAG** - PitchBook profiles are NOT created for small bootstrapped companies
-   - Profile existence suggests institutional investors (PE/VC)
-   - **Do NOT give GREEN verdict** - Default to YELLOW (uncertain) or search harder for confirmation
-   - Example: MDMS has PitchBook profile showing "Financing Status: Private Equity-Backed" but page is paywalled
-4. If snippet mentions investors → Proceed to Search 9 for verification
+2. Check snippet for "Private Equity-Backed", "VC-Backed", "Financing Status", investor/lender names
+3. **PAYWALL RULE - CHECK FOR EQUITY vs DEBT**:
+   - If PitchBook profile EXISTS but snippet is vague/paywalled: INVESTIGATE FURTHER
+   - Search for "[Company]" "equity" OR "investment" OR "portfolio company" (equity indicators)
+   - Search for "[Company]" "debt" OR "credit facility" OR "loan" (debt indicators)
+   - **If EQUITY keywords found → RED**
+   - **If ONLY DEBT keywords found (e.g., "SaaS Capital credit facility") → NOT disqualifying (can be YELLOW/GREEN)**
+   - If uncertain after investigation → YELLOW (not GREEN, but also not auto-RED)
+   - PitchBook profiles can exist for debt-financed companies (e.g., SaaS Capital clients)
+   - Examples:
+     * MDMS: PitchBook shows "Financing Status: Private Equity-Backed" → EQUITY → RED
+     * DataBP: PitchBook shows "SaaS Capital credit facility" → DEBT → NOT disqualifying
+4. If snippet mentions investors/lenders → Proceed to Search 9 for verification of equity vs debt
 
 ### Search 7: Crunchbase Search
 ```
@@ -155,18 +184,24 @@ PURPOSE: Catch paywalled information that leaked to other sources
 **Example:**
 `"Market Data Management Solutions" "Private Equity-Backed" OR "VC-Backed"`
 
-### Search 9: Investor Name Verification (IF investors found)
+### Search 9: Investor/Lender Name Verification (IF investors/lenders found)
 ```
 TOOL: web_search
-QUERY: "[Company Name]" "[Investor Name from snippet]"
-PURPOSE: Confirm specific investor relationship
+QUERY: "[Company Name]" "[Investor/Lender Name]" equity OR investment OR ownership
+QUERY: "[Company Name]" "[Investor/Lender Name]" debt OR loan OR "credit facility"
+PURPOSE: Verify if this is EQUITY investment or DEBT financing
 ```
 
-**Example:**
-If snippet mentioned "Vareton Group", search:
-`"Market Data Management Solutions" "Vareton Group"`
+**Examples:**
+- EQUITY: If snippet mentioned "Vareton Group", search:
+  `"Market Data Management Solutions" "Vareton Group"` → Confirms equity PE backing → RED
 
-**This search will definitively confirm or deny the relationship.**
+- DEBT: If snippet mentioned "SaaS Capital", search:
+  `"DataBP" "SaaS Capital" debt OR "credit facility"` → Confirms MRR-based debt → NOT disqualifying
+
+**This search will definitively confirm:**
+1. If the relationship exists
+2. If it's EQUITY (disqualifying) or DEBT (not disqualifying)
 
 ### Search 10: Acquisition/Portfolio Check
 ```
@@ -271,25 +306,37 @@ QUERY: "[Company Name]" clients customers case studies
 
 ### How to Parse Search Snippets for PE/VC:
 
-**Positive PE/VC Indicators (Automatic RED FLAG):**
-- "raised $X in Series A/B/C"
-- "backed by [Investor Name]"
-- "portfolio company of"
-- "acquired by [Company]"
-- "Private Equity-Backed" (from PitchBook)
-- "led by [VC Firm]"
-- Mentions of: Sequoia, Accel, a16z, KKR, Blackstone, etc.
+**EQUITY PE/VC Indicators (Automatic RED FLAG):**
+- "Private Equity-Backed" (equity ownership) → RED
+- "VC-Backed" (equity ownership) → RED
+- "raised $X in Series A/B/C" (equity rounds) → RED
+- "backed by [PE/VC Firm]" (equity backing) → RED
+- "portfolio company of" (equity ownership) → RED
+- "acquired by [PE Firm]" (equity purchase) → RED
+- "led by [VC Firm]" (equity investment) → RED
+- "majority stake" or "equity investment" → RED
+- Equity investor names: Sequoia, Accel, a16z, KKR, Blackstone, Vareton Group, Vista Equity, etc. → RED
 
-**Neutral Indicators (Need verification):**
-- "private company"
-- "privately held"
-- "independent"
+**DEBT Financing Indicators (NOT disqualifying - investigate but can be GREEN/YELLOW):**
+- "SaaS Capital credit facility" (MRR-based debt) → NOT RED
+- "revenue-based financing" or "RBF" → NOT RED
+- "line of credit" or "credit facility" → NOT RED
+- "venture debt" (debt, not equity) → NOT RED (verify it's debt)
+- "loan" or "debt financing" → NOT RED
+- Debt lenders: SaaS Capital, Lighter Capital, Clearco, Pipe → NOT RED
 
-**Negative Indicators (Good signs):**
-- "founder-owned"
-- "founder-led"
-- "bootstrapped"
+**Neutral Indicators (Need verification - could be either equity or debt):**
+- "private company" (check for PE/VC)
+- "privately held" (check for PE/VC)
+- "independent" (verify no PE/VC)
+- "funding" (could be equity or debt - investigate)
+
+**Positive Indicators (Good signs - no equity PE/VC):**
+- "founder-owned" (still owned by founders)
+- "founder-led" (founders in control)
+- "bootstrapped" (no external funding)
 - "No external funding detected"
+- "self-funded"
 
 ### How to Extract Investor Names from Snippets:
 
@@ -311,15 +358,17 @@ QUERY: "[Company Name]" clients customers case studies
 **Checklist:**
 - [ ] Searched PitchBook directly (site:pitchbook.com)
 - [ ] Searched Crunchbase (site:crunchbase.com)
-- [ ] Searched for exact phrases: "Private Equity-Backed" OR "VC-Backed" OR "Financing Status"
+- [ ] Searched for exact EQUITY phrases: "Private Equity-Backed" OR "VC-Backed" OR "Financing Status"
 - [ ] Used "funding" and "investors" keywords
 - [ ] Searched for "portfolio company" or "acquired by"
-- [ ] If investor name found → Verified with specific search
-- [ ] **PAYWALL CHECK:** If PitchBook/Crunchbase profile found → Treated as RED FLAG (not ignored)
+- [ ] **If investor/lender name found → Verified if EQUITY or DEBT**
+  - [ ] Searched: "[Company]" "[Name]" equity OR investment
+  - [ ] Searched: "[Company]" "[Name]" debt OR "credit facility"
+- [ ] **EQUITY vs DEBT CHECK:** Distinguished between equity PE/VC (disqualifying) and debt financing (not disqualifying)
 
-**If ALL checkboxes ✓ and NO PE/VC found → Proceed with confidence**
+**If ALL checkboxes ✓ and NO EQUITY PE/VC found (debt is OK) → Proceed with confidence**
 **If ANY box ✗ → Continue searching before marking GREEN**
-**If PitchBook/Crunchbase profile exists → Do NOT give GREEN (use YELLOW or search harder)**
+**If PitchBook/Crunchbase profile exists → INVESTIGATE for equity vs debt (don't auto-RED or auto-GREEN)**
 
 ### After Stage 1 (Employee Count), Verify:
 
@@ -334,20 +383,30 @@ QUERY: "[Company Name]" clients customers case studies
 
 ## Decision Framework Based on Search Results
 
-### PE/VC Detection:
+### PE/VC Detection (Equity vs Debt):
 ```
-IF PitchBook snippet shows "Private Equity-Backed" → RED (automatic)
-IF PitchBook snippet shows "Financing Status" → RED (automatic)
-IF PitchBook snippet mentions investor name → RED (automatic)
-IF PitchBook/Crunchbase PROFILE EXISTS (even if paywalled) → RED FLAG (do NOT give GREEN)
-  → PAYWALL RULE: Profile existence suggests institutional investors
-  → These databases don't profile small bootstrapped companies
-  → Default to YELLOW (uncertain) or search harder for confirmation
-IF Crunchbase shows funding rounds → RED (automatic)
-IF snippet says "raised $X" → RED (automatic)
-IF 6+ searches done and no profile/funding found → Proceed cautiously
-IF uncertain → YELLOW (not GREEN)
+IF PitchBook snippet shows "Private Equity-Backed" → EQUITY → RED (automatic)
+IF PitchBook snippet shows "VC-Backed" → EQUITY → RED (automatic)
+IF PitchBook snippet mentions equity investor name → EQUITY → RED (automatic)
+IF PitchBook snippet shows "SaaS Capital credit facility" → DEBT → NOT disqualifying (can be YELLOW/GREEN)
+IF PitchBook/Crunchbase PROFILE EXISTS but unclear → INVESTIGATE for equity vs debt
+  → Search: "[Company]" "equity" OR "investment" OR "portfolio company"
+  → Search: "[Company]" "debt" OR "credit facility" OR "loan"
+  → If EQUITY found → RED
+  → If ONLY DEBT found → NOT disqualifying (can be YELLOW/GREEN)
+  → If uncertain → YELLOW (not GREEN, but not auto-RED)
+IF Crunchbase shows equity funding rounds (Series A/B/C) → EQUITY → RED (automatic)
+IF Crunchbase shows "Venture Debt" or "Credit Line" → DEBT → NOT disqualifying
+IF snippet says "raised $X in Series A/B/C" → EQUITY → RED (automatic)
+IF snippet says "credit facility" or "line of credit" → DEBT → NOT disqualifying
+IF lender/investor name found → VERIFY if equity or debt with specific search
+  → "[Company]" "[Name]" equity OR investment → If found → RED
+  → "[Company]" "[Name]" debt OR loan → If found → NOT disqualifying
+IF 6+ searches done and no EQUITY found (debt is OK) → Proceed cautiously
+IF uncertain about equity vs debt → YELLOW (not GREEN)
 ```
+
+**KEY PRINCIPLE: Only EQUITY PE/VC disqualifies. DEBT financing does NOT disqualify.**
 
 ### Employee Count:
 ```
@@ -422,22 +481,26 @@ IF services only + no products → Evaluate category fit
 ### ❌ Don't Do This:
 1. **Only searching "company name funding"** → Too generic
 2. **Skipping PitchBook direct search** → Most reliable PE/VC source
-3. **Ignoring PitchBook profile if snippet is vague** → FALSE POSITIVE! Profile existence = RED FLAG
-4. **Not searching for "Private Equity-Backed" exact phrases** → Misses paywalled information
-5. **Not verifying investor names found in snippets** → False negatives
-6. **Marking GREEN without thorough PE/VC search** → Dangerous false positive
-7. **Assuming "privately held" = no PE backing** → Many PE-backed companies are private
-8. **Stopping after 3-4 searches** → Not enough for reliable screening
+3. **Treating DEBT financing as automatic RED** → FALSE POSITIVE! Only EQUITY PE/VC disqualifies
+4. **Not verifying if lender/investor is providing DEBT or taking EQUITY** → Crucial distinction
+5. **Not searching for "Private Equity-Backed" exact phrases** → Misses paywalled information
+6. **Not verifying investor names found in snippets** → False negatives
+7. **Marking GREEN without thorough EQUITY PE/VC search** → Dangerous false positive
+8. **Assuming "privately held" = no PE backing** → Many PE-backed companies are private
+9. **Stopping after 3-4 searches** → Not enough for reliable screening
+10. **Assuming PitchBook profile = automatic RED** → Could be debt-financed (investigate first)
 
 ### ✅ Do This:
 1. **Always search PitchBook directly** → site:pitchbook.com
-2. **Apply PAYWALL RULE** → Profile exists (even if paywalled) = RED FLAG, don't give GREEN
-3. **Search for exact PE/VC phrases** → "Private Equity-Backed" OR "VC-Backed" OR "Financing Status"
-4. **Parse snippets for investor names** → Then verify with specific search
-5. **Search 8-12 times minimum** → Thorough is better than fast
-6. **Default to YELLOW when uncertain** → Conservative approach (false negative < false positive)
-7. **Verify employee count from LinkedIn** → Most reliable source
-8. **Cross-reference multiple sources** → Consistency check
+2. **Distinguish EQUITY from DEBT** → Only equity PE/VC disqualifies, debt financing does not
+3. **Verify lender/investor type** → "[Company]" "[Name]" equity vs debt
+4. **Search for exact EQUITY phrases** → "Private Equity-Backed" OR "VC-Backed" (not just "funding")
+5. **Parse snippets for investor/lender names** → Then verify if equity or debt
+6. **Search 8-12 times minimum** → Thorough is better than fast
+7. **Default to YELLOW when uncertain** → Conservative approach (false negative < false positive)
+8. **Verify employee count from LinkedIn** → Most reliable source
+9. **Cross-reference multiple sources** → Consistency check
+10. **Understand debt ≠ disqualifying** → SaaS Capital, credit facilities, loans are OK
 
 ---
 
@@ -505,17 +568,24 @@ site:crunchbase.com "[Company Name]" funding
 - Limited public information but no red flags
 
 **AUTOMATIC RED if:**
-- Any PE/VC backing detected (even 1%)
+- Any EQUITY PE/VC backing detected (even 1%)
 - Non-US headquarters confirmed
 - Employee count <5 or >150 with institutionalization
 - Pure software product (no service indicators)
 
+**YELLOW if:**
+- Debt financing found (SaaS Capital, credit facilities, loans) → NOT disqualifying but may indicate uncertainty
+- Mixed software + services business model
+- Borderline employee count or conflicting sources
+- Uncertain business model (unclear if services >70%)
+
 **GREEN only if:**
-- Thorough PE/VC search (10+ searches) finds nothing
+- Thorough EQUITY PE/VC search (10+ searches) finds nothing (debt is OK)
 - Employee count verified in 5-100 range
 - US-based confirmed
 - Category fit confirmed (Tier 1 or Tier 2)
 - Business model confirmed (managed services)
+- Founder-owned (debt financing does NOT violate this)
 
 ---
 
@@ -592,15 +662,19 @@ site:crunchbase.com "[Company Name]" funding
 
 ## Final Checklist Before Submitting Verdict
 
-- [ ] Searched for PE/VC backing thoroughly (PitchBook + Crunchbase + generic)
-- [ ] If investor name appeared → verified with specific search
+- [ ] Searched for EQUITY PE/VC backing thoroughly (PitchBook + Crunchbase + generic)
+- [ ] **If investor/lender name appeared → verified if EQUITY or DEBT**
+  - [ ] EQUITY found (PE/VC ownership) → RED
+  - [ ] DEBT found (credit facility, loan) → NOT disqualifying (can be YELLOW/GREEN)
 - [ ] Found employee count from reliable source (or noted inability)
 - [ ] Verified US-based location
 - [ ] Determined business model (services vs. software vs. mixed)
 - [ ] Applied mechanical rules (e.g., software + service language → YELLOW)
+- [ ] **Confirmed debt financing alone does NOT disqualify** (only equity PE/VC disqualifies)
 - [ ] Used conservative default (when uncertain → YELLOW, not GREEN)
 - [ ] Total search count: 7+ searches performed
 
 **Only mark GREEN if ALL checkboxes are ✓ with high confidence**
+**Remember: Debt financing (SaaS Capital, etc.) ≠ Equity PE/VC → NOT automatic RED**
 
 ---
