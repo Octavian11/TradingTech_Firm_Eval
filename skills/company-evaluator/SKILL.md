@@ -65,10 +65,11 @@ Check against criteria in this order:
 - Already acquired/part of larger company - look for "a [Company] company"
 
 **2. SIZE ASSESSMENT (LinkedIn + Website):**
-- 10-100 employees = likely fits target EBITDA range (✅)
-- <10 employees = likely too small (❌)
-- >150 employees + multiple offices = likely too institutionalized (❌)
-- 100-150 employees = borderline (⚠️)
+- 5-50 employees = $500K-$2M EBITDA range (✅)
+- 50-100 employees = $2M-$5M EBITDA range (✅)
+- 100-150 employees = borderline, may be too institutionalized (⚠️)
+- <5 employees = too small (❌)
+- >150 employees + multiple offices = too large/institutionalized (❌)
 - Additional signals of too large:
   - 4+ office locations globally
   - "800+ clients" or similar scale mentioned
@@ -116,7 +117,7 @@ If fits neither Tier 1 nor Tier 2 = RED LIGHT
 
 **GREEN ✅** = Pass initial screening, advance to confidential due diligence
 - Meets ALL publicly verifiable requirements:
-  - 10-100 employees (LinkedIn verified)
+  - 5-150 employees (LinkedIn verified)
   - US-based headquarters
   - Founder-owned (no PE/VC detected)
   - Fits **Tier 1** category with managed services model
@@ -127,7 +128,7 @@ If fits neither Tier 1 nor Tier 2 = RED LIGHT
 **YELLOW ⚠️** = Needs additional research before deciding
 - Meets MOST requirements but has questions:
   - Fits **Tier 2** category (acceptable but lower priority than Tier 1)
-  - Borderline size (8-12 or 100-120 employees)
+  - Borderline size (3-5 employees or 120-150 employees)
   - Unclear if fully managed services or mixed with projects
   - Limited public information available
   - Recently founded (<3 years) but fits category
@@ -137,7 +138,7 @@ If fits neither Tier 1 nor Tier 2 = RED LIGHT
 - Fails on ANY critical publicly verifiable requirement:
   - PE/VC backed
   - Non-US headquarters
-  - Wrong size (<10 or >150 employees with institutionalization)
+  - Wrong size (<5 or >150 employees with institutionalization)
   - Software product company (not services)
   - Generic IT staffing or project consulting
   - Does NOT fit Tier 1 or Tier 2 categories

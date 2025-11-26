@@ -4,15 +4,17 @@
 This skill evaluates companies using ONLY publicly available information for initial screening.
 
 ### Core Requirements (MUST HAVE - Publicly Verifiable)
-- **Team Size**: 10-100 employees (verifiable via LinkedIn)
+- **Team Size**: 5-150 employees (verifiable via LinkedIn)
 - **Geography**: United States-based ONLY (verifiable via website/LinkedIn)
 - **Ownership**: Founder-owned (NO PE/VC ownership - any percentage is automatic rejection)
 - **Customer Base**: B2B institutional clients (asset managers, broker-dealers, banks)
 - **Business Model**: Managed services (not software products, not project consulting)
 - **Size Signals**: Based on employee count and market presence:
-  - 10-100 employees suggests $1-5M EBITDA range (target)
-  - <10 employees = too small
-  - >150 employees with multiple offices = likely too large/institutionalized
+  - 5-50 employees suggests $500K-$2M EBITDA range (target)
+  - 50-100 employees suggests $2M-$5M EBITDA range (target)
+  - 100-150 employees = borderline, may be too institutionalized
+  - <5 employees = too small
+  - >150 employees with multiple offices = too large/institutionalized
 
 ### TIER 1 Categories (80% of search effort - Highest Priority)
 
@@ -117,7 +119,7 @@ If the company emphasizes "implementation projects" or "consulting engagements" 
 
 ### GREEN ✅ - Advance to Due Diligence
 Company meets ALL publicly verifiable requirements:
-- 10-100 employees (LinkedIn verified)
+- 5-150 employees (LinkedIn verified)
 - US-based headquarters
 - Founder-owned (no PE/VC detected)
 - Fits **Tier 1** category (managed services model) - highest priority
@@ -130,7 +132,7 @@ Company meets ALL publicly verifiable requirements:
 ### YELLOW ⚠️ - Research Further Before Deciding
 Company meets MOST requirements but needs additional research:
 - Fits **Tier 2** category (acceptable but lower priority than Tier 1)
-- Borderline size (8-12 employees or 100-120 employees)
+- Borderline size (3-5 employees or 120-150 employees)
 - Unclear if fully managed services or mix with project work
 - Limited public information available (need more research)
 - Some project language but also operational support mentioned
@@ -142,7 +144,7 @@ Company meets MOST requirements but needs additional research:
 Company fails on ANY critical publicly verifiable requirement:
 - PE/VC backed or part of larger company
 - Non-US headquarters
-- Wrong size (<10 or >150 employees with multiple offices)
+- Wrong size (<5 or >150 employees with multiple offices)
 - Software product company (not services)
 - Generic IT staffing or consulting
 - Does NOT fit Tier 1 or Tier 2 categories
@@ -162,7 +164,7 @@ When evaluating a company using ONLY public information:
 - Generic IT staffing? (automatic rejection)
 
 ### 2. Size Assessment (LinkedIn + Website)
-- Employee count on LinkedIn: 10-100 = good, <10 = too small, >150 = likely too large
+- Employee count on LinkedIn: 5-150 = good, <5 = too small, >150 = likely too large
 - Office locations: 1-2 offices = good, 4+ global offices = too institutionalized
 - Client scale: If they mention "800+ clients" or "22 geographies" = too large
 
@@ -210,7 +212,7 @@ Does website clearly show they fit one of these?
 ## Remember
 
 Hassan's edge is being a former CUSTOMER of these exact services at Verition, Lazard, and Barclays. The ideal target is:
-- The 10-50 employee version of larger players
+- The 5-50 employee version of larger players
 - Founder-led and scrappy
 - Providing hands-on managed operations
 - For mission-critical trading infrastructure

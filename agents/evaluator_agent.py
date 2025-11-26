@@ -164,7 +164,7 @@ Provide your verdict (GREEN/YELLOW/RED) and a detailed rationale that includes s
 Format your response EXACTLY like this (and NOTHING ELSE):
 VERDICT: [GREEN/YELLOW/RED]
 EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review, does NOT influence verdict]
-EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <10 or >150]
+EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <5 or >150]
 TIER_FIT: [Tier 1 or Tier 2 - categorize company regardless of verdict]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]"""
 
@@ -220,21 +220,21 @@ Format your response EXACTLY like this (and NOTHING ELSE):
 COMPANY #1: {companies[0].name}
 VERDICT: [GREEN/YELLOW/RED]
 EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review, does NOT influence verdict]
-EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <10 or >150]
+EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <5 or >150]
 TIER_FIT: [Tier 1 or Tier 2 - categorize company regardless of verdict]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 
 COMPANY #2: {companies[1].name}
 VERDICT: [GREEN/YELLOW/RED]
 EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review, does NOT influence verdict]
-EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <10 or >150]
+EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <5 or >150]
 TIER_FIT: [Tier 1 or Tier 2 - categorize company regardless of verdict]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 """ + (f"""
 COMPANY #3: {companies[2].name}
 VERDICT: [GREEN/YELLOW/RED]
 EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review, does NOT influence verdict]
-EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <10 or >150]
+EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <5 or >150]
 TIER_FIT: [Tier 1 or Tier 2 - categorize company regardless of verdict]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 """ if len(companies) > 2 else "")
@@ -419,7 +419,7 @@ Key Lesson: "We operate" + "24/7" + NO products + NO PE/VC = GREEN (very rare!)
 
 3. Mixed Models = YELLOW (Examples: EZX, DataBP)
    - Software products + managed services = YELLOW
-   - Size concerns (too small <10 or borderline employee count) = YELLOW
+   - Size concerns (too small <5 or borderline employee count) = YELLOW
    - Mixed model uncertainty (unclear if services >70%) = YELLOW
    - When uncertain about business model → YELLOW
 
@@ -443,10 +443,11 @@ STAGE 1: Initial Discovery (6-7 searches)
 
 EMPLOYEE COUNT (DOES influence verdict):
 - LinkedIn employee count is PRIMARY source for verdict decisions
-- MUST be 10-100 employees to qualify for GREEN/YELLOW
-- <10 employees = too small (automatic RED)
+- MUST be 5-150 employees to qualify for GREEN/YELLOW
+- <5 employees = too small (automatic RED)
 - >150 employees with institutionalization = too large (automatic RED)
 - 100-150 employees = borderline (YELLOW)
+- 3-5 employees = borderline (YELLOW - too small but worth investigating)
 - Also extract employee count for EST_EMPLOYEES field (for user to verify your verdict)
 - May be ranges like "11-50" or specific counts like "17"
 - Use LinkedIn count for verdict sizing, but report all sources found
