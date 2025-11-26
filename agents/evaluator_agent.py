@@ -443,10 +443,11 @@ STAGE 1: Initial Discovery (6-7 searches)
 
 EMPLOYEE COUNT (DOES influence verdict):
 - LinkedIn employee count is PRIMARY source for verdict decisions
-- MUST be 5-100 employees to qualify for GREEN/YELLOW
+- MUST be 5-150 employees to qualify for GREEN/YELLOW
 - <5 employees = too small (automatic RED)
 - >150 employees with institutionalization = too large (automatic RED)
 - 100-150 employees = borderline (YELLOW)
+- 3-5 employees = borderline (YELLOW - too small but worth investigating)
 - Also extract employee count for EST_EMPLOYEES field (for user to verify your verdict)
 - May be ranges like "11-50" or specific counts like "17"
 - Use LinkedIn count for verdict sizing, but report all sources found

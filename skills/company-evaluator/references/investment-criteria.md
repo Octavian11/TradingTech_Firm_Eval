@@ -4,15 +4,17 @@
 This skill evaluates companies using ONLY publicly available information for initial screening.
 
 ### Core Requirements (MUST HAVE - Publicly Verifiable)
-- **Team Size**: 5-100 employees (verifiable via LinkedIn)
+- **Team Size**: 5-150 employees (verifiable via LinkedIn)
 - **Geography**: United States-based ONLY (verifiable via website/LinkedIn)
 - **Ownership**: Founder-owned (NO PE/VC ownership - any percentage is automatic rejection)
 - **Customer Base**: B2B institutional clients (asset managers, broker-dealers, banks)
 - **Business Model**: Managed services (not software products, not project consulting)
 - **Size Signals**: Based on employee count and market presence:
-  - 5-100 employees suggests $1-5M EBITDA range (target)
+  - 5-50 employees suggests $500K-$2M EBITDA range (target)
+  - 50-100 employees suggests $2M-$5M EBITDA range (target)
+  - 100-150 employees = borderline, may be too institutionalized
   - <5 employees = too small
-  - >150 employees with multiple offices = likely too large/institutionalized
+  - >150 employees with multiple offices = too large/institutionalized
 
 ### TIER 1 Categories (80% of search effort - Highest Priority)
 
@@ -76,36 +78,9 @@ These categories are acceptable but lower priority:
 - Services-led SaaS model
 
 ### Key Business Model Distinction
-
-**The Core Question: Own Platform vs. Others' Platforms?**
-
-**✅ TARGET - Operating Others' Platforms:**
-- Companies that OPERATE infrastructure like Bloomberg, Charles River, Aladdin FOR clients
-- Managed services providers who run other vendors' platforms
-- Example: "We manage your Bloomberg terminals, handle entitlements, monitor data feeds"
-- Hassan's edge: He was a CUSTOMER of these services at Verition/Lazard/Barclays
-
-**❌ NOT TARGET - Building Competing Platforms:**
-- Companies that BUILD their own OMS, trading platform, or surveillance system
-- Software vendors trying to REPLACE Bloomberg/Charles River/Aladdin
-- Example: "Our proprietary OMS competes with Charles River"
-- Why avoid: Different business model, typically software licensing heavy
-
-**⚠️ BORDERLINE - Operating Own Platform as Service:**
-- Companies that built proprietary platform AND mention service delivery
-- Website has BOTH software products AND managed service language
-- Example: "Trading infrastructure software delivered as fully managed 24/7 service"
-- **Verdict**: **YELLOW LIGHT** (needs due diligence to verify >70% services revenue)
-- **Hassan's Test**: "Would I have hired this as a customer at Verition?"
-  - If YES (they'd operate something for me) → potentially acceptable
-  - If NO (they'd sell me software to operate myself) → wrong model
-
-**MECHANICAL RULE FOR THIS CASE:**
-- IF (website mentions products) AND (website mentions "managed service" OR "24/7 monitoring" OR "delivered as a service")
-- THEN → **YELLOW LIGHT**
-- DO NOT try to determine which is "primary" - you cannot know from public info
-
-**Revenue Mix Note**: Revenue percentage (>70% services) is evaluated AFTER initial screening during due diligence, not from public information alone.
+- ✅ **WANT**: Companies that OPERATE infrastructure (managed services, ongoing 24/7 support)
+- ❌ **DON'T WANT**: Companies that just implement/consult then leave
+- ❌ **DON'T WANT**: Software product companies (unless services-heavy with >70% services revenue)
 
 ### Recurring Revenue Signals (Public Indicators)
 Look for these signals on the website and marketing materials:
@@ -124,33 +99,15 @@ If the company emphasizes "implementation projects" or "consulting engagements" 
 - ❌ Already acquired or part of larger company - check "a [Parent Company] company"
 - ❌ Not US-based - verify headquarters location
 
-### Business Model - DECISION TREE
-
-**Use this mechanical process - do NOT interpret or reason around it:**
-
-**STEP 1**: Search website for service language:
-- "Managed service" / "delivered as a service" / "as-a-service"
-- "24/7 monitoring" / "24/7 support" / "proactive monitoring"
-- "Fully managed" / "we operate" / "we handle production"
-- "Operations-as-a-Service" / "SLA-backed"
-
-**STEP 2**: Apply verdict based on findings:
-- ✅ Services ONLY (no proprietary products) → GREEN/YELLOW (target profile)
-- ⚠️ Services + Software Products BOTH present → **YELLOW LIGHT** (cannot determine revenue mix)
-- ❌ Software Products ONLY (zero service mentions) → **RED LIGHT** (pure software)
-- ❌ Generic IT staffing (not specialized trading tech) → RED LIGHT
-- ❌ Project-based consulting only (no ongoing operations) → RED LIGHT
-- ❌ Implementation-only firms (they implement then leave) → RED LIGHT
-
-**CRITICAL RULES**:
-1. You CANNOT determine revenue percentage from public information
-2. If website mentions BOTH software AND services → MUST be YELLOW (not RED)
-3. Do NOT use indirect signals (number of products, positioning, competitive language) to conclude revenue mix
-4. Revenue percentage (>70% services) is evaluated AFTER screening during due diligence
+### Business Model
+- ❌ Software product companies (unless services-heavy >70% based on website description)
+- ❌ Generic IT staffing (not specialized trading tech)
+- ❌ Project-based consulting only (no ongoing operations)
+- ❌ Implementation-only firms (they implement then leave)
 
 ### Size
 - ❌ Too big: >150 employees OR multiple global offices OR 500+ clients mentioned
-- ❌ Too small: <5 employees (based on LinkedIn)
+- ❌ Too small: <10 employees (based on LinkedIn)
 - ❌ Too institutionalized: ISO certifications, 4+ offices, "award-winning" 3+ years, 800+ clients
 
 ### Category Fit
@@ -160,34 +117,9 @@ If the company emphasizes "implementation projects" or "consulting engagements" 
 
 ## VERDICT GUIDANCE (Public Information Only)
 
-**MANDATORY FINAL CHECK BEFORE VERDICT:**
-
-Run through this checklist IN ORDER before giving any verdict:
-
-**CHECK 1**: Did website mention service language?
-- "Managed service" / "delivered as a service" / "24/7 monitoring" / "fully managed" / "we operate" / "support services"
-
-→ **If YES**, go to CHECK 2
-→ **If NO**, go to CHECK 3
-
-**CHECK 2**: Does company also have proprietary software products?
-- Own platform, own OMS, own FIX engine, own connectivity tools, etc.
-
-→ **If YES** → **VERDICT: YELLOW LIGHT**. STOP here. Do NOT reason about "core business" or "primary revenue". The mechanical rule applies: Products + Service language = YELLOW.
-→ **If NO** → Continue to full GREEN/YELLOW evaluation below
-
-**CHECK 3**: Website ONLY discusses software/products with ZERO service mentions?
-
-→ **If YES** → **VERDICT: RED LIGHT** (pure software)
-→ **If NO** → **VERDICT: YELLOW LIGHT** (unclear)
-
-**STOP AT CHECK 2 IF ANSWER IS YES** - Do not override with reasoning about business model.
-
----
-
-### GREEN LIGHT ✅ - Advance to Due Diligence
+### GREEN ✅ - Advance to Due Diligence
 Company meets ALL publicly verifiable requirements:
-- 5-100 employees (LinkedIn verified)
+- 5-150 employees (LinkedIn verified)
 - US-based headquarters
 - Founder-owned (no PE/VC detected)
 - Fits **Tier 1** category (managed services model) - highest priority
@@ -197,56 +129,29 @@ Company meets ALL publicly verifiable requirements:
 
 **Next Step**: Reach out for confidential information to evaluate financial metrics.
 
-### YELLOW LIGHT ⚠️ - Research Further Before Deciding
+### YELLOW ⚠️ - Research Further Before Deciding
 Company meets MOST requirements but needs additional research:
 - Fits **Tier 2** category (acceptable but lower priority than Tier 1)
-- Borderline size (100-120 employees)
+- Borderline size (3-5 employees or 120-150 employees)
 - Unclear if fully managed services or mix with project work
-- **Website mentions BOTH proprietary products AND managed services** (cannot verify >70% services from public info)
-- **Has software + service language present** (borderline "operating own platform as service" case)
 - Limited public information available (need more research)
 - Some project language but also operational support mentioned
 - Founded recently (<3 years) but fits category
 
-**CRITICAL**: If company website mentions "managed service", "24/7 support", or "delivered as a service" alongside products → MUST be YELLOW, NOT RED
+**Next Step**: Additional web research or light outreach to clarify before advancing.
 
-**Next Step**: Proceed to due diligence to verify revenue mix, service model, and fit. Can reach out for confidential information.
-
-### RED LIGHT ❌ - Does Not Fit Thesis
+### RED ❌ - Does Not Fit Thesis
 Company fails on ANY critical publicly verifiable requirement:
 - PE/VC backed or part of larger company
 - Non-US headquarters
 - Wrong size (<5 or >150 employees with multiple offices)
-- **Pure software product company** (website has ZERO service mentions - only software licensing/products, no "managed service", no "24/7 support", no "we operate")
+- Software product company (not services)
 - Generic IT staffing or consulting
 - Does NOT fit Tier 1 or Tier 2 categories
 - Project-based only (no ongoing operations)
 - Too institutionalized (4+ offices, 500+ clients, ISO certified, etc.)
 
-**IMPORTANT**: RED verdict requires ZERO service language on website. If ANY service mentions exist alongside products → That's YELLOW, not RED.
-
 **Next Step**: Do not pursue. Move to next target.
-
-## TROUBLESHOOTING: Software vs Services Decision
-
-**IF YOU SEE**: Company with multiple software products (OMS, FIX engine, connectivity tools, etc.)
-**AND**: Website also says "delivered as a fully managed Service" or "24/7 monitoring" or similar
-**THEN**: This is **YELLOW LIGHT** - not RED
-
-**WHY**: You cannot determine from public information whether this is:
-- 80% software licensing, 20% services → Would be RED
-- 20% software licensing, 80% services → Would be acceptable
-
-**CORRECT APPROACH**: Default to YELLOW (needs due diligence to determine actual revenue mix)
-
-**WRONG APPROACH**: Using indirect signals like:
-- "They have 8 products so must be software-heavy" ❌
-- "Positioning says 'break away from vendors' so must be software company" ❌
-- "Heavy emphasis on products, so primarily software" ❌
-
-These are ASSUMPTIONS, not facts. Stick to the mechanical rule: Products + Service language = YELLOW.
-
----
 
 ## EVALUATION APPROACH (Top-of-Funnel Screening)
 
@@ -259,7 +164,7 @@ When evaluating a company using ONLY public information:
 - Generic IT staffing? (automatic rejection)
 
 ### 2. Size Assessment (LinkedIn + Website)
-- Employee count on LinkedIn: 5-100 = good, <5 = too small, >150 = likely too large
+- Employee count on LinkedIn: 5-150 = good, <5 = too small, >150 = likely too large
 - Office locations: 1-2 offices = good, 4+ global offices = too institutionalized
 - Client scale: If they mention "800+ clients" or "22 geographies" = too large
 
@@ -278,9 +183,9 @@ Does website clearly show they fit one of these?
 7. Technology-enabled business services (payments, finops outsourcing)
 8. B2B SaaS with heavy services component (strong product, weak ops)
 
-**Tier 1 = GREEN LIGHT potential**
-**Tier 2 = YELLOW LIGHT (acceptable but lower priority)**
-**Neither = RED LIGHT**
+**Tier 1 = GREEN potential**
+**Tier 2 = YELLOW (acceptable but lower priority)**
+**Neither = RED**
 
 ### 4. Business Model Assessment (Website Language)
 - ✅ Look for: "24/7 support", "managed services", "operations team", "SLA-backed", "ongoing support"
@@ -307,7 +212,7 @@ Does website clearly show they fit one of these?
 ## Remember
 
 Hassan's edge is being a former CUSTOMER of these exact services at Verition, Lazard, and Barclays. The ideal target is:
-- The 10-50 employee version of larger players
+- The 5-50 employee version of larger players
 - Founder-led and scrappy
 - Providing hands-on managed operations
 - For mission-critical trading infrastructure
