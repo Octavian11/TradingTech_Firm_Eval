@@ -362,7 +362,7 @@ EQUITY vs DEBT ANALYSIS:
 ✗ Employee count borderline/unclear in some sources (1-10 vs 29-32 conflicting data)
 
 Verdict: YELLOW ⚠️
-Rationale: US-based market data licensing platform serving exchanges (Tier 1 fit). Company has SaaS Capital credit facility (debt financing, NOT equity - still founder-owned). Mixed SaaS platform + managed services model where it's unclear if services exceed 70% threshold. Employee count needs verification. Debt financing alone does NOT disqualify - only equity PE/VC ownership disqualifies.
+Rationale: US-based market data licensing platform serving exchanges (Tier 1B - Market Data Ops). Company has SaaS Capital credit facility (debt financing, NOT equity - still founder-owned). Mixed SaaS platform + managed services model where it's unclear if services exceed 70% threshold. Employee count needs verification. Debt financing alone does NOT disqualify - only equity PE/VC ownership disqualifies.
 
 Key Lesson:
 - Debt financing (SaaS Capital, credit facilities) ≠ Equity PE/VC → NOT automatic RED
@@ -396,7 +396,7 @@ OPERATIONS INDICATORS FOUND:
 ✓ NO proprietary software products (pure services)
 
 Verdict: GREEN ✅
-Rationale: US-based with 25 employees. Founder-owned with no PE/VC backing detected across comprehensive searches. Pure operations provider running mission-critical market data infrastructure 24/7 for clients. Clear Tier 1 fit - platform operations with NOC and technical support team.
+Rationale: US-based with 25 employees. Founder-owned with no PE/VC backing detected across comprehensive searches. Pure operations provider running mission-critical market data infrastructure 24/7 for clients. Clear Tier 1B fit (Market Data Ops) - platform operations with NOC and technical support team.
 
 Key Lesson: "We operate" + "24/7" + NO products + NO PE/VC = GREEN (very rare!)
 
@@ -428,6 +428,34 @@ Key Lesson: "We operate" + "24/7" + NO products + NO PE/VC = GREEN (very rare!)
    - Debt financing alone does NOT disqualify
    - When uncertain → Default to YELLOW, not GREEN
    - Only mark GREEN if 100% confident on all factors
+
+**CRITICAL V2.0 TIER VERDICT RULES:**
+
+GREEN ✅ Eligibility (Must meet ALL requirements):
+- **Tier 1 (1A-1E) OR Tier 2 (2A-2D)** = GREEN eligible if all other criteria met
+- 5-150 employees ✓
+- US headquarters ✓
+- Founder-owned (no equity PE/VC) ✓
+- Managed services model ✓
+- Institutional B2B clients ✓
+
+YELLOW ⚠️ Cases:
+- **Tier 3 (3A-3C)** = YELLOW (adjacent services, selective)
+- Tier 1/2 with borderline size (3-5 or 120-150 employees)
+- Tier 1/2 with mixed business model (products + services)
+- Tier 1/2 with unclear PE/VC status (needs more research)
+- Any genuine uncertainty about criteria
+
+RED ❌ Automatic Disqualification:
+- Equity PE/VC backing (confirmed)
+- Non-US headquarters
+- <5 or >150 employees with institutionalization
+- Software product company (not services)
+- Generic IT/consulting (not specialized finserv)
+- Does NOT fit Tier 1, 2, or 3
+- Project-based only (no ongoing operations)
+
+**KEY V2.0 CHANGE**: Tier 2 (middle/back-office operations like reconciliation, regulatory reporting, post-trade processing) is now GREEN eligible, not YELLOW. If a company fits Tier 2A/2B/2C/2D and meets all other criteria, mark it GREEN.
 
 **MANDATORY SEARCH STRATEGY (10-12 searches minimum for GREEN verdict):**
 
