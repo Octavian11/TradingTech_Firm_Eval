@@ -270,26 +270,32 @@ CRITICAL PROCESS (DO NOT SKIP):
 
 **REFERENCE EXAMPLES - Learn from these before evaluating:**
 
-❌ RED EXAMPLE #1: Market Data Management Solutions (MDMS)
+⚠️ YELLOW EXAMPLE #1: Market Data Management Solutions (MDMS)
 Company Profile:
 - Location: New York, NY (US-based) ✓
-- Size: ~50 employees ✓
-- Industry: Market data/financial services ✓
+- Size: 11-13 employees ✓
+- Industry: Market data operations (Tier 1B fit) ✓
 
-Why RED - PE/VC Disqualification:
+Why YELLOW - Uncertain PE/VC Status (Needs Verification):
 - Search: site:pitchbook.com "Market Data Management Solutions" → Found PitchBook profile
-- Search: "Market Data Management Solutions" "Private Equity-Backed" → Found confirmation
-- Search: "Market Data Management Solutions" "Vareton Group" → Found investor relationship
-- CRITICAL FINDING: "The Vareton Group has invested in Market Data Management Solutions"
+- PitchBook snippet shows "Private Equity-Backed" label
+- BUT: Cannot confirm if it's equity PE ownership vs minority investment vs debt
+- Search: "Market Data Management Solutions" investor names → Results unclear
+- UNCERTAINTY: PitchBook profiles can exist for debt-financed OR equity-backed companies
 
-Verdict: RED ❌
-Rationale: PE-backed by Vareton Group per PitchBook profile. Any PE/VC ownership = automatic disqualification regardless of other positive factors.
+CRITICAL DISTINCTION:
+- If PitchBook shows "Private Equity-Backed" but you CANNOT verify actual equity ownership → YELLOW
+- If you find CONFIRMED equity PE investor name (e.g., "Vareton Group owns 60%") → RED
+- "Minority PE" or unclear backing status → YELLOW (needs deeper research before ruling out)
 
-Key Lesson: PitchBook profile existence + investor name verification = RED
+Verdict: YELLOW ⚠️
+Rationale: NY-based market data operations provider (Tier 1B), 11-13 employees. PitchBook shows "Private Equity-Backed" label but actual ownership structure unclear - could be minority stake, debt financing, or advisory board seat. Needs verification before advancing or ruling out.
+
+Key Lesson: Uncertain PE/VC signals = YELLOW (research further), not automatic RED. Only mark RED when equity ownership is CONFIRMED.
 
 ---
 
-❌ RED EXAMPLE #2: BST Americas
+❌ RED EXAMPLE #1: BST Americas
 Company Profile:
 - Location: US-based ✓
 - Size: ~13 employees ✓
@@ -314,7 +320,32 @@ Key Lesson: "Negotiation", "optimization", "advisory" = consulting red flags →
 
 ---
 
-⚠️ YELLOW EXAMPLE #1: EZX Inc
+❌ RED EXAMPLE #2: Hypothetical PE-Backed Trading Tech Firm
+Company Profile:
+- Location: New York, NY (US-based) ✓
+- Size: 35 employees ✓
+- Industry: Trade surveillance operations (Tier 1D fit) ✓
+- Business model: Managed services ✓
+
+Why RED - Confirmed PE/VC Ownership (AUTOMATIC DISQUALIFICATION):
+- Search: site:pitchbook.com "[Company Name]" → Found PitchBook profile
+- PitchBook snippet: "Private Equity-Backed" label present
+- Search: "[Company]" "Accel Partners" → Found press release
+- CONFIRMED FINDING: "Accel Partners led $15M Series A investment, taking 40% equity stake"
+- Additional confirmation: Company LinkedIn shows "Part of Accel portfolio" badge
+
+CRITICAL DISTINCTION from MDMS example above:
+- MDMS = PitchBook label but UNCERTAIN ownership → YELLOW (needs research)
+- This company = PitchBook label + CONFIRMED equity stake → RED (disqualified)
+
+Verdict: RED ❌
+Rationale: Despite fitting Tier 1D category with 35 employees and managed services model, company has confirmed VC backing (Accel Partners owns 40% equity stake). Any confirmed equity PE/VC ownership = automatic disqualification regardless of other positive factors.
+
+Key Lesson: CONFIRMED equity ownership (with investor name + stake %) = RED. Uncertain PE signals = YELLOW.
+
+---
+
+⚠️ YELLOW EXAMPLE #2: EZX Inc
 Company Profile:
 - Location: Westfield, NJ (US-based) ✓
 - Size: 8-10 employees (verified via LinkedIn)
@@ -340,7 +371,7 @@ Key Lesson: Products + "managed service" language = YELLOW (not pure operations)
 
 ---
 
-⚠️ YELLOW EXAMPLE #2: DataBP
+⚠️ YELLOW EXAMPLE #3: DataBP
 Company Profile:
 - Location: New York, NY (US-based) ✓
 - Size: 29-32 employees (verified via LinkedIn and PitchBook)
@@ -404,14 +435,16 @@ Key Lesson: "We operate" + "24/7" + NO products + NO PE/VC = GREEN (very rare!)
 
 **CRITICAL LESSONS FROM EXAMPLES:**
 
-1. EQUITY PE/VC = AUTOMATIC RED, but DEBT ≠ RED (Examples: MDMS vs DataBP)
-   - EQUITY investment (Vareton Group, KKR, Sequoia, etc.) → AUTOMATIC RED
+1. CONFIRMED EQUITY PE/VC = RED, UNCERTAIN PE = YELLOW, DEBT = NOT disqualifying
+   - CONFIRMED equity investment (investor name + ownership stake verified) → AUTOMATIC RED
+   - UNCERTAIN PE/VC status (PitchBook label but can't verify ownership) → YELLOW (needs research)
    - DEBT financing (SaaS Capital credit facility, bank loans, venture debt) → NOT disqualifying (can be YELLOW/GREEN)
-   - PitchBook/Crunchbase profiles can exist for both equity-backed AND debt-financed companies
-   - ALWAYS verify: Is it EQUITY ownership or DEBT financing?
+   - PitchBook/Crunchbase profiles can exist for equity-backed, debt-financed, AND minority-invested companies
+   - ALWAYS verify: Is it CONFIRMED equity ownership, uncertain PE signal, or just debt?
    - Examples:
-     * MDMS + Vareton Group = EQUITY PE → RED ❌
-     * DataBP + SaaS Capital = DEBT (credit facility) → YELLOW ⚠️ (not auto-RED)
+     * Hypothetical firm + Accel Partners 40% equity (CONFIRMED) → RED ❌
+     * MDMS + PitchBook "PE-Backed" label but ownership unclear → YELLOW ⚠️ (research needed)
+     * DataBP + SaaS Capital = DEBT (credit facility) → YELLOW ⚠️ (not auto-RED, YELLOW for mixed model)
 
 2. Consulting/Advisory = RED, Operations = Potential GREEN (Example: BST vs MarketOps)
    - RED FLAGS: "negotiate contracts", "optimize spending", "advisory", "invoice audit", "staff augmentation"
