@@ -279,19 +279,27 @@ Company Profile:
 Why YELLOW - Uncertain PE/VC Status (Needs Verification):
 - Search: site:pitchbook.com "Market Data Management Solutions" → Found PitchBook profile
 - PitchBook snippet shows "Private Equity-Backed" label
-- BUT: Cannot confirm if it's equity PE ownership vs minority investment vs debt
-- Search: "Market Data Management Solutions" investor names → Results unclear
-- UNCERTAINTY: PitchBook profiles can exist for debt-financed OR equity-backed companies
+- Search: "Market Data Management Solutions" "Private Equity-Backed" OR "VC-Backed" → Found 9 results mentioning PE
+- Search: "Market Data Management Solutions" investor names → NO specific investor names found
+- Search: "Market Data Management Solutions" "backed by" "portfolio company" → NO confirmed equity investor found
+- CRITICAL: Despite finding PitchBook label and PE mentions, CANNOT find specific investor name or equity stake percentage
 
-CRITICAL DISTINCTION:
-- If PitchBook shows "Private Equity-Backed" but you CANNOT verify actual equity ownership → YELLOW
-- If you find CONFIRMED equity PE investor name (e.g., "Vareton Group owns 60%") → RED
-- "Minority PE" or unclear backing status → YELLOW (needs deeper research before ruling out)
+**WHAT MAKES THIS YELLOW (NOT RED):**
+- ✗ NO specific investor name (e.g., "Accel Partners", "KKR", "Vareton Group")
+- ✗ NO equity stake percentage (e.g., "owns 40% stake", "led $15M Series A")
+- ✗ NO press release announcing equity investment
+- ✗ NO "portfolio company" listing on an investor's website
+- ✓ ONLY have: PitchBook "PE-Backed" label + general search results mentioning PE
 
-Verdict: YELLOW ⚠️
-Rationale: NY-based market data operations provider (Tier 1B), 11-13 employees. PitchBook shows "Private Equity-Backed" label but actual ownership structure unclear - could be minority stake, debt financing, or advisory board seat. Needs verification before advancing or ruling out.
+**CONFIRMED PE = Requires ALL of these:**
+1. Specific investor name (e.g., "Accel Partners owns equity stake in MDMS")
+2. Evidence of equity ownership (stake %, press release, portfolio listing)
+3. Clear that it's equity (not debt/credit facility/advisory role)
 
-Key Lesson: Uncertain PE/VC signals = YELLOW (research further), not automatic RED. Only mark RED when equity ownership is CONFIRMED.
+Verdict: YELLOW ⚠️ (borderline RED - elevated concern)
+Rationale: NY-based market data operations provider (Tier 1B), 11-13 employees. PitchBook shows "Private Equity-Backed" label and search results mention PE, but cannot identify specific investor name or verify equity ownership. Could be minority stake, debt financing, or advisory board seat. Flagged as "minority PE?" in original research. Needs deeper verification before advancing or ruling out.
+
+Key Lesson: PitchBook label + PE search results WITHOUT specific investor name = YELLOW (not automatic RED). Only mark RED when you find BOTH investor name AND equity ownership evidence.
 
 ---
 
@@ -433,31 +441,133 @@ Key Lesson: "We operate" + "24/7" + NO products + NO PE/VC = GREEN (very rare!)
 
 ---
 
+✅ GREEN EXAMPLE #2: Generic Network Systems (GNS)
+Company Profile:
+- Location: New York, NY (US-based) ✓
+- Size: 20-25 employees (verified via LinkedIn) ✓
+- Ownership: Founder-owned (founded 2001), no PE/VC ✓
+- Industry: Boutique MSP for investment firms (Tier 2D or 3B) ✓
+
+Why GREEN - Boutique Investment Ops Support:
+- Website analysis: MSP services for hedge funds and asset managers
+- Specialization: Geneva/Advent specialist (portfolio accounting systems for investment firms)
+- Certifications: SOC 1 & 2 certified (shows operational maturity)
+- Search: "Generic Network Systems" funding investors → NO PE/VC found ✓
+- Search: site:pitchbook.com "Generic Network Systems" → NO profile found ✓
+- Revenue: ~$6.3M (appropriate for 20-25 person boutique MSP)
+
+TIER CLASSIFICATION:
+- Tier 2D: Investment Ops Support (portfolio accounting operations for asset managers) → GREEN eligible
+- OR Tier 3B: Boutique IT for financial firms → YELLOW eligible
+- DECISION: Tier 2D fit (Geneva/Advent ops specialist) → GREEN
+
+**CRITICAL LESSON - Don't confuse "generic MSP" with wrong business model:**
+- "Generic Network Systems" (company name) ≠ "generic MSP" (wrong business model)
+- This is a SPECIALIZED boutique MSP for investment firms (Tier 2D/3B)
+- 20+ years in business (founded 2001), SOC certified, financial services specialist
+- NO PE/VC detected → Passes ownership test
+- Serves investment firms with portfolio accounting ops → Tier 2D (GREEN eligible)
+
+Verdict: GREEN ✅
+Rationale: NYC-based boutique MSP founded 2001, 20-25 employees, ~$6.3M revenue. Specializes in Geneva/Advent portfolio accounting operations for hedge funds and asset managers (Tier 2D - Investment Ops Support). SOC 1 & 2 certified. Founder-owned with no PE/VC backing detected. Perfect middle/back-office operations provider for investment firms.
+
+Key Lesson: Boutique MSPs specializing in investment ops (Geneva/Advent, portfolio accounting) fit Tier 2D = GREEN eligible. Don't mark RED just because company name has "Generic" in it.
+
+---
+
+⚠️ YELLOW EXAMPLE #4: Apex Technology Services
+Company Profile:
+- Location: Norwalk, CT (US-based) ✓
+- Size: ~10 employees ✓
+- Ownership: Founder-owned (founded 2012), no PE/VC ✓
+- Industry: Generic MSP with multiple verticals ✓
+
+Why YELLOW - Tier 3B (Generalist MSP with Financial Vertical):
+- Website analysis: MSP serving financial, medical, legal, and government sectors
+- Search: "apex technology services" financial → Financial services is ONE of many verticals
+- Search: "apex technology services" Norwalk → Confirmed CT-based (US headquarters) ✓
+- Search: site:pitchbook.com "apex technology services" → NO profile found ✓
+- Revenue: ~$5.1M, 10 employees (appropriate for small MSP)
+
+TIER CLASSIFICATION:
+- NOT Tier 1/2: Not specialized in trading/financial operations (serves medical, legal, government too)
+- Tier 3B: Generalist MSP that INCLUDES financial clients among other verticals
+- Per V2.0 criteria: Tier 3 (3A-3C) = YELLOW (adjacent services, selective)
+
+**CRITICAL LESSON - Tier 3 = YELLOW (NOT RED):**
+- Generic MSP serving multiple verticals (financial is just one) = Tier 3B
+- Tier 3B is YELLOW (adjacent services, worth investigating further)
+- Do NOT mark RED just because they're "generic MSP" or serve non-financial clients
+- RED is for: (1) confirmed PE/VC, (2) consulting/advisory model, (3) too small (<5), (4) too large (>150)
+- Generalist MSP with fin vertical = YELLOW (not RED)
+
+Verdict: YELLOW ⚠️
+Rationale: Norwalk CT-based MSP founded 2012, ~10 employees, ~$5.1M revenue. Generic MSP serving financial, medical, legal, and government sectors - NOT specialized in fintech operations. Financial services is just one of multiple verticals (Tier 3B - Generalist with fin vertical). Founder-owned, no PE/VC detected. YELLOW for Tier 3 classification (adjacent services, selective).
+
+Key Lesson: Tier 3 = YELLOW (not RED). Generic MSPs with financial vertical fit Tier 3B and should be YELLOW for further research, not automatically disqualified.
+
+---
+
 **CRITICAL LESSONS FROM EXAMPLES:**
 
-1. CONFIRMED EQUITY PE/VC = RED, UNCERTAIN PE = YELLOW, DEBT = NOT disqualifying
-   - CONFIRMED equity investment (investor name + ownership stake verified) → AUTOMATIC RED
-   - UNCERTAIN PE/VC status (PitchBook label but can't verify ownership) → YELLOW (needs research)
-   - DEBT financing (SaaS Capital credit facility, bank loans, venture debt) → NOT disqualifying (can be YELLOW/GREEN)
-   - PitchBook/Crunchbase profiles can exist for equity-backed, debt-financed, AND minority-invested companies
-   - ALWAYS verify: Is it CONFIRMED equity ownership, uncertain PE signal, or just debt?
-   - Examples:
-     * Hypothetical firm + Accel Partners 40% equity (CONFIRMED) → RED ❌
-     * MDMS + PitchBook "PE-Backed" label but ownership unclear → YELLOW ⚠️ (research needed)
-     * DataBP + SaaS Capital = DEBT (credit facility) → YELLOW ⚠️ (not auto-RED, YELLOW for mixed model)
+1. **PE/VC VERIFICATION - CONFIRMED = RED, UNCERTAIN = YELLOW, DEBT = NOT disqualifying**
 
-2. Consulting/Advisory = RED, Operations = Potential GREEN (Example: BST vs MarketOps)
+   **WHAT IS "CONFIRMED" PE/VC BACKING? (Required for RED verdict):**
+   - ✓ Specific investor name (e.g., "Accel Partners", "KKR", "Vareton Group")
+   - ✓ Evidence of equity ownership (e.g., "owns 40% stake", "led $15M Series A", "portfolio company" on investor site)
+   - ✓ Clear that it's equity (not debt/credit facility/advisory role)
+
+   **MUST HAVE ALL THREE to mark RED. If missing ANY of these → YELLOW (not RED)**
+
+   **WHAT IS "UNCERTAIN" PE/VC STATUS? (YELLOW, not RED):**
+   - ✗ PitchBook "Private Equity-Backed" label WITHOUT specific investor name
+   - ✗ Search results mention "PE-Backed" BUT cannot identify investor
+   - ✗ Investor name mentioned BUT unclear if equity vs debt vs advisory
+   - ✗ "Minority PE" or unclear backing status
+
+   **DEBT FINANCING (NOT disqualifying - can be GREEN/YELLOW):**
+   - SaaS Capital credit facility, bank loans, venture debt, revenue-based financing
+   - Lender gets interest payments, NOT equity ownership
+   - Company remains founder-owned → Still qualifies for GREEN/YELLOW
+
+   Examples:
+   * Hypothetical firm + "Accel Partners led $15M Series A, owns 40% stake" (CONFIRMED) → RED ❌
+   * MDMS + PitchBook "PE-Backed" label + 9 search results mentioning PE BUT NO investor name found → YELLOW ⚠️
+   * DataBP + SaaS Capital credit facility (DEBT, not equity) → YELLOW ⚠️ (for mixed model, not PE)
+
+2. **TIER 3 = YELLOW (NOT RED) - Don't auto-disqualify generic MSPs**
+
+   - **Tier 3A/3B/3C = YELLOW** (adjacent services, worth investigating further)
+   - Generic MSP with financial vertical = Tier 3B = YELLOW (not RED)
+   - RED is ONLY for: (1) confirmed PE/VC, (2) consulting/advisory model, (3) too small (<5), (4) too large (>150)
+   - DO NOT mark RED just because they're "generic MSP" or serve multiple industries
+
+   Examples:
+   * Apex Tech: Generic MSP serving financial, medical, legal, government → Tier 3B = YELLOW ⚠️ (not RED)
+   * Generic name doesn't mean RED (GNS = "Generic Network Systems" but specialized = GREEN)
+
+3. **BOUTIQUE MSPs FOR INVESTMENT FIRMS = Can be GREEN (Tier 2D)**
+
+   - Geneva/Advent portfolio accounting operations = Tier 2D (Investment Ops Support)
+   - Back-office/middle-office ops for hedge funds = Tier 2D
+   - Tier 2D is GREEN eligible (if all other criteria met)
+   - Don't confuse "generic MSP" (Tier 3B) with "boutique investment ops MSP" (Tier 2D)
+
+   Example:
+   * GNS: Geneva/Advent specialist, 20-25 employees, SOC certified, no PE/VC → Tier 2D = GREEN ✅
+
+4. Consulting/Advisory = RED, Operations = Potential GREEN (Example: BST vs MarketOps)
    - RED FLAGS: "negotiate contracts", "optimize spending", "advisory", "invoice audit", "staff augmentation"
    - GREEN FLAGS: "we operate", "24/7 monitoring", "production support", "NOC team", "we manage production"
 
-3. Mixed Models = YELLOW (Examples: EZX, DataBP)
+5. Mixed Models = YELLOW (Examples: EZX, DataBP)
    - Software products + managed services = YELLOW
    - Size concerns (too small <5 or borderline employee count) = YELLOW
    - Mixed model uncertainty (unclear if services >70%) = YELLOW
    - When uncertain about business model → YELLOW
 
-4. GREEN is EXTREMELY RARE (<5% of companies)
-   - Must pass ALL criteria: size, location, no EQUITY PE/VC, pure operations
+6. GREEN is EXTREMELY RARE (<5% of companies)
+   - Must pass ALL criteria: size, location, no EQUITY PE/VC, pure operations OR boutique investment ops
    - Debt financing alone does NOT disqualify
    - When uncertain → Default to YELLOW, not GREEN
    - Only mark GREEN if 100% confident on all factors
