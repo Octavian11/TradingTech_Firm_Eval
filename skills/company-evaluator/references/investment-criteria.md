@@ -1,219 +1,287 @@
 # Devonshire Partners Investment Criteria
-## TOP-OF-FUNNEL SCREENING (Public Information Only)
+## VERSION 2.0 - Expanded Thesis (November 2025)
 
 This skill evaluates companies using ONLY publicly available information for initial screening.
 
-### Core Requirements (MUST HAVE - Publicly Verifiable)
-- **Team Size**: 5-150 employees (verifiable via LinkedIn)
-- **Geography**: United States-based ONLY (verifiable via website/LinkedIn)
-- **Ownership**: Founder-owned (NO PE/VC ownership - any percentage is automatic rejection)
-- **Customer Base**: B2B institutional clients (asset managers, broker-dealers, banks)
-- **Business Model**: Managed services (not software products, not project consulting)
-- **Size Signals**: Based on employee count and market presence:
-  - 5-50 employees suggests $500K-$2M EBITDA range (target)
-  - 50-100 employees suggests $2M-$5M EBITDA range (target)
-  - 100-150 employees = borderline, may be too institutionalized
-  - <5 employees = too small
-  - >150 employees with multiple offices = too large/institutionalized
+---
 
-### TIER 1 Categories (80% of search effort - Highest Priority)
+## Core Requirements (MUST HAVE - Publicly Verifiable)
 
-The company should fit into one of these four categories:
+| Criterion | Requirement | How to Verify |
+|-----------|-------------|---------------|
+| **Team Size** | 5-150 employees | LinkedIn company page |
+| **Geography** | US-headquartered | Website/LinkedIn (US presence alone is not enough) |
+| **Ownership** | Founder-owned (NO PE/VC - any % = rejection) | Search for funding, "backed by", investors |
+| **Customer Base** | B2B institutional (asset managers, broker-dealers, banks) | Website client logos, case studies |
+| **Business Model** | Managed services (not software products, not project consulting) | Website service descriptions |
 
-#### 1. OMS/EMS Support/Implementation
-- Aladdin implementation and ongoing support
-- Charles River OMS managed services
-- Bloomberg AIM support and operations
-- FIX protocol onboarding and support
-- Production support and incident response
-- 24x7 ops teams keeping trading systems running
+### Size Signals
+- **5-50 employees**: Likely $500K-$2M EBITDA range ✅
+- **50-100 employees**: Likely $2M-$5M EBITDA range ✅
+- **100-150 employees**: Borderline, may be too institutionalized ⚠️
+- **<5 employees**: Too small ❌
+- **>150 employees + multiple offices**: Too large/institutionalized ❌
 
-#### 2. Market Data Managed Services
-- Bloomberg/Refinitiv partner services
-- Data operations and management
-- Licensing and entitlements management
-- Vendor compliance services
-- Usage audits and cost optimization
-- Entitlements administration (DACS, EMRS)
+---
 
-#### 3. Trade Surveillance/Compliance Services
-- RegTech services (alert triage, monitoring)
-- Trade surveillance operations (not just software)
-- Best-execution reporting support
-- TCA (Transaction Cost Analysis) services
-- Audit trail packaging for regulators
-- Compliance evidence operations
+## Service Category Tiers
 
-#### 4. Execution Analytics/Consulting
-- Trade execution quality analysis
-- Algorithmic trading strategy consulting
-- Best execution analysis and reporting
-- Market microstructure consulting for trading desks
+### TIER 1: Trading Infrastructure Operations (50-55% of deals)
+**GREEN LIGHT potential if all other criteria met**
 
-### TIER 2 Categories (20% of search effort - Secondary Priority)
+Services that support front-office trading without involving actual trade execution or investment decisions.
 
-These categories are acceptable but lower priority:
+#### 1A. Network Operations for Trading
+- Low-latency network management and monitoring
+- Exchange connectivity operations
+- Colocation facility management
+- FIX protocol operations and support
+- Trading infrastructure monitoring (24/7 NOC services)
 
-#### 5. Enterprise Software Implementation (FinServ-Focused)
-- ServiceNow implementation for financial services
-- Salesforce Financial Services Cloud
-- Workday implementation for financial institutions
-- Must be financial services focused, not generic IT
+#### 1B. Market Data Operations
+- Bloomberg/Refinitiv entitlements administration
+- Market data feed operations and monitoring
+- Vendor compliance and audit support
+- Data licensing and cost optimization
+- Entitlements management (DACS, EMRS)
 
-#### 6. Data/Analytics Services for Financial Services
-- Financial data analytics consulting
-- Regulatory reporting services
-- Risk analytics services
-- Performance analytics for asset managers
+#### 1C. Trading Systems Support
+- OMS/EMS production support (Aladdin, Charles River, Bloomberg AIM, Eze)
+- 24/7 incident response and monitoring
+- System administration and configuration
+- Upgrade management and testing
+- User support and training for trading platforms
 
-#### 7. Technology-Enabled Business Services
-- Payment operations outsourcing
-- Financial operations (finops) outsourcing
-- Reconciliation services
-- Middle/back-office operations
+#### 1D. Trade Surveillance & Compliance Operations
+- Alert triage and investigation support
+- Best execution monitoring operations
+- Transaction reporting operations
+- Compliance evidence packaging
+- Regulatory filing support (operations, not consulting)
 
-#### 8. B2B SaaS with Heavy Services Component
-- Software product with >70% revenue from services
-- Strong product but needs operational support to deliver value
-- Services-led SaaS model
+#### 1E. Other Trading Infrastructure
+- Disaster recovery/BCP for trading systems
+- Trading technology consulting WITH ongoing operations
+- Execution analytics services
 
-### Key Business Model Distinction
-- ✅ **WANT**: Companies that OPERATE infrastructure (managed services, ongoing 24/7 support)
-- ❌ **DON'T WANT**: Companies that just implement/consult then leave
-- ❌ **DON'T WANT**: Software product companies (unless services-heavy with >70% services revenue)
+---
 
-### Recurring Revenue Signals (Public Indicators)
-Look for these signals on the website and marketing materials:
-- "24/7 support" or "managed services"
-- "Operations-as-a-Service (OaaS)"
-- "Retainer-based" or "SLA-backed"
-- Long-term client testimonials
-- "Ongoing support" vs "project-based implementation"
+### TIER 2: Middle/Back-Office Operations (30-35% of deals)
+**GREEN LIGHT potential if all other criteria met**
 
-If the company emphasizes "implementation projects" or "consulting engagements" without ongoing operations = likely not a fit.
+Post-trade processing and investment operations services. This is now a CORE focus area, not secondary.
 
-## RED FLAGS (Automatic Rejection - Publicly Verifiable)
+#### 2A. Post-Trade Processing Operations
+- Trade confirmation and matching
+- Settlement operations and fails management
+- Trade break resolution
+- Corporate actions processing
+- Asset servicing operations
 
-### Ownership & Structure
-- ❌ ANY PE/VC ownership (even 1%) - search for funding announcements, "backed by", investors
-- ❌ Already acquired or part of larger company - check "a [Parent Company] company"
-- ❌ Not US-based - verify headquarters location
+#### 2B. Reconciliation & Settlement Services
+- Position reconciliation (custodian, prime broker, internal)
+- Cash reconciliation operations
+- NAV reconciliation for funds
+- Exception management and resolution
+- Reconciliation platform operations (not just software)
 
-### Business Model
-- ❌ Software product companies (unless services-heavy >70% based on website description)
-- ❌ Generic IT staffing (not specialized trading tech)
-- ❌ Project-based consulting only (no ongoing operations)
-- ❌ Implementation-only firms (they implement then leave)
+#### 2C. Regulatory Reporting Operations
+- EMIR/MiFID/Dodd-Frank reporting operations
+- Form PF preparation and filing
+- 13F filing operations
+- Regulatory change management operations
+- Audit support and evidence production
 
-### Size
-- ❌ Too big: >150 employees OR multiple global offices OR 500+ clients mentioned
-- ❌ Too small: <10 employees (based on LinkedIn)
-- ❌ Too institutionalized: ISO certifications, 4+ offices, "award-winning" 3+ years, 800+ clients
+#### 2D. Investment Operations Support
+- Portfolio accounting operations
+- Performance measurement operations
+- Client reporting production
+- Data management and validation
+- Reference data operations
 
-### Category Fit
-- ❌ Does NOT fit Tier 1 or Tier 2 categories
-- ❌ Generic technology consulting (not specialized)
-- ❌ Retail/consumer fintech (not institutional B2B)
+---
 
-## VERDICT GUIDANCE (Public Information Only)
+### TIER 3: Adjacent Services (15-20% of deals)
+**YELLOW LIGHT - Selective, requires strong fit on other criteria**
 
-### GREEN ✅ - Advance to Due Diligence
+Adjacent services that serve the same client base and can create platform synergies.
+
+#### 3A. Boutique Fund Administration
+- Small/mid-market fund administrators (NOT SS&C/Apex scale)
+- RIA and family office administration
+- Private fund operations support
+- Emerging manager specialists
+- *Must be operations-heavy, not just accounting*
+
+#### 3B. Middle-Office BPO
+- Trade lifecycle operations outsourcing
+- Investment book of record operations
+- Order management operations support
+- Portfolio monitoring services
+- *Must serve asset managers/broker-dealers*
+
+#### 3C. Specialized Technology-Enabled Services
+- Financial data operations (cleansing, validation, enrichment)
+- Pricing and valuation operations
+- Document/communications automation for trading
+- *Must be services-led with >70% recurring revenue*
+
+---
+
+## What We Do NOT Invest In (Automatic RED)
+
+### Business Model Exclusions
+- ❌ **Software product companies** (unless >70% revenue from services)
+- ❌ **Pure consulting/advisory** (implement then leave)
+- ❌ **Implementation-only firms** (no ongoing operations)
+- ❌ **IT staffing/body shops** (generic contractors)
+- ❌ **Outsourced trading providers** (broker-dealers executing trades)
+
+### Market Exclusions
+- ❌ **Retail/consumer fintech** (not institutional B2B)
+- ❌ **Generic IT MSPs** (help desk, cybersecurity monitoring for any industry)
+- ❌ **Compliance consulting** (advisory without ongoing operations)
+
+### Structural Exclusions
+- ❌ **PE/VC-backed** (any percentage)
+- ❌ **Non-US headquarters** (US presence alone not sufficient)
+- ❌ **Already acquired/subsidiary** ("a [Parent] company")
+- ❌ **Too institutionalized** (4+ global offices, 500+ clients, ISO certified conglomerate)
+
+---
+
+## RED FLAGS (Automatic Rejection)
+
+### Ownership Red Flags
+- Any mention of funding rounds, Series A/B/C, investors
+- "Backed by" or "portfolio company of" language
+- Crunchbase/PitchBook showing PE/VC investment
+- Recent acquisition announcement
+
+### Size Red Flags
+- >150 employees with 4+ office locations
+- "800+ clients" or "serving 22 geographies"
+- Multiple ISO certifications + decades old + award-winning (too institutionalized)
+- <5 employees on LinkedIn (too small)
+
+### Business Model Red Flags
+- Primary offering is software/platform they built
+- "Consulting engagements" or "project-based" as primary description
+- No mention of ongoing support, SLAs, or managed services
+- Generic IT services serving multiple industries
+
+---
+
+## VERDICT GUIDANCE
+
+### GREEN LIGHT ✅ - Advance to Outreach/Due Diligence
+
 Company meets ALL publicly verifiable requirements:
 - 5-150 employees (LinkedIn verified)
-- US-based headquarters
-- Founder-owned (no PE/VC detected)
-- Fits **Tier 1** category (managed services model) - highest priority
+- US-based headquarters (not just US presence)
+- Founder-owned (no PE/VC detected after thorough search)
+- Fits **Tier 1 OR Tier 2** category
+- Managed services model (ongoing operations, not just projects)
 - Serves institutional B2B clients
-- Clear signals of ongoing operations (not just project work)
 - No public red flags
 
-**Next Step**: Reach out for confidential information to evaluate financial metrics.
+**Next Step**: Add to priority outreach list for confidential diligence.
 
-### YELLOW ⚠️ - Research Further Before Deciding
-Company meets MOST requirements but needs additional research:
-- Fits **Tier 2** category (acceptable but lower priority than Tier 1)
+### YELLOW LIGHT ⚠️ - Research Further Before Deciding
+
+Company meets MOST requirements but has questions:
+- Fits **Tier 3** category (acceptable but selective)
 - Borderline size (3-5 employees or 120-150 employees)
-- Unclear if fully managed services or mix with project work
-- Limited public information available (need more research)
-- Some project language but also operational support mentioned
-- Founded recently (<3 years) but fits category
+- Unclear if fully managed services or mixed with projects
+- Limited public information available
+- Mixed business model signals
+- PE/VC status unclear (needs deeper search)
 
-**Next Step**: Additional web research or light outreach to clarify before advancing.
+**Next Step**: Additional 10-15 minutes research to clarify before deciding.
 
-### RED ❌ - Does Not Fit Thesis
-Company fails on ANY critical publicly verifiable requirement:
-- PE/VC backed or part of larger company
+### RED LIGHT ❌ - Does Not Fit Thesis
+
+Company fails on ANY critical requirement:
+- PE/VC backed (confirmed)
 - Non-US headquarters
-- Wrong size (<5 or >150 employees with multiple offices)
+- <5 or >150 employees (with institutionalization signals)
 - Software product company (not services)
-- Generic IT staffing or consulting
-- Does NOT fit Tier 1 or Tier 2 categories
+- Generic IT/consulting (not specialized financial services)
+- Does NOT fit Tier 1, 2, or 3 categories
 - Project-based only (no ongoing operations)
-- Too institutionalized (4+ offices, 500+ clients, ISO certified, etc.)
+- Too institutionalized
 
-**Next Step**: Do not pursue. Move to next target.
+**Next Step**: Do not pursue. Document reason and move to next target.
 
-## EVALUATION APPROACH (Top-of-Funnel Screening)
+---
 
-When evaluating a company using ONLY public information:
+## Evaluation Process
 
-### 1. Quick Eliminators (Check First)
-- PE/VC backing? (automatic rejection)
-- Non-US headquarters? (automatic rejection)
-- Software product company? (automatic rejection unless services-heavy)
-- Generic IT staffing? (automatic rejection)
+### Step 1: Quick Eliminators (Check First - 2 minutes)
+1. PE/VC backing? → Search "[company] funding" "[company] investors"
+2. US headquarters? → Check website footer, LinkedIn location
+3. Software product vs services? → Read main website messaging
+4. Employee count? → LinkedIn company page
 
-### 2. Size Assessment (LinkedIn + Website)
-- Employee count on LinkedIn: 5-150 = good, <5 = too small, >150 = likely too large
-- Office locations: 1-2 offices = good, 4+ global offices = too institutionalized
-- Client scale: If they mention "800+ clients" or "22 geographies" = too large
+If any fails → RED LIGHT, stop evaluation.
 
-### 3. Category Fit (Tier 1 or Tier 2)
-Does website clearly show they fit one of these?
+### Step 2: Category Fit (3-5 minutes)
+1. Read website services/solutions pages
+2. Identify which Tier (1, 2, or 3) they fit
+3. If no Tier fit → RED LIGHT
 
-**Tier 1 (Highest Priority - 80% of search effort):**
-1. OMS/EMS support/implementation (Aladdin, Charles River, Bloomberg AIM)
-2. Market data managed services (Bloomberg/Refinitiv partners, data ops)
-3. Trade surveillance/compliance services (RegTech, monitoring, TCA)
-4. Execution analytics/consulting
+### Step 3: Business Model Assessment (3-5 minutes)
+Look for managed services signals:
+- ✅ "24/7 support", "managed services", "SLA-backed", "ongoing operations"
+- ⚠️ Mixed: Both "implementation" and "support" mentioned
+- ❌ "Project-based", "consulting engagements", "we implement then hand off"
 
-**Tier 2 (Lower Priority - 20% of search effort):**
-5. Enterprise software implementation (ServiceNow, Salesforce, Workday - finserv focused)
-6. Data/analytics services for financial services
-7. Technology-enabled business services (payments, finops outsourcing)
-8. B2B SaaS with heavy services component (strong product, weak ops)
+### Step 4: Deep PE/VC Check (2-3 minutes)
+- Search: "[company] funding" "[company] investment" "[company] backed by"
+- Check Crunchbase, PitchBook if available
+- Look for press releases about funding
+- Check founder LinkedIn for investor connections
 
-**Tier 1 = GREEN potential**
-**Tier 2 = YELLOW (acceptable but lower priority)**
-**Neither = RED**
+### Step 5: Verdict
+- All criteria met + Tier 1/2 → GREEN
+- Most criteria met + Tier 3 or minor questions → YELLOW
+- Any critical failure → RED
 
-### 4. Business Model Assessment (Website Language)
-- ✅ Look for: "24/7 support", "managed services", "operations team", "SLA-backed", "ongoing support"
-- ⚠️ Mixed signals: Both "implementation" and "support" mentioned
-- ❌ Avoid: "project-based", "consulting engagements", "we implement then hand off"
+---
 
-### 5. Make Verdict
-- GREEN = All criteria met, advance to confidential due diligence
-- YELLOW = Mostly fits, needs more research before deciding
-- RED = Does not fit, move to next target
+## Output Format
 
-### What This Screening Does NOT Include
-- Exact revenue or EBITDA numbers (confidential)
-- Recurring revenue percentage (confidential)
-- Margin analysis (confidential)
-- Client concentration (confidential)
-- GRR/NRR metrics (confidential)
-- Financial performance trends (confidential)
+**Verdict:** [GREEN LIGHT ✅ / YELLOW LIGHT ⚠️ / RED LIGHT ❌]
 
-**Those metrics are evaluated AFTER a company passes this initial screening.**
+**Tier:** [1A/1B/1C/1D/1E / 2A/2B/2C/2D / 3A/3B/3C / None]
+
+**Rationale:** [2-4 sentences covering:
+1. What the company does
+2. Why it fits or doesn't fit
+3. Key concern if Yellow, or deal-breaker if Red]
+
+---
+
+## Key Changes from V1.0
+
+| Dimension | V1.0 | V2.0 |
+|-----------|------|------|
+| Employee range | 10-100 | **5-150** |
+| EBITDA floor (implied) | $700K-$1M | **$500K** |
+| Tier 1 | Front-office only | Front-office (expanded sub-categories) |
+| Tier 2 | Secondary priority | **Core focus (middle/back-office)** |
+| Tier 3 | Not included | **Added (boutique fund admin, BPO)** |
+| GREEN eligibility | Tier 1 only | **Tier 1 OR Tier 2** |
+| Deal allocation | 80% Tier 1, 20% Tier 2 | **50-55% T1, 30-35% T2, 15-20% T3** |
 
 ---
 
 ## Remember
 
 Hassan's edge is being a former CUSTOMER of these exact services at Verition, Lazard, and Barclays. The ideal target is:
-- The 5-50 employee version of larger players
+- The 5-100 employee version of larger players
 - Founder-led and scrappy
 - Providing hands-on managed operations
-- For mission-critical trading infrastructure
+- For mission-critical trading infrastructure OR investment operations
 - That Hassan has personally used or would have used
+- Where outsourcing is common and growing

@@ -165,7 +165,7 @@ Format your response EXACTLY like this (and NOTHING ELSE):
 VERDICT: [GREEN/YELLOW/RED]
 EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review, does NOT influence verdict]
 EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <5 or >150]
-TIER_FIT: [Tier 1 or Tier 2 - categorize company regardless of verdict]
+TIER_FIT: [1A/1B/1C/1D/1E or 2A/2B/2C/2D or 3A/3B/3C or None - categorize company regardless of verdict]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]"""
 
         else:
@@ -221,21 +221,21 @@ COMPANY #1: {companies[0].name}
 VERDICT: [GREEN/YELLOW/RED]
 EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review, does NOT influence verdict]
 EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <5 or >150]
-TIER_FIT: [Tier 1 or Tier 2 - categorize company regardless of verdict]
+TIER_FIT: [1A/1B/1C/1D/1E or 2A/2B/2C/2D or 3A/3B/3C or None - categorize company regardless of verdict]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 
 COMPANY #2: {companies[1].name}
 VERDICT: [GREEN/YELLOW/RED]
 EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review, does NOT influence verdict]
 EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <5 or >150]
-TIER_FIT: [Tier 1 or Tier 2 - categorize company regardless of verdict]
+TIER_FIT: [1A/1B/1C/1D/1E or 2A/2B/2C/2D or 3A/3B/3C or None - categorize company regardless of verdict]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 """ + (f"""
 COMPANY #3: {companies[2].name}
 VERDICT: [GREEN/YELLOW/RED]
 EST_REVENUE: [e.g., "$33M" or "Not found" or "$10-20M" - for USER manual review, does NOT influence verdict]
 EST_EMPLOYEES: [e.g., "17" or "Not found" or "11-50" - report what you found, this DOES influence verdict if <5 or >150]
-TIER_FIT: [Tier 1 or Tier 2 - categorize company regardless of verdict]
+TIER_FIT: [1A/1B/1C/1D/1E or 2A/2B/2C/2D or 3A/3B/3C or None - categorize company regardless of verdict]
 RATIONALE: [2-4 concise sentences: employee count, ownership, PE/VC status, business model, key concern/strength]
 """ if len(companies) > 2 else "")
 
