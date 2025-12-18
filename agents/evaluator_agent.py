@@ -594,9 +594,11 @@ RED ❌ Automatic Disqualification:
 - Non-US headquarters
 - <5 or >150 employees with institutionalization
 - Software product company (not services)
-- Generic IT/consulting (not specialized finserv)
-- Does NOT fit Tier 1, 2, or 3
+- Does NOT fit Tier 1, 2, or 3 (no fit = RED)
+- Pure consulting/advisory (no ongoing operations) - BUT if mixed consulting + managed services → YELLOW
 - Project-based only (no ongoing operations)
+
+**IMPORTANT:** "Generic MSP" or "generalist IT" that serves financial clients = Tier 3B = YELLOW (NOT RED)
 
 **KEY V2.0 CHANGE**: Tier 2 (middle/back-office operations like reconciliation, regulatory reporting, post-trade processing) is now GREEN eligible, not YELLOW. If a company fits Tier 2A/2B/2C/2D and meets all other criteria, mark it GREEN.
 
@@ -633,6 +635,33 @@ REVENUE (does NOT influence verdict - for USER manual review ONLY):
 
 STAGE 2: PE/VC Detection (CRITICAL - MANDATORY 4-6 searches)
 **THIS IS THE MOST IMPORTANT SCREENING CRITERION - ANY EQUITY PE/VC = AUTOMATIC RED**
+
+**🚨 CRITICAL: COMPANY NAME VERIFICATION (MUST DO THIS FOR EVERY SEARCH RESULT) 🚨**
+
+Before citing ANY information from search results, VERIFY the company name matches:
+
+1. **Check exact company name in search result snippet**
+   - Does the snippet mention the TARGET company by name?
+   - Or does it mention a DIFFERENT company with similar positioning?
+
+2. **Common error pattern to AVOID:**
+   - Target: "Computronix USA" (computronixusa.com)
+   - Search: "Computronix funding investors"
+   - Result mentions: "FFL Partners invested in Abacus Group" (different company!)
+   - ERROR: Attributing Abacus Group's PE backing to Computronix USA
+   - CORRECT: Disregard result that doesn't mention "Computronix USA" by name
+
+3. **If investor/PE firm appears in results:**
+   - Search: "[TARGET COMPANY EXACT NAME]" "[Investor Name]"
+   - Verify the investor is linked to THIS company, not a similar company
+   - Example: Search "Computronix USA" "FFL Partners" (not just "Computronix" + "FFL")
+
+4. **Only cite PE backing if:**
+   - Search result explicitly mentions the target company's exact name
+   - AND the investor/PE firm name
+   - AND evidence of equity ownership (stake %, "portfolio company", etc.)
+
+**DO NOT attribute another company's PE backing to the target company!**
 
 **CRITICAL DISTINCTION - EQUITY vs DEBT:**
 
@@ -763,6 +792,11 @@ STEP 3A: Check for Consulting Red Flags (MANDATORY - Check FIRST)
 - "we help you select" / "we help you negotiate"
 - "optimization" as core service (not infrastructure optimization)
 
+**⚠️ IMPORTANT: Mixed Model Rule**
+- IF consulting flags found AND "Managed Services" also explicitly mentioned → YELLOW (mixed model)
+- IF consulting flags found BUT NO managed services/operations → RED (pure consulting)
+- Example: BST America lists both "Consulting" and "Managed Services" → YELLOW (not RED)
+
 STEP 3B: Check for Operations Green Flags (ONLY if 3A shows NO strong consulting signals)
 - web_search: "[Company]" "we operate" OR "we manage production" OR "24/7 monitoring"
 - web_search: "[Company]" "NOC" OR "operations center" OR "production support"
@@ -777,7 +811,8 @@ STEP 3B: Check for Operations Green Flags (ONLY if 3A shows NO strong consulting
 - "Uptime SLA" / "SLA-backed operations"
 
 **BUSINESS MODEL DECISION TREE:**
-IF consulting red flags found + NO operations green flags → RED (consulting firm)
+IF consulting red flags found + "Managed Services" explicitly mentioned → YELLOW (mixed consulting + managed services)
+IF consulting red flags found + NO operations/managed services green flags → RED (pure consulting firm)
 IF operations green flags found + proprietary products found → YELLOW (mixed model)
 IF operations green flags found + NO products + NO consulting → Potential GREEN (pure operations)
 IF uncertain or mixed signals → YELLOW (default to caution)
@@ -815,7 +850,55 @@ QUALITY REQUIREMENTS:
 - Always search PitchBook directly for PE/VC verification
 - Include specific metrics: employee count, ownership details
 - Be conservative: uncertain about PE/VC → YELLOW (not GREEN)
-- Provide evidence-based rationales (2-4 sentences)"""
+- Provide evidence-based rationales (2-4 sentences)
+
+**🔥 MANDATORY FINAL VERDICT DECISION LOGIC (Apply in Order) 🔥**
+
+Step 1: Check for AUTOMATIC RED FLAGS (any one of these = RED):
+□ Confirmed EQUITY PE/VC backing (investor name + equity ownership verified)
+□ Non-US headquarters
+□ <5 employees (too small)
+□ >150 employees with institutionalization
+□ Software product company (not services)
+□ Does NOT fit Tier 1, 2, or 3 (no category fit = RED)
+□ Pure consulting/advisory with NO managed services mentioned
+
+→ IF ANY checked → VERDICT = RED ❌
+
+Step 2: Check for YELLOW FLAGS (if no automatic red flags):
+□ Tier 3 fit (3A/3B/3C) - "Tier 3 = YELLOW by definition"
+□ Mixed business model (consulting + managed services)
+□ Mixed business model (products + services)
+□ Borderline employee count (3-5 or 120-150)
+□ Uncertain PE/VC status (signals but can't verify)
+□ Any genuine uncertainty about criteria
+
+→ IF ANY checked → VERDICT = YELLOW ⚠️
+
+**CRITICAL: Tier 3 (3A/3B/3C) = AUTOMATIC YELLOW (not RED)**
+- Generic MSP serving financial clients = Tier 3B = YELLOW
+- Boutique fund admin = Tier 3A = YELLOW
+- Niche fintech IT = Tier 3B = YELLOW
+- DO NOT override to RED just because it's "generic" or "generalist"
+
+Step 3: Check for GREEN eligibility (if no red or yellow flags):
+□ Fits Tier 1 (1A-1E) or Tier 2 (2A-2D)
+□ 5-150 employees (ideal range)
+□ US headquarters
+□ Founder-owned (NO equity PE/VC - debt is OK)
+□ Managed services/operations model
+□ Institutional B2B clients
+
+→ IF ALL checked → VERDICT = GREEN ✅ (rare - only ~5% of companies)
+
+**FAILSAFE:** If uncertain → Default to YELLOW (not GREEN, not RED)
+
+**COMMON ERRORS TO AVOID:**
+1. ❌ DO NOT mark Tier 3 companies as RED (Tier 3 = YELLOW by definition)
+2. ❌ DO NOT mark mixed consulting + managed services as RED (should be YELLOW)
+3. ❌ DO NOT attribute PE backing from search results without verifying company name match
+4. ❌ DO NOT confuse debt financing with equity PE/VC (debt is NOT disqualifying)
+5. ❌ DO NOT return "nan" or empty values (if research insufficient, explain why in rationale)"""
 
         logger.debug(f"Calling Claude API with prompt length: {len(prompt)} chars")
 
