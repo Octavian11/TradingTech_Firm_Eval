@@ -276,30 +276,39 @@ Company Profile:
 - Size: 11-13 employees ✓
 - Industry: Market data operations (Tier 1B fit) ✓
 
-Why YELLOW - Uncertain PE/VC Status (Needs Verification):
+Why YELLOW - Family Office Exception (Not External PE):
 - Search: site:pitchbook.com "Market Data Management Solutions" → Found PitchBook profile
 - PitchBook snippet shows "Private Equity-Backed" label
 - Search: "Market Data Management Solutions" "Private Equity-Backed" OR "VC-Backed" → Found 9 results mentioning PE
-- Search: "Market Data Management Solutions" investor names → NO specific investor names found
-- Search: "Market Data Management Solutions" "backed by" "portfolio company" → NO confirmed equity investor found
-- CRITICAL: Despite finding PitchBook label and PE mentions, CANNOT find specific investor name or equity stake percentage
+- Search: "Market Data Management Solutions" investor → Found "Vareton Group has invested"
+- Search: "Vareton Group" "family office" OR "family investment" → Found evidence it's founders' family investment vehicle
+- CRITICAL FINDING: Vareton Group is the FOUNDERS' FAMILY investment vehicle (not external PE firm)
 
-**WHAT MAKES THIS YELLOW (NOT RED):**
-- ✗ NO specific investor name (e.g., "Accel Partners", "KKR", "Vareton Group")
-- ✗ NO equity stake percentage (e.g., "owns 40% stake", "led $15M Series A")
-- ✗ NO press release announcing equity investment
-- ✗ NO "portfolio company" listing on an investor's website
-- ✓ ONLY have: PitchBook "PE-Backed" label + general search results mentioning PE
+**WHAT MAKES THIS YELLOW (NOT RED) - FAMILY OFFICE EXCEPTION:**
+- ✓ Investor identified: "Vareton Group"
+- ✓ BUT: Vareton is founders' FAMILY OFFICE / family investment vehicle
+- ✓ Family offices = founders still control the company (not external PE takeover)
+- ✓ This is an EXTREME EDGE CASE (highly unlikely to see in other companies)
 
-**CONFIRMED PE = Requires ALL of these:**
-1. Specific investor name (e.g., "Accel Partners owns equity stake in MDMS")
-2. Evidence of equity ownership (stake %, press release, portfolio listing)
-3. Clear that it's equity (not debt/credit facility/advisory role)
+**CRITICAL DISTINCTION - External PE vs Family Office:**
+- EXTERNAL PE/VC firm (KKR, Accel Partners, Sequoia, Vista Equity) → RED ❌
+  * Third-party investors control the company
+  * Automatic disqualification
+- FAMILY OFFICE of founders (family investment vehicle) → YELLOW ⚠️
+  * Founders/family still control the company through their investment vehicle
+  * Borderline case, needs verification
+  * Example: MDMS + Vareton Group (founders' family office)
 
-Verdict: YELLOW ⚠️ (borderline RED - elevated concern)
-Rationale: NY-based market data operations provider (Tier 1B), 11-13 employees. PitchBook shows "Private Equity-Backed" label and search results mention PE, but cannot identify specific investor name or verify equity ownership. Could be minority stake, debt financing, or advisory board seat. Flagged as "minority PE?" in original research. Needs deeper verification before advancing or ruling out.
+**HOW TO VERIFY FAMILY OFFICE:**
+1. After finding PE investor name, search: "[Investor Name]" "family office"
+2. Search: "[Investor Name]" "family investment vehicle" OR "founders' investment firm"
+3. If confirmed family office → YELLOW (exception)
+4. If external PE firm → RED (disqualified)
 
-Key Lesson: PitchBook label + PE search results WITHOUT specific investor name = YELLOW (not automatic RED). Only mark RED when you find BOTH investor name AND equity ownership evidence.
+Verdict: YELLOW ⚠️ (borderline RED - elevated concern, but family office exception applies)
+Rationale: NY-based market data operations provider (Tier 1B), 11-13 employees. PitchBook shows "Private Equity-Backed" label and Vareton Group identified as investor. However, Vareton Group is the founders' family investment vehicle (not external PE firm), so company remains founder/family-controlled. This is an extreme edge case qualifying for family office exception. Needs verification before advancing or ruling out.
+
+Key Lesson: EXTERNAL PE/VC = RED. FAMILY OFFICE (founders' investment vehicle) = YELLOW exception. Always verify if investor is external PE firm or family office.
 
 ---
 
@@ -510,20 +519,31 @@ Key Lesson: Tier 3 = YELLOW (not RED). Generic MSPs with financial vertical fit 
 
 **CRITICAL LESSONS FROM EXAMPLES:**
 
-1. **PE/VC VERIFICATION - CONFIRMED = RED, UNCERTAIN = YELLOW, DEBT = NOT disqualifying**
+1. **PE/VC VERIFICATION - EXTERNAL PE = RED, FAMILY OFFICE = YELLOW EXCEPTION, DEBT = NOT disqualifying**
 
-   **WHAT IS "CONFIRMED" PE/VC BACKING? (Required for RED verdict):**
-   - ✓ Specific investor name (e.g., "Accel Partners", "KKR", "Vareton Group")
-   - ✓ Evidence of equity ownership (e.g., "owns 40% stake", "led $15M Series A", "portfolio company" on investor site)
-   - ✓ Clear that it's equity (not debt/credit facility/advisory role)
+   **WHAT IS "EXTERNAL PE/VC" (AUTOMATIC RED):**
+   - ✓ External PE/VC firm (KKR, Accel Partners, Sequoia, Vista Equity, etc.)
+   - ✓ Evidence of equity ownership (any stake %, regardless of percentage)
+   - ✓ Third-party investors control or own stake in company
+   - ✓ Phrases: "majority stake", "minority stake", "investor", "backed by", "portfolio company", "Series A/B/C"
 
-   **MUST HAVE ALL THREE to mark RED. If missing ANY of these → YELLOW (not RED)**
+   **ALL PE/VC-RELATED LANGUAGE = RED (regardless of stake %)**
+   - "majority stake" = RED
+   - "minority stake" = RED
+   - "investor" = RED
+   - "backed by" = RED
+   - "portfolio company" = RED
+   - "lead investor" = RED
+   - "strategic investor" = RED
+   - Board seats without ownership % = RED
 
-   **WHAT IS "UNCERTAIN" PE/VC STATUS? (YELLOW, not RED):**
-   - ✗ PitchBook "Private Equity-Backed" label WITHOUT specific investor name
-   - ✗ Search results mention "PE-Backed" BUT cannot identify investor
-   - ✗ Investor name mentioned BUT unclear if equity vs debt vs advisory
-   - ✗ "Minority PE" or unclear backing status
+   **FAMILY OFFICE EXCEPTION (YELLOW, not RED) - EXTREME EDGE CASE:**
+   - IF investor is founders' FAMILY OFFICE / family investment vehicle → YELLOW ⚠️
+   - Founders/family still control company through their investment vehicle
+   - NOT external PE takeover
+   - **HOW TO VERIFY:** After finding PE investor, search "[Investor]" "family office"
+   - Example: MDMS + Vareton Group (founders' family office) → YELLOW ⚠️ (not RED)
+   - **NOTE:** This is EXTREMELY RARE - unlikely to encounter in other companies
 
    **DEBT FINANCING (NOT disqualifying - can be GREEN/YELLOW):**
    - SaaS Capital credit facility, bank loans, venture debt, revenue-based financing
@@ -531,8 +551,10 @@ Key Lesson: Tier 3 = YELLOW (not RED). Generic MSPs with financial vertical fit 
    - Company remains founder-owned → Still qualifies for GREEN/YELLOW
 
    Examples:
-   * Hypothetical firm + "Accel Partners led $15M Series A, owns 40% stake" (CONFIRMED) → RED ❌
-   * MDMS + PitchBook "PE-Backed" label + 9 search results mentioning PE BUT NO investor name found → YELLOW ⚠️
+   * Company + "Accel Partners owns stake" (EXTERNAL PE) → RED ❌
+   * Company + "minority investment by KKR" (EXTERNAL PE, any %) → RED ❌
+   * Company + "strategic investor Sequoia" (EXTERNAL PE) → RED ❌
+   * MDMS + Vareton Group (FAMILY OFFICE verified) → YELLOW ⚠️ (exception)
    * DataBP + SaaS Capital credit facility (DEBT, not equity) → YELLOW ⚠️ (for mixed model, not PE)
 
 2. **TIER 3 = YELLOW (NOT RED) - Don't auto-disqualify generic MSPs**
@@ -724,19 +746,28 @@ SEARCH 6: Direct search for PE/VC status phrases (MANDATORY for GREEN verdicts)
 SEARCH 7: IF ANY investor/lender name appears → VERIFY IF EQUITY OR DEBT (MANDATORY)
 - web_search: "[Company Name]" "[Investor/Lender Name]" equity OR investment OR ownership
 - web_search: "[Company Name]" "[Investor/Lender Name]" debt OR loan OR "credit facility"
-- Example for EQUITY: "MDMS" "Vareton Group" → Confirms equity PE backing → RED
 - Example for DEBT: "DataBP" "SaaS Capital" → Confirms MRR-based debt facility → NOT disqualifying
 
-**CRITICAL EQUITY PE/VC SNIPPET INDICATORS (Any one of these = AUTOMATIC RED):**
-- "Private Equity-Backed" → RED
-- "VC-Backed" → RED
-- "The [PE/VC Firm] has invested in [Company]" (equity investment) → RED
-- "raised $X in Series A/B/C/D" (equity rounds) → RED
-- "[Company], a portfolio company of [PE/VC Firm]" → RED
-- "backed by [PE/VC Firm]" (equity backing) → RED
-- "led by [VC Firm]" (equity investment) → RED
-- "majority stake" or "acquired by [PE Firm]" → RED
-- Equity investor names: Sequoia, Accel, a16z, KKR, Blackstone, Vareton Group, Vista Equity, etc. → RED
+SEARCH 8: IF EQUITY PE/VC INVESTOR FOUND → VERIFY IF EXTERNAL PE OR FAMILY OFFICE (MANDATORY)
+- web_search: "[Investor Name]" "family office" OR "family investment vehicle"
+- web_search: "[Investor Name]" "[Company Founder Names]" family
+- IF family office CONFIRMED → YELLOW ⚠️ (exception - founders still control via family vehicle)
+- IF external PE firm → RED ❌ (automatic disqualification)
+- Example for FAMILY OFFICE: "Vareton Group" "family office" → MDMS founders' family vehicle → YELLOW ⚠️
+- Example for EXTERNAL PE: "Accel Partners" (VC firm) → RED ❌
+
+**CRITICAL EQUITY PE/VC SNIPPET INDICATORS (Any one = CHECK IF FAMILY OFFICE, if not = RED):**
+- "Private Equity-Backed" → Verify if family office, if not → RED
+- "VC-Backed" → Verify if family office, if not → RED
+- "The [PE/VC Firm] has invested in [Company]" → Verify if family office, if not → RED
+- "raised $X in Series A/B/C/D" (equity rounds) → Verify if family office, if not → RED
+- "[Company], a portfolio company of [PE/VC Firm]" → Verify if family office, if not → RED
+- "backed by [PE/VC Firm]" → Verify if family office, if not → RED
+- "led by [VC Firm]" → Verify if family office, if not → RED
+- "majority stake" OR "minority stake" → Verify if family office, if not → RED
+- "strategic investor" OR "lead investor" → Verify if family office, if not → RED
+- "acquired by [PE Firm]" → RED (no family office exception for acquisitions)
+- Equity investor names: Sequoia, Accel, a16z, KKR, Blackstone, Vista Equity, etc. → RED (external PE firms)
 
 **DEBT FINANCING INDICATORS (NOT disqualifying - investigate but can be GREEN/YELLOW):**
 - "SaaS Capital credit facility" (MRR-based debt) → NOT RED
@@ -755,19 +786,25 @@ Before marking a company GREEN, ask yourself these 8 questions:
    → If YES: INVESTIGATE - profile could indicate equity PE/VC OR just debt financing
    → Search for equity indicators: "[Company]" "equity" OR "investment" OR "portfolio company"
    → Search for debt indicators: "[Company]" "debt" OR "credit facility" OR "loan"
-   → If EQUITY found → RED (not GREEN)
+   → If EQUITY found → CHECK IF FAMILY OFFICE → If external PE = RED, if family office = YELLOW
    → If ONLY DEBT found (e.g., SaaS Capital credit facility) → Can be YELLOW or GREEN (debt is NOT disqualifying)
    → If uncertain → YELLOW (not GREEN)
 5. Did I carefully parse ALL snippets for investor/lender names?
 6. **If ANY investor/lender name appeared, did I verify if it's EQUITY or DEBT?**
-   → Search: "[Company]" "[Name]" equity OR investment → If found → RED
+   → Search: "[Company]" "[Name]" equity OR investment → If found → CHECK IF FAMILY OFFICE
    → Search: "[Company]" "[Name]" debt OR loan OR "credit facility" → If found → NOT disqualifying
    → Examples:
-     - "Vareton Group" with MDMS → Equity PE → RED
+     - "Vareton Group" with MDMS → Search "Vareton" "family office" → Family office → YELLOW ⚠️
+     - "Accel Partners" with Company X → External VC firm → RED ❌
      - "SaaS Capital" with DataBP → Debt lender → NOT disqualifying (can be YELLOW/GREEN)
-7. Am I 100% confident NO EQUITY PE/VC backing exists?
+7. **If EQUITY PE/VC investor found, did I verify if it's EXTERNAL PE or FAMILY OFFICE?**
+   → Search: "[Investor Name]" "family office" OR "family investment vehicle"
+   → If family office → YELLOW (exception - founders still control)
+   → If external PE firm → RED (automatic disqualification)
+8. Am I 100% confident NO EXTERNAL EQUITY PE/VC backing exists?
    → Debt financing is OK (not disqualifying)
-   → Only EQUITY PE/VC is disqualifying
+   → Family office equity is OK for YELLOW (not GREEN, but not RED either)
+   → Only EXTERNAL EQUITY PE/VC is disqualifying (RED)
 8. If debt financing exists (e.g., SaaS Capital), did I confirm the company is still founder-owned?
    → Debt = borrowing money, founder still owns company → Can be GREEN/YELLOW
    → Equity = investor owns company → RED
@@ -855,7 +892,7 @@ QUALITY REQUIREMENTS:
 **🔥 MANDATORY FINAL VERDICT DECISION LOGIC (Apply in Order) 🔥**
 
 Step 1: Check for AUTOMATIC RED FLAGS (any one of these = RED):
-□ Confirmed EQUITY PE/VC backing (investor name + equity ownership verified)
+□ Confirmed EXTERNAL EQUITY PE/VC backing (investor name verified AND NOT family office)
 □ Non-US headquarters
 □ <5 employees (too small)
 □ >150 employees with institutionalization
@@ -865,12 +902,17 @@ Step 1: Check for AUTOMATIC RED FLAGS (any one of these = RED):
 
 → IF ANY checked → VERDICT = RED ❌
 
+**CRITICAL:** Before marking RED for PE/VC, verify investor is NOT family office!
+- If PE investor found, search: "[Investor]" "family office"
+- If family office = YELLOW (exception), NOT RED
+
 Step 2: Check for YELLOW FLAGS (if no automatic red flags):
 □ Tier 3 fit (3A/3B/3C) - "Tier 3 = YELLOW by definition"
 □ Mixed business model (consulting + managed services)
 □ Mixed business model (products + services)
 □ Borderline employee count (3-5 or 120-150)
 □ Uncertain PE/VC status (signals but can't verify)
+□ FAMILY OFFICE PE/VC (founders' investment vehicle - extreme edge case)
 □ Any genuine uncertainty about criteria
 
 → IF ANY checked → VERDICT = YELLOW ⚠️
@@ -898,7 +940,14 @@ Step 3: Check for GREEN eligibility (if no red or yellow flags):
 2. ❌ DO NOT mark mixed consulting + managed services as RED (should be YELLOW)
 3. ❌ DO NOT attribute PE backing from search results without verifying company name match
 4. ❌ DO NOT confuse debt financing with equity PE/VC (debt is NOT disqualifying)
-5. ❌ DO NOT return "nan" or empty values (if research insufficient, explain why in rationale)"""
+5. ❌ DO NOT mark PE/VC as RED without checking if it's a family office (family office = YELLOW exception)
+6. ❌ DO NOT return "nan" or empty values (if research insufficient, explain why in rationale)
+
+**FAMILY OFFICE CHECK (MANDATORY when PE investor found):**
+- If ANY PE/VC investor found → MUST search "[Investor]" "family office"
+- If family office confirmed → YELLOW ⚠️ (founders still control via family vehicle)
+- If external PE firm → RED ❌ (third-party ownership)
+- Example: Vareton Group + MDMS → Family office → YELLOW (not RED)"""
 
         logger.debug(f"Calling Claude API with prompt length: {len(prompt)} chars")
 
