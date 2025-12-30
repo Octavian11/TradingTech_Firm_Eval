@@ -183,6 +183,19 @@ Step 4: Evaluate each company below following the evaluation framework EXACTLY
 
 DO NOT SKIP STEPS 1, 2, AND 3.
 
+🚨 CRITICAL BATCH ISOLATION PROTOCOL 🚨
+You are evaluating MULTIPLE companies in this batch. For EACH company:
+1. **START FRESH** - Forget all research from previous companies in the batch
+2. **VERIFY COMPANY NAME** - Every search result must mention THIS company's exact name
+3. **NO COPY-PASTE** - Do NOT reuse rationale, research, or findings from previous companies
+4. **SEPARATE RESEARCH** - Each company needs its OWN dedicated searches and analysis
+5. **CHECK RATIONALE** - Final rationale should mention ONLY the target company (not other company names)
+
+**COMMON BATCH PROCESSING ERROR TO AVOID:**
+- ❌ Search results for Company A mention "FFL Partners" → Copy to Company B's rationale
+- ❌ Rationale for Company B mentions Company A's details (merger, investor, offices, etc.)
+- ✅ Each company gets completely independent research and rationale
+
 Companies to evaluate:
 {"".join(company_sections)}
 
@@ -658,30 +671,42 @@ REVENUE (does NOT influence verdict - for USER manual review ONLY):
 STAGE 2: PE/VC Detection (CRITICAL - MANDATORY 4-6 searches)
 **THIS IS THE MOST IMPORTANT SCREENING CRITERION - ANY EQUITY PE/VC = AUTOMATIC RED**
 
-**🚨 CRITICAL: COMPANY NAME VERIFICATION (MUST DO THIS FOR EVERY SEARCH RESULT) 🚨**
+**🚨 CRITICAL: COMPANY NAME VERIFICATION (MANDATORY FOR EVERY SEARCH RESULT) 🚨**
 
-Before citing ANY information from search results, VERIFY the company name matches:
+**EVERY search result MUST mention the TARGET COMPANY by exact name. Do NOT cite information about different companies!**
 
+**RULE #1: Verify company name BEFORE citing ANY information**
 1. **Check exact company name in search result snippet**
    - Does the snippet mention the TARGET company by name?
    - Or does it mention a DIFFERENT company with similar positioning?
+   - If snippet doesn't mention target company → DISCARD (do not cite this information)
 
-2. **Common error pattern to AVOID:**
-   - Target: "Computronix USA" (computronixusa.com)
-   - Search: "Computronix funding investors"
-   - Result mentions: "FFL Partners invested in Abacus Group" (different company!)
-   - ERROR: Attributing Abacus Group's PE backing to Computronix USA
-   - CORRECT: Disregard result that doesn't mention "Computronix USA" by name
+2. **Common error pattern to AVOID - Wrong PE Attribution:**
+   - ❌ WRONG: Target "Computronix USA" → Search "Computronix funding" → Result mentions "FFL Partners invested in Abacus Group" → ERROR: Attributing Abacus's PE to Computronix
+   - ✅ CORRECT: Target "Computronix USA" → Search "Computronix USA" "FFL Partners" → No results linking them → No PE backing found
+   - **WHY THIS MATTERS:** In batch processing, search results may return info about Company A when researching Company B
 
-3. **If investor/PE firm appears in results:**
+3. **Common error pattern to AVOID - Copy-Paste Rationale:**
+   - ❌ WRONG: Evaluating CJC but rationale mentions "FFL Partners," "Medicus IT merger," "10+ office locations" (copied from Abacus Group)
+   - ✅ CORRECT: Every company gets FRESH research mentioning that company's name ONLY
+   - **RED FLAG:** If your rationale mentions company names OTHER than the target → You used the WRONG company's research
+
+4. **If investor/PE firm appears in results:**
    - Search: "[TARGET COMPANY EXACT NAME]" "[Investor Name]"
    - Verify the investor is linked to THIS company, not a similar company
    - Example: Search "Computronix USA" "FFL Partners" (not just "Computronix" + "FFL")
+   - Only cite PE backing if search result shows BOTH company name AND investor name in SAME sentence/snippet
 
-4. **Only cite PE backing if:**
-   - Search result explicitly mentions the target company's exact name
-   - AND the investor/PE firm name
-   - AND evidence of equity ownership (stake %, "portfolio company", etc.)
+5. **Only cite PE backing if ALL of these are true:**
+   - Search result explicitly mentions the target company's exact name ✓
+   - AND the investor/PE firm name ✓
+   - AND evidence of equity ownership (stake %, "portfolio company", etc.) ✓
+   - AND they appear in the same sentence/context (not just same page) ✓
+
+**BATCH ISOLATION REMINDER:**
+- If evaluating multiple companies in batch: FORGET previous companies, START FRESH
+- Do NOT reuse research from Company A when evaluating Company B
+- Each company needs its OWN dedicated searches with company name verification
 
 **DO NOT attribute another company's PE backing to the target company!**
 
@@ -778,7 +803,7 @@ SEARCH 8: IF EQUITY PE/VC INVESTOR FOUND → VERIFY IF EXTERNAL PE OR FAMILY OFF
 - "equipment loan" or "working capital loan" → NOT RED
 
 **FAILSAFE FOR GREEN VERDICTS (Check BEFORE giving GREEN):**
-Before marking a company GREEN, ask yourself these 8 questions:
+Before marking a company GREEN, ask yourself these 10 questions:
 1. Did I search PitchBook with the exact full company name? (site:pitchbook.com "[Full Name]")
 2. Did I search PitchBook with variations/acronyms? (if exact name found nothing)
 3. Did I search Crunchbase? (site:crunchbase.com)
@@ -805,12 +830,20 @@ Before marking a company GREEN, ask yourself these 8 questions:
    → Debt financing is OK (not disqualifying)
    → Family office equity is OK for YELLOW (not GREEN, but not RED either)
    → Only EXTERNAL EQUITY PE/VC is disqualifying (RED)
-8. If debt financing exists (e.g., SaaS Capital), did I confirm the company is still founder-owned?
+9. If debt financing exists (e.g., SaaS Capital), did I confirm the company is still founder-owned?
    → Debt = borrowing money, founder still owns company → Can be GREEN/YELLOW
    → Equity = investor owns company → RED
+10. **Does my VERDICT contradict my RATIONALE?** 🚨 CRITICAL SELF-VALIDATION CHECK 🚨
+    → If rationale mentions PE/VC/investor/backing → Verdict CANNOT be GREEN (must be YELLOW or RED)
+    → If rationale mentions "founder-owned, no PE/VC" → Verdict can be GREEN/YELLOW
+    → If rationale mentions company names OTHER than target company → ERROR (copy-paste mistake)
+    → Examples of CONTRADICTIONS to avoid:
+      * Rationale: "PE-backed by FFL Partners" → Verdict: GREEN ❌ WRONG! (should be RED)
+      * Rationale: "70-500 employees" → Verdict: GREEN ❌ WRONG! (too large, should be RED)
+      * Rationale mentions "Abacus Group" when evaluating CJC ❌ WRONG! (wrong company research)
 
 → IF ANY ANSWER IS "NO" OR "UNCERTAIN" → GIVE YELLOW (NOT GREEN)
-→ ONLY give GREEN if all 8 answers are "YES" with high confidence
+→ ONLY give GREEN if all 10 answers are "YES" with high confidence
 → SPECIAL RULE: Debt financing alone does NOT disqualify - check for equity ownership instead
 
 STAGE 3: Business Model Classification (CRITICAL - 3-4 searches)
@@ -891,6 +924,21 @@ QUALITY REQUIREMENTS:
 
 **🔥 MANDATORY FINAL VERDICT DECISION LOGIC (Apply in Order) 🔥**
 
+**Step 0: CHECK TIER CLASSIFICATION FIRST (BEFORE checking red flags):**
+□ Is this company Tier 3 (3A, 3B, or 3C)?
+  → YES: **DEFAULT VERDICT = YELLOW ⚠️**
+  → ONLY mark RED if: Non-US HQ, Public company, or External PE/VC
+  → DO NOT mark RED for: "generic MSP," "generalist," "IT support," "wrong business focus"
+  → **Tier 3 = AUTOMATIC YELLOW** unless disqualified by Non-US/Public/External PE
+
+**CRITICAL TIER 3 RULE:**
+- Tier 3A/3B/3C companies serve financial services but lack deep specialization
+- They are borderline candidates that need manual review → YELLOW by definition
+- Examples: Generic MSP with financial vertical, boutique fund admin, niche fintech IT
+- RED is ONLY for: Non-US HQ, Public company, or External PE/VC (not for being "generic")
+
+→ IF Tier 3 → Skip to Step 2 (YELLOW flags) - DO NOT apply Step 1 red flags except Non-US/Public/External PE
+
 Step 1: Check for AUTOMATIC RED FLAGS (any one of these = RED):
 □ Confirmed EXTERNAL EQUITY PE/VC backing (investor name verified AND NOT family office)
 □ Non-US headquarters
@@ -907,7 +955,7 @@ Step 1: Check for AUTOMATIC RED FLAGS (any one of these = RED):
 - If family office = YELLOW (exception), NOT RED
 
 Step 2: Check for YELLOW FLAGS (if no automatic red flags):
-□ Tier 3 fit (3A/3B/3C) - "Tier 3 = YELLOW by definition"
+□ Tier 3 fit (3A/3B/3C) - "Tier 3 = YELLOW by definition" ← CHECK THIS IN STEP 0 FIRST!
 □ Mixed business model (consulting + managed services)
 □ Mixed business model (products + services)
 □ Borderline employee count (3-5 or 120-150)
@@ -916,12 +964,6 @@ Step 2: Check for YELLOW FLAGS (if no automatic red flags):
 □ Any genuine uncertainty about criteria
 
 → IF ANY checked → VERDICT = YELLOW ⚠️
-
-**CRITICAL: Tier 3 (3A/3B/3C) = AUTOMATIC YELLOW (not RED)**
-- Generic MSP serving financial clients = Tier 3B = YELLOW
-- Boutique fund admin = Tier 3A = YELLOW
-- Niche fintech IT = Tier 3B = YELLOW
-- DO NOT override to RED just because it's "generic" or "generalist"
 
 Step 3: Check for GREEN eligibility (if no red or yellow flags):
 □ Fits Tier 1 (1A-1E) or Tier 2 (2A-2D)
@@ -936,12 +978,46 @@ Step 3: Check for GREEN eligibility (if no red or yellow flags):
 **FAILSAFE:** If uncertain → Default to YELLOW (not GREEN, not RED)
 
 **COMMON ERRORS TO AVOID:**
-1. ❌ DO NOT mark Tier 3 companies as RED (Tier 3 = YELLOW by definition)
-2. ❌ DO NOT mark mixed consulting + managed services as RED (should be YELLOW)
-3. ❌ DO NOT attribute PE backing from search results without verifying company name match
-4. ❌ DO NOT confuse debt financing with equity PE/VC (debt is NOT disqualifying)
-5. ❌ DO NOT mark PE/VC as RED without checking if it's a family office (family office = YELLOW exception)
-6. ❌ DO NOT return "nan" or empty values (if research insufficient, explain why in rationale)
+
+**ERROR #1: Tier 3 marked RED instead of YELLOW**
+- ❌ WRONG: Tier 3B "generic MSP" → RED for "wrong business focus"
+- ✅ CORRECT: Tier 3B "generic MSP" → YELLOW (borderline, needs manual review)
+- **RULE:** Tier 3 (3A/3B/3C) = AUTOMATIC YELLOW unless Non-US HQ, Public, or External PE
+
+**ERROR #2: Verdict contradicts rationale (CRITICAL)**
+- ❌ WRONG: Rationale says "PE-backed by FFL Partners, 70-500 employees" → Verdict: GREEN
+- ✅ CORRECT: Rationale says "PE-backed by FFL Partners" → Verdict: RED (automatic disqualification)
+- **RULE:** If rationale mentions PE/VC/investor → Verdict CANNOT be GREEN
+
+**ERROR #3: Copy-paste rationale from different company in batch**
+- ❌ WRONG: Evaluating CJC but rationale mentions "FFL Partners," "Medicus IT merger" (from Abacus Group)
+- ✅ CORRECT: Each company gets FRESH research, rationale mentions ONLY that company's name
+- **RULE:** Rationale should NEVER mention other company names (batch isolation error)
+
+**ERROR #4: Wrong PE attribution (company name verification failure)**
+- ❌ WRONG: Search "Computronix funding" → Find "FFL Partners invested in Abacus" → Attribute to Computronix
+- ✅ CORRECT: Search "Computronix USA" "FFL Partners" → No results → No PE backing found
+- **RULE:** Only cite PE backing if search result mentions TARGET company name + investor in same context
+
+**ERROR #5: Mixed consulting + managed services marked RED**
+- ❌ WRONG: Company lists "Consulting" and "Managed Services" → RED (pure consulting)
+- ✅ CORRECT: Both consulting + managed services → YELLOW (mixed model)
+- **RULE:** Mixed model = YELLOW, ONLY pure consulting (no operations) = RED
+
+**ERROR #6: Confusing debt financing with equity PE/VC**
+- ❌ WRONG: "SaaS Capital credit facility" → RED (PE-backed)
+- ✅ CORRECT: "SaaS Capital credit facility" → Debt (not equity) → Can be GREEN/YELLOW
+- **RULE:** Debt financing is NOT disqualifying, only EQUITY PE/VC is RED
+
+**ERROR #7: PE/VC marked RED without family office check**
+- ❌ WRONG: Found "PE-backed" → Immediate RED (without verifying if family office)
+- ✅ CORRECT: Found "PE-backed" → Check if family office → If yes = YELLOW, if external PE = RED
+- **RULE:** When PE investor found → MUST search "[Investor]" "family office" before verdict
+
+**ERROR #8: Returning empty/nan values**
+- ❌ WRONG: EST_EMPLOYEES: "nan", RATIONALE: "nan"
+- ✅ CORRECT: If research insufficient, explain why (e.g., "Company website offline, no LinkedIn profile")
+- **RULE:** Never return empty values, always provide explanation
 
 **FAMILY OFFICE CHECK (MANDATORY when PE investor found):**
 - If ANY PE/VC investor found → MUST search "[Investor]" "family office"
